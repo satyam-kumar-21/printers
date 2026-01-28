@@ -1,8 +1,7 @@
 import React from "react";
-import printer from "../../assets/printer.png"
+import printer from "../../assets/printer.png";
 
 const TopPicksGrid = () => {
-    // Products defined inside the component
     const products = [
         {
             category: "Trending",
@@ -36,21 +35,22 @@ const TopPicksGrid = () => {
             image: printer,
             tag: "Trending",
         },
-
     ];
 
     return (
         <section className="max-w-7xl mx-auto px-4 py-12">
             {/* Heading */}
             <div className="mb-8 text-center">
-                <h2 className="text-3xl font-semibold text-gray-900">Top Picks This Month</h2>
+                <h2 className="text-3xl font-semibold text-gray-900">
+                    Top Picks This Month
+                </h2>
                 <p className="text-gray-600 mt-2">
                     Explore our most popular pieces that customers can't get enough of
                 </p>
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 {products.map((product, index) => (
                     <div
                         key={index}
@@ -63,7 +63,6 @@ const TopPicksGrid = () => {
                                 alt={product.title}
                                 className="w-full h-full object-contain"
                             />
-                            {/* Tag */}
                             {product.tag && (
                                 <span className="absolute top-2 left-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded">
                                     {product.tag}
@@ -74,17 +73,23 @@ const TopPicksGrid = () => {
                         {/* Info */}
                         <div className="p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 className="text-sm text-indigo-600 font-medium">{product.category}</h3>
-                                <h2 className="text-lg font-semibold text-gray-900 mt-1 line-clamp-2">
+                                <h3 className="text-sm text-indigo-600 font-medium">
+                                    {product.category}
+                                </h3>
+                                <h2 className="text-sm font-semibold text-gray-900 mt-1 line-clamp-2">
                                     {product.title}
                                 </h2>
-                                <p className="text-gray-900 font-bold mt-2">${product.price}</p>
+                                <p className="text-gray-900 font-bold mt-2">
+                                    ${product.price}
+                                </p>
                                 {product.available && (
-                                    <p className="text-gray-500 text-sm mt-1">Available: {product.available}</p>
+                                    <p className="text-gray-500 text-sm mt-1">
+                                        Available: {product.available}
+                                    </p>
                                 )}
                             </div>
 
-                            {/* Add to Cart Button */}
+                            {/* Add to Cart */}
                             <button className="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
                                 Add to Cart
                             </button>
