@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingCart, Heart, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import PrinterImage from '../../assets/printer.png';
 
 const deals = [
@@ -16,6 +17,21 @@ const deals = [
 ];
 
 const MegaDeals = () => {
+    const navigate = useNavigate();
+
+    // Function to generate slug from product title
+    const generateSlug = (title) => {
+        return title
+            .toLowerCase()
+            .replace(/[^a-z0-9 ]/g, '')
+            .replace(/\s+/g, '-');
+    };
+
+    const handleCardClick = (title) => {
+        const slug = generateSlug(title);
+        navigate(`/product/${slug}`);
+    };
+
     return (
         <section className="py-12 bg-white">
             <div className="mb-8">
@@ -23,12 +39,12 @@ const MegaDeals = () => {
                 <p className="text-slate-500 md:text-left text-center">Shop smart and print best with our special printer deals.</p>
             </div>
 
-            {/* Grid: 2 cols on mobile, 3/4 on larger screens */}
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {deals.map((deal) => (
                     <div
                         key={deal.id}
-                        className="group border border-slate-100 rounded-2xl p-4 hover:shadow-xl transition-all duration-300 bg-white relative"
+                        onClick={() => handleCardClick(deal.name)}
+                        className="group border border-slate-100 rounded-2xl p-4 hover:shadow-xl transition-all duration-300 bg-white relative cursor-pointer"
                     >
                         {/* Image */}
                         <div className="h-40 flex items-center justify-center mb-4 relative overflow-hidden">
@@ -38,7 +54,7 @@ const MegaDeals = () => {
                                 className="h-32 object-contain transition-transform duration-500 group-hover:scale-110"
                             />
 
-                            {/* Action Icons - only icons, no text */}
+                            {/* Action Icons */}
                             <div className="absolute inset-0 flex items-end justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mb-2">
                                 <button className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md">
                                     <ShoppingCart size={18} />

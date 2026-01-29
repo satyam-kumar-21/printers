@@ -34,8 +34,8 @@ const Footer = () => {
                     <h3 className="text-gray-900 font-semibold mb-4">Quick Links</h3>
                     <ul className="space-y-2 text-gray-600 text-sm">
                         <li><Link to="/track-order" className="hover:text-gray-900">Track Your Order</Link></li>
-                        <li><Link to="/returns" className="hover:text-gray-900">Returns & Exchanges</Link></li>
-                        <li><Link to="/contact" className="hover:text-gray-900">Contact Us</Link></li>
+                        <li><Link to="/returns-exchanges" className="hover:text-gray-900">Returns & Exchanges</Link></li>
+                        <li><Link to="/customer-service" className="hover:text-gray-900">Contact Us</Link></li>
                         <li><Link to="/faq" className="hover:text-gray-900">FAQ</Link></li>
                     </ul>
                 </div>
@@ -55,8 +55,8 @@ const Footer = () => {
                 <div>
                     <h3 className="text-gray-900 font-semibold mb-4">Get in Touch</h3>
                     <ul className="space-y-2 text-gray-600 text-sm">
-                        <li>Email: <a href="mailto:info@myinkshops.com" className="hover:text-gray-900">info@myinkshops.com</a></li>
-                        <li>Phone: <a href="tel:+1234567890" className="hover:text-gray-900">+1 234 567 890</a></li>
+                        <li>Email: <a href="mailto:satyamkumar@.com" className="hover:text-gray-900">satyamkumar@.com</a></li>
+                        <li>Phone: <a href="tel:+911111111111" className="hover:text-gray-900">+91 1111111111</a></li>
                         <li>Address: 9169 W State St #810, Garden City, ID 83714</li>
                         <li>Support Hours: Mon–Fri 8AM–8PM</li>
                     </ul>

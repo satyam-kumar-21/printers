@@ -9,7 +9,7 @@ const AdminAnalytics = () => {
                 <p className="text-slate-500">Overview of your store's performance.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                     { label: 'Total Revenue', value: '$54,239', change: '+12.5%', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-100' },
                     { label: 'Total Orders', value: '1,253', change: '+8.2%', icon: BarChart3, color: 'text-blue-600', bg: 'bg-blue-100' },

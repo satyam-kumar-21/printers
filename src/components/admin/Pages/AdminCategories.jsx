@@ -103,7 +103,7 @@ const AdminCategories = () => {
 
                 {/* Table Content */}
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
+                    <table className="w-full text-left text-sm min-w-[700px]">
                         <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
                             <tr>
                                 <th className="px-6 py-4 w-16">

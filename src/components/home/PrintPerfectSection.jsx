@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ProductImage from "../../assets/printer.png"; // Replace with real images
 
 const productData = {
@@ -109,6 +110,21 @@ const productData = {
 const PrintPerfectSection = () => {
     const tabs = Object.keys(productData);
     const [activeTab, setActiveTab] = useState("New Arrivals");
+    const navigate = useNavigate();
+
+    // Function to generate slug from product title
+    const generateSlug = (title) => {
+        return title
+            .toLowerCase()
+            .replace(/[^a-z0-9 ]/g, '')   // remove non-alphanumeric characters
+            .replace(/\s+/g, '-');         // replace spaces with dashes
+    };
+
+    // Handle product card click
+    const handleCardClick = (product) => {
+        const slug = generateSlug(product.name);
+        navigate(`/product/${slug}`);  // Navigate to product details page
+    };
 
     return (
         <section className="w-full py-12 bg-white">
@@ -146,7 +162,8 @@ const PrintPerfectSection = () => {
                 {productData[activeTab].map((product) => (
                     <div
                         key={product.id}
-                        className="group border border-slate-100 rounded-2xl p-4 hover:shadow-xl transition-all duration-300 bg-white relative"
+                        onClick={() => handleCardClick(product)} // Redirect to product details
+                        className="group border border-slate-100 rounded-2xl p-4 hover:shadow-xl transition-all duration-300 bg-white relative cursor-pointer"
                     >
                         {/* Label */}
                         <span className="absolute top-4 left-4 bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">

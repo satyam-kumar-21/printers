@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -26,6 +26,11 @@ import InkToner from './components/productsCategories/inkToner/InkToner';
 import CustomerService from './components/customerService/CustomerService';
 import LaserPrinters from './components/productsCategories/laserPrinters/LaserPrinters';
 import ScrollToTop from './components/ScrollToTop';
+import Cart from './components/Cart';
+import ProductDetails from './components/productsCategories/ProductDetails';
+import TrackOrder from './components/order/TrackOrder';
+import ReturnsAndExchanges from './components/order/ReturnsAndExchanges';
+import FAQ from './components/FAQ';
 
 function App() {
     const location = useLocation();
@@ -47,11 +52,19 @@ function App() {
                     <Route path="/product-category/led-printers" element={<LedPrinters />} />
                     <Route path="/product-category/ink-toner" element={<InkToner />} />
                     <Route path="/customer-service" element={<CustomerService />} />
+                    <Route path="/cart" element={<Cart />} />
 
+                    <Route path="/product/:productSlug" element={<ProductDetails />} />
+
+                    {/*order*/}
+                    <Route path="/track-order" element={<TrackOrder />} />
+                    <Route path="/returns-exchanges" element={<ReturnsAndExchanges />} />
+                    <Route path="/faq" element={<FAQ />} />
 
                     {/* Admin Routes */}
                     <Route path="/admin/login" element={<AdminLogin />} />
                     <Route path="/admin" element={<AdminLayout />}>
+                        <Route index element={<Navigate to="/admin/dashboard" replace />} />
                         <Route path="dashboard" element={<AdminDashboard />} />
                         <Route path="categories" element={<AdminCategories />} />
                         <Route path="products" element={<AdminProducts />} />

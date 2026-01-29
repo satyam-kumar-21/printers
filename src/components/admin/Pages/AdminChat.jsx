@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Send, User, MoreVertical, Phone, Video } from 'lucide-react';
+import { Search, Send, User, MoreVertical, Phone, Video, ChevronLeft } from 'lucide-react';
 
 const AdminChat = () => {
     // Dummy Chat Data
@@ -9,6 +9,7 @@ const AdminChat = () => {
         { id: 3, name: 'Ellen Ripley', lastMsg: 'Thanks for the quick response!', time: 'Yesterday', unread: 0, status: 'busy' },
     ]);
 
+    const [showMobileList, setShowMobileList] = useState(true);
     const [activeChat, setActiveChat] = useState(chats[0]);
     const [messages, setMessages] = useState([
         { id: 1, sender: 'user', text: 'Hi, I have a question about my order.', time: '10:28 AM' },
@@ -16,6 +17,11 @@ const AdminChat = () => {
         { id: 3, sender: 'user', text: 'It is ORD-7782. When will it arrive?', time: '10:30 AM' },
     ]);
     const [newMessage, setNewMessage] = useState('');
+
+    const handleChatSelect = (chat) => {
+        setActiveChat(chat);
+        setShowMobileList(false);
+    };
 
     const handleSend = (e) => {
         e.preventDefault();
@@ -30,9 +36,12 @@ const AdminChat = () => {
     };
 
     return (
-        <div className="flex h-[calc(100vh-100px)] bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="flex h-[calc(100vh-120px)] bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden relative">
             {/* Sidebar List */}
-            <div className="w-80 border-r border-slate-200 flex flex-col">
+            <div className={`
+                w-full lg:w-80 border-r border-slate-200 flex flex-col bg-white z-10
+                ${showMobileList ? 'flex' : 'hidden lg:flex'}
+            `}>
                 <div className="p-4 border-b border-slate-200">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -47,7 +56,7 @@ const AdminChat = () => {
                     {chats.map(chat => (
                         <div
                             key={chat.id}
-                            onClick={() => setActiveChat(chat)}
+                            onClick={() => handleChatSelect(chat)}
                             className={`p-4 flex gap-3 hover:bg-slate-50 cursor-pointer transition-colors border-b border-slate-50 ${activeChat.id === chat.id ? 'bg-blue-50/50' : ''}`}
                         >
                             <div className="relative">
@@ -55,7 +64,7 @@ const AdminChat = () => {
                                     {chat.name.charAt(0)}
                                 </div>
                                 <div className={`absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full ${chat.status === 'online' ? 'bg-green-500' :
-                                        chat.status === 'busy' ? 'bg-red-500' : 'bg-slate-400'
+                                    chat.status === 'busy' ? 'bg-red-500' : 'bg-slate-400'
                                     }`} />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -78,26 +87,36 @@ const AdminChat = () => {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 flex flex-col bg-slate-50/30">
+            <div className={`
+                flex-1 flex flex-col bg-slate-50/30
+                ${!showMobileList ? 'flex' : 'hidden lg:flex'}
+            `}>
                 {/* Chat Header */}
-                <div className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between">
+                <div className="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between">
                     <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setShowMobileList(true)}
+                            className="lg:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-lg flex items-center gap-1"
+                        >
+                            <ChevronLeft size={20} />
+                            <span className="text-xs font-bold">Back</span>
+                        </button>
                         <div className="relative">
                             <div className="w-9 h-9 bg-slate-200 rounded-full flex items-center justify-center text-slate-500 font-bold">
                                 {activeChat.name.charAt(0)}
                             </div>
                             <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 border-2 border-white rounded-full ${activeChat.status === 'online' ? 'bg-green-500' :
-                                    activeChat.status === 'busy' ? 'bg-red-500' : 'bg-slate-400'
+                                activeChat.status === 'busy' ? 'bg-red-500' : 'bg-slate-400'
                                 }`} />
                         </div>
                         <div>
                             <h3 className="font-bold text-slate-800 text-sm">{activeChat.name}</h3>
-                            <p className="text-xs text-slate-500 flex items-center gap-1">
+                            <p className="text-xs text-slate-500 hidden sm:flex items-center gap-1">
                                 {activeChat.status === 'online' ? 'Active now' : 'Last seen recently'}
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3 text-slate-400">
+                    <div className="flex items-center gap-1 sm:gap-3 text-slate-400">
                         <button className="p-2 hover:bg-slate-100 rounded-full"><Phone size={18} /></button>
                         <button className="p-2 hover:bg-slate-100 rounded-full"><Video size={18} /></button>
                         <button className="p-2 hover:bg-slate-100 rounded-full"><MoreVertical size={18} /></button>
@@ -105,12 +124,12 @@ const AdminChat = () => {
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
                     {messages.map(msg => (
                         <div key={msg.id} className={`flex ${msg.sender === 'admin' ? 'justify-end' : 'justify-start'}`}>
-                            <div className={`max-w-[70%] rounded-2xl px-4 py-3 text-sm shadow-sm ${msg.sender === 'admin'
-                                    ? 'bg-blue-600 text-white rounded-tr-none'
-                                    : 'bg-white text-slate-700 rounded-tl-none border border-slate-200'
+                            <div className={`max-w-[85%] sm:max-w-[70%] rounded-2xl px-4 py-3 text-sm shadow-sm ${msg.sender === 'admin'
+                                ? 'bg-blue-600 text-white rounded-tr-none'
+                                : 'bg-white text-slate-700 rounded-tl-none border border-slate-200'
                                 }`}>
                                 <p>{msg.text}</p>
                                 <div className={`text-[10px] mt-1 text-right ${msg.sender === 'admin' ? 'text-blue-100' : 'text-slate-400'}`}>
@@ -133,7 +152,7 @@ const AdminChat = () => {
                         />
                         <button
                             type="submit"
-                            className="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-shadow shadow-md"
+                            className="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-shadow shadow-md shrink-0"
                         >
                             <Send size={18} className="translate-x-0.5" />
                         </button>

@@ -8,11 +8,12 @@ import {
     MessageSquare,
     BarChart3,
     Settings,
-    LogOut
+    LogOut,
+    X
 } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -32,42 +33,65 @@ const AdminSidebar = () => {
     ];
 
     return (
-        <div className="w-64 bg-white border-r border-slate-200 flex flex-col h-full shadow-lg z-10">
-            <div className="h-16 flex items-center gap-2 px-6 border-b border-slate-100">
-                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                    A
-                </div>
-                <span className="text-xl font-bold text-slate-900 tracking-tight">AdminPanel</span>
-            </div>
+        <>
+            {/* Mobile Overlay */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
 
-            <nav className="flex-1 py-6 px-4 space-y-1 overflow-y-auto">
-                {navItems.map((item) => (
-                    <NavLink
-                        key={item.path}
-                        to={item.path}
-                        className={({ isActive }) =>
-                            `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                                ? 'bg-slate-900 text-white shadow-md'
-                                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                            }`
-                        }
+            <div className={`
+                fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col h-full shadow-lg transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0
+                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}>
+                <div className="h-16 flex items-center gap-2 px-6 border-b border-slate-100 shrink-0">
+                    <div className="flex-1 flex items-center gap-2">
+                        <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                            A
+                        </div>
+                        <span className="text-xl font-bold text-slate-900 tracking-tight">AdminPanel</span>
+                    </div>
+                    {/* Mobile Close Button */}
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
                     >
-                        {item.icon}
-                        <span className="font-medium text-sm">{item.name}</span>
-                    </NavLink>
-                ))}
-            </nav>
+                        <X size={20} />
+                    </button>
+                </div>
 
-            <div className="p-4 border-t border-slate-100">
-                <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl text-red-600 hover:bg-red-50 transition-colors"
-                >
-                    <LogOut size={20} />
-                    <span className="font-medium text-sm">Logout</span>
-                </button>
+                <nav className="flex-1 py-6 px-4 space-y-1 overflow-y-auto">
+                    {navItems.map((item) => (
+                        <NavLink
+                            key={item.path}
+                            to={item.path}
+                            onClick={() => setIsOpen(false)}
+                            className={({ isActive }) =>
+                                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
+                                    ? 'bg-slate-900 text-white shadow-md'
+                                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                                }`
+                            }
+                        >
+                            {item.icon}
+                            <span className="font-medium text-sm">{item.name}</span>
+                        </NavLink>
+                    ))}
+                </nav>
+
+                <div className="p-4 border-t border-slate-100">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                        <LogOut size={20} />
+                        <span className="font-medium text-sm">Logout</span>
+                    </button>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

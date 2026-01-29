@@ -199,7 +199,7 @@ const AdminProducts = () => {
                         </button>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <form onSubmit={handleSubmit} className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         {/* Left Column: Basic Info */}
                         <div className="space-y-4">
                             <h4 className="font-semibold text-slate-900 border-b pb-2 mb-4">Basic Information</h4>
@@ -474,7 +474,7 @@ const AdminProducts = () => {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
+                    <table className="w-full text-left text-sm min-w-[800px]">
                         <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
                             <tr>
                                 <th className="px-6 py-4 w-12"><input type="checkbox" className="rounded" /></th>
@@ -519,7 +519,7 @@ const AdminProducts = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-1.5">
                                             <div className={`w-2 h-2 rounded-full ${product.stock === 'In Stock' ? 'bg-green-500' :
-                                                    product.stock === 'Low Stock' ? 'bg-orange-500' : 'bg-red-500'
+                                                product.stock === 'Low Stock' ? 'bg-orange-500' : 'bg-red-500'
                                                 }`} />
                                             <span className="text-slate-600 font-medium text-xs">{product.stock}</span>
                                         </div>

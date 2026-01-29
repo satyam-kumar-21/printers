@@ -37,6 +37,7 @@ const AdminLayout = () => {
     }, []);
 
     // Dropdown States
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isNotifOpen, setIsNotifOpen] = useState(false);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -77,13 +78,20 @@ const AdminLayout = () => {
 
     return (
         <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
-            <AdminSidebar />
+            <AdminSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
             <div className="flex-1 flex flex-col min-w-0">
                 {/* Top Header */}
                 <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-20 relative">
-                    {/* Left: Clock */}
+                    {/* Left: Menu Toggle (Mobile) & Clock */}
                     <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsSidebarOpen(true)}
+                            className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+                        >
+                            <Menu size={20} />
+                        </button>
+
                         <div className="hidden md:flex items-center gap-2 text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
                             <Clock size={14} />
                             <span className="text-xs font-semibold font-mono">

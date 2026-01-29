@@ -99,7 +99,7 @@ const AdminCustomers = () => {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
+                    <table className="w-full text-left text-sm min-w-[1000px]">
                         <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
                             <tr>
                                 <th className="px-6 py-4">Customer Info</th>
@@ -157,8 +157,8 @@ const AdminCustomers = () => {
                                         <button
                                             onClick={() => toggleStatus(customer.id)}
                                             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border flex items-center gap-2 ml-auto ${customer.status === 'Active'
-                                                    ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' // Block Button
-                                                    : 'bg-green-50 text-green-600 border-green-200 hover:bg-green-100' // Unblock Button
+                                                ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' // Block Button
+                                                : 'bg-green-50 text-green-600 border-green-200 hover:bg-green-100' // Unblock Button
                                                 }`}
                                         >
                                             {customer.status === 'Active' ? (

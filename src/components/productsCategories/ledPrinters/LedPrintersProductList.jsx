@@ -11,7 +11,6 @@ const LedPrintersProductList = () => {
             price: "209.99",
             originalPrice: "309.99",
             image: printerImg,
-            link: "/product/9125e",
         },
         {
             category: "Led Printers",
@@ -20,7 +19,6 @@ const LedPrintersProductList = () => {
             price: "119.99",
             originalPrice: "159.99",
             image: printerImg,
-            link: "/product/6155e",
         },
         {
             category: "Led Printers",
@@ -29,7 +27,6 @@ const LedPrintersProductList = () => {
             price: "179.99",
             originalPrice: "279.99",
             image: printerImg,
-            link: "/product/8139e",
         },
         {
             category: "Led Printers",
@@ -38,7 +35,6 @@ const LedPrintersProductList = () => {
             price: "269.99",
             originalPrice: "369.99",
             image: printerImg,
-            link: "/product/6001",
         },
         {
             category: "Led Printers",
@@ -47,7 +43,6 @@ const LedPrintersProductList = () => {
             price: "349.99",
             originalPrice: "469.99",
             image: printerImg,
-            link: "/product/7602",
         },
         {
             category: "Led Printers",
@@ -56,7 +51,6 @@ const LedPrintersProductList = () => {
             price: "189.99",
             originalPrice: "259.99",
             image: printerImg,
-            link: "/product/5101",
         },
         {
             category: "Led Printers",
@@ -65,18 +59,26 @@ const LedPrintersProductList = () => {
             price: "349.99",
             originalPrice: "419.99",
             image: printerImg,
-            link: "/product/200",
         },
     ];
+
+    // Generate dynamic links from title
+    const productsWithLinks = products.map((product) => ({
+        ...product,
+        link: `/product/${product.title
+            .toLowerCase()
+            .replace(/[^a-z0-9 ]/g, "") // remove special characters
+            .replace(/\s+/g, "-")       // replace spaces with hyphens
+            }`,
+    }));
 
     const dropdownOptions = ["Best Selling", "Top Rated", "New Arrivals"];
 
     return (
         <div>
-
             <ProductGrid
                 heading="Best Selling"
-                products={products}
+                products={productsWithLinks}
                 dropdownOptions={dropdownOptions}
             />
         </div>

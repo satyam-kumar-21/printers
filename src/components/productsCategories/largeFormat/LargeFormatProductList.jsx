@@ -3,6 +3,7 @@ import printerImg from "../../../assets/printer.png"; // placeholder image
 import ProductGrid from "../ProductGrid";
 
 const LargeFormatProductList = () => {
+    // Products without hardcoded links
     const products = [
         {
             category: "Large Format Printers",
@@ -11,7 +12,6 @@ const LargeFormatProductList = () => {
             price: "209.99",
             originalPrice: "309.99",
             image: printerImg,
-            link: "/product/9125e",
         },
         {
             category: "Large Format Printers",
@@ -20,7 +20,6 @@ const LargeFormatProductList = () => {
             price: "119.99",
             originalPrice: "159.99",
             image: printerImg,
-            link: "/product/6155e",
         },
         {
             category: "Large Format Printers",
@@ -29,7 +28,6 @@ const LargeFormatProductList = () => {
             price: "179.99",
             originalPrice: "279.99",
             image: printerImg,
-            link: "/product/8139e",
         },
         {
             category: "Large Format Printers",
@@ -38,7 +36,6 @@ const LargeFormatProductList = () => {
             price: "269.99",
             originalPrice: "369.99",
             image: printerImg,
-            link: "/product/6001",
         },
         {
             category: "Large Format Printers",
@@ -47,7 +44,6 @@ const LargeFormatProductList = () => {
             price: "349.99",
             originalPrice: "469.99",
             image: printerImg,
-            link: "/product/7602",
         },
         {
             category: "Large Format Printers",
@@ -56,7 +52,6 @@ const LargeFormatProductList = () => {
             price: "189.99",
             originalPrice: "259.99",
             image: printerImg,
-            link: "/product/5101",
         },
         {
             category: "Large Format Printers",
@@ -65,18 +60,26 @@ const LargeFormatProductList = () => {
             price: "349.99",
             originalPrice: "419.99",
             image: printerImg,
-            link: "/product/200",
         },
     ];
+
+    // Generate dynamic links from title
+    const productsWithLinks = products.map((product) => ({
+        ...product,
+        link: `/product/${product.title
+            .toLowerCase()
+            .replace(/[^a-z0-9 ]/g, "") // remove special characters
+            .replace(/\s+/g, "-")       // replace spaces with hyphens
+            }`,
+    }));
 
     const dropdownOptions = ["Best Selling", "Top Rated", "New Arrivals"];
 
     return (
         <div>
-
             <ProductGrid
                 heading="Best Selling"
-                products={products}
+                products={productsWithLinks}
                 dropdownOptions={dropdownOptions}
             />
         </div>

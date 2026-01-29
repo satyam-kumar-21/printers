@@ -51,7 +51,7 @@ const AdminDashboard = () => {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map((stat, i) => (
                     <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex justify-between items-start mb-4">
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
                         <button onClick={() => navigate('/admin/orders')} className="text-sm text-blue-600 font-semibold hover:text-blue-700">View All</button>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
+                        <table className="w-full text-left text-sm min-w-[600px]">
                             <thead className="bg-slate-50 text-slate-500 font-semibold">
                                 <tr>
                                     <th className="px-6 py-3">Order ID</th>

@@ -3,6 +3,7 @@ import printerImg from "../../../assets/printer.png"; // placeholder image
 import ProductGrid from "../ProductGrid";
 
 const InkTonerProductList = () => {
+    // Products without manually defined links
     const products = [
         {
             category: "Ink Toner",
@@ -11,7 +12,6 @@ const InkTonerProductList = () => {
             price: "209.99",
             originalPrice: "309.99",
             image: printerImg,
-            link: "/product/9125e",
         },
         {
             category: "Ink Toner",
@@ -20,7 +20,6 @@ const InkTonerProductList = () => {
             price: "119.99",
             originalPrice: "159.99",
             image: printerImg,
-            link: "/product/6155e",
         },
         {
             category: "Ink Toner",
@@ -29,7 +28,6 @@ const InkTonerProductList = () => {
             price: "179.99",
             originalPrice: "279.99",
             image: printerImg,
-            link: "/product/8139e",
         },
         {
             category: "Ink Toner",
@@ -38,7 +36,6 @@ const InkTonerProductList = () => {
             price: "269.99",
             originalPrice: "369.99",
             image: printerImg,
-            link: "/product/6001",
         },
         {
             category: "Ink Toner",
@@ -47,7 +44,6 @@ const InkTonerProductList = () => {
             price: "349.99",
             originalPrice: "469.99",
             image: printerImg,
-            link: "/product/7602",
         },
         {
             category: "Ink Toner",
@@ -56,7 +52,6 @@ const InkTonerProductList = () => {
             price: "189.99",
             originalPrice: "259.99",
             image: printerImg,
-            link: "/product/5101",
         },
         {
             category: "Ink Toner",
@@ -65,18 +60,26 @@ const InkTonerProductList = () => {
             price: "349.99",
             originalPrice: "419.99",
             image: printerImg,
-            link: "/product/200",
         },
     ];
+
+    // Generate dynamic links based on title
+    const productsWithLinks = products.map((product) => ({
+        ...product,
+        link: `/product/${product.title
+            .toLowerCase()
+            .replace(/[^a-z0-9 ]/g, "") // remove special characters
+            .replace(/\s+/g, "-")       // replace spaces with hyphens
+            }`,
+    }));
 
     const dropdownOptions = ["Best Selling", "Top Rated", "New Arrivals"];
 
     return (
         <div>
-
             <ProductGrid
                 heading="Best Selling"
-                products={products}
+                products={productsWithLinks}
                 dropdownOptions={dropdownOptions}
             />
         </div>

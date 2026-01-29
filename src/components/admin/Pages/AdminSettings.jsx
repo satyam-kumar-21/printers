@@ -3,7 +3,7 @@ import { Save } from 'lucide-react';
 
 const AdminSettings = () => {
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 max-w-4xl">
+        <div className="space-y-6 animate-in fade-in duration-500 w-full max-w-4xl">
             <div>
                 <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
                 <p className="text-slate-500">Manage your store configuration and preferences.</p>

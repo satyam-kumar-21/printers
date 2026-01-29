@@ -1,5 +1,7 @@
-import React from "react";
-import printer from "../../assets/printer.png";
+import React from 'react';
+import { ShoppingCart, Heart, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import printerImg from '../../assets/printer.png';
 
 const TopPicksGrid = () => {
     const products = [
@@ -8,7 +10,7 @@ const TopPicksGrid = () => {
             title: "Brother® MFC-L3780CDW Wireless Digital Laser Color All-In-One Printer With Refresh EZ Print Eligibility",
             price: 569.99,
             available: 73,
-            image: printer,
+            image: printerImg,
             tag: "Trending",
         },
         {
@@ -16,7 +18,7 @@ const TopPicksGrid = () => {
             title: "HP 58A Black Toner Cartridge, CF258A",
             price: 146.89,
             available: 108,
-            image: printer,
+            image: printerImg,
             tag: "Trending",
         },
         {
@@ -24,7 +26,7 @@ const TopPicksGrid = () => {
             title: "HP DesignJet Z9+ PostScript Color Inkjet Large-Format Printer, W3Z72A#B1K",
             price: 5895.09,
             available: 61,
-            image: printer,
+            image: printerImg,
             tag: "Trending",
         },
         {
@@ -32,10 +34,31 @@ const TopPicksGrid = () => {
             title: "Epson® WorkForce® Pro WF-7840 Wide-Format Wireless Inkjet All-In-One Color Printer",
             price: 229.99,
             available: 51,
-            image: printer,
+            image: printerImg,
             tag: "Trending",
         },
     ];
+
+    const navigate = useNavigate();
+
+    // Function to generate a slug from the product title
+    const generateSlug = (title) => {
+        return title
+            .toLowerCase()
+            .replace(/[^a-z0-9 ]/g, '')
+            .replace(/\s+/g, '-');
+    };
+
+    // Handle click on product to navigate to details page
+    const handleProductClick = (productTitle) => {
+        const slug = generateSlug(productTitle);
+        navigate(`/product/${slug}`);
+    };
+
+    // Handle click on Add to Cart button to navigate to cart page
+    const handleAddToCartClick = () => {
+        navigate('/cart');  // Redirect to cart page
+    };
 
     return (
         <section className="max-w-7xl mx-auto px-4 py-12">
@@ -57,7 +80,10 @@ const TopPicksGrid = () => {
                         className="bg-white border rounded-xl overflow-hidden shadow hover:shadow-lg transition flex flex-col"
                     >
                         {/* Image */}
-                        <div className="relative w-full aspect-square bg-gray-100 flex items-center justify-center">
+                        <div
+                            className="relative w-full aspect-square bg-gray-100 flex items-center justify-center cursor-pointer"
+                            onClick={() => handleProductClick(product.title)}  // Navigate to product details page on image click
+                        >
                             <img
                                 src={product.image}
                                 alt={product.title}
@@ -89,8 +115,11 @@ const TopPicksGrid = () => {
                                 )}
                             </div>
 
-                            {/* Add to Cart */}
-                            <button className="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+                            {/* Add to Cart Button */}
+                            <button
+                                onClick={handleAddToCartClick}
+                                className="mt-4 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+                            >
                                 Add to Cart
                             </button>
                         </div>

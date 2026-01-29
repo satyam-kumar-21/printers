@@ -1,5 +1,6 @@
 import React from "react";
 import { EnvelopeIcon, ClockIcon, ChatBubbleLeftRightIcon, MapPinIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const CustomerService = () => {
     return (
@@ -71,16 +72,13 @@ const CustomerService = () => {
                         <ul className="space-y-2">
                             <li className="flex items-center space-x-2 text-indigo-600 hover:underline cursor-pointer">
                                 <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                                <span>Track Your Order</span>
+                                <Link to="/track-order"><span>Track Your Order</span></Link>
                             </li>
                             <li className="flex items-center space-x-2 text-indigo-600 hover:underline cursor-pointer">
                                 <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                                <span>Returns & Exchanges</span>
+                                <Link to="/returns-exchanges"><span>Returns & Exchanges</span></Link>
                             </li>
-                            <li className="flex items-center space-x-2 text-indigo-600 hover:underline cursor-pointer">
-                                <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                                <span>Send us a Message</span>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
