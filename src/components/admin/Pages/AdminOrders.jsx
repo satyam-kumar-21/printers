@@ -28,7 +28,7 @@ const AdminOrders = () => {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('http://localhost:5000/api/orders', {
+            const { data } = await axios.get('https://printersbackend.onrender.com/api/orders', {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             setOrders(data);
@@ -89,7 +89,7 @@ const AdminOrders = () => {
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:5000/api/orders/${selectedOrder._id}/status`, updateForm, {
+            await axios.put(`https://printersbackend.onrender.com/api/orders/${selectedOrder._id}/status`, updateForm, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             fetchOrders();
@@ -321,7 +321,7 @@ const AdminOrders = () => {
                                 {selectedOrder.isPaid ? <CheckCircle size={24} className="text-white" /> : <Clock size={24} className="text-white" />}
                             </div>
                             <h3 className="font-bold text-lg">{selectedOrder.isPaid ? 'Payment Successful' : 'Payment Pending'}</h3>
-                            <p className="text-white/80 text-sm">Order #ORD-{selectedOrder._id.substring(selectedOrder._id.length-4).toUpperCase()}</p>
+                            <p className="text-white/80 text-sm">Order #ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="text-center mb-6">

@@ -19,6 +19,8 @@ import {
 } from './reducers/categoryReducers';
 import { orderCreateReducer, orderDetailsReducer, orderListMyReducer } from './reducers/orderReducers';
 import { cartReducer } from './reducers/cartReducers';
+import { analyticsReducer } from './reducers/analyticsReducers';
+import { chatListReducer, chatDetailsReducer, chatSendMessageReducer, chatMarkReadReducer } from './reducers/chatReducers';
 
 const reducer = combineReducers({
     userLogin: userLoginReducer,
@@ -38,6 +40,11 @@ const reducer = combineReducers({
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
     cart: cartReducer,
+    analytics: analyticsReducer,
+    chatList: chatListReducer,
+    chatDetails: chatDetailsReducer,
+    chatSendMessage: chatSendMessageReducer,
+    chatMarkRead: chatMarkReadReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

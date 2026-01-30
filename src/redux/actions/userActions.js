@@ -27,7 +27,7 @@ export const login = (email, password, isAdminLogin = false) => async (dispatch)
         };
 
         const { data } = await axios.post(
-            'http://localhost:5000/api/auth/login',
+            'https://printersbackend.onrender.com/api/auth/login',
             { email, password, isAdminLogin },
             config
         );
@@ -66,7 +66,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
         };
 
         const { data } = await axios.post(
-            'http://localhost:5000/api/auth/register',
+            'https://printersbackend.onrender.com/api/auth/register',
             { firstName, lastName, email, password },
             config
         );
@@ -106,7 +106,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`http://localhost:5000/api/auth/profile`, config);
+        const { data } = await axios.get(`https://printersbackend.onrender.com/api/auth/profile`, config);
 
         dispatch({
             type: USER_DETAILS_SUCCESS,
@@ -138,7 +138,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.put(`http://localhost:5000/api/auth/profile`, user, config);
+        const { data } = await axios.put(`https://printersbackend.onrender.com/api/auth/profile`, user, config);
 
         dispatch({
             type: USER_UPDATE_PROFILE_SUCCESS,

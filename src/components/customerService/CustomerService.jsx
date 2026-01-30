@@ -10,7 +10,7 @@ const CustomerService = () => {
     const [orderNumber, setOrderNumber] = useState('');
     const [subject, setSubject] = useState('Order Inquiry');
     const [message, setMessage] = useState('');
-    
+
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(null);
@@ -22,7 +22,7 @@ const CustomerService = () => {
         setSuccess(false);
 
         try {
-            await axios.post('http://localhost:5000/api/contact', {
+            await axios.post('https://printersbackend.onrender.com/api/contact', {
                 name,
                 email,
                 orderNumber,
@@ -114,7 +114,7 @@ const CustomerService = () => {
                                         <span className="text-sm font-bold">Track Shipment Baseline</span>
                                     </div>
                                     <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-slate-900 transition-all">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
                                 </Link>
                             </li>
@@ -125,7 +125,7 @@ const CustomerService = () => {
                                         <span className="text-sm font-bold">Returns & Recalibration</span>
                                     </div>
                                     <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-slate-900 transition-all">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
                                 </Link>
                             </li>
@@ -136,7 +136,7 @@ const CustomerService = () => {
                 {/* Right Column: Contact Form */}
                 <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8 md:p-12 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50/50 rounded-bl-full -z-10"></div>
-                    
+
                     <h2 className="text-2xl font-black mb-2 text-slate-900 uppercase tracking-tighter">Submit Transmission</h2>
                     <p className="text-slate-400 mb-10 text-[10px] font-black uppercase tracking-widest">
                         Dispatch your parameters for immediate analysis.
@@ -203,8 +203,8 @@ const CustomerService = () => {
                                     onChange={(e) => setSubject(e.target.value)}
                                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 focus:bg-white focus:ring-4 focus:ring-slate-100 outline-none transition-all font-black text-[10px] uppercase tracking-widest appearance-none cursor-pointer"
                                 >
-                                    
-                                   
+
+
                                     <option>Order Inquiry</option>
                                     <option>Returns & Exchanges</option>
                                     <option>Technical Support</option>

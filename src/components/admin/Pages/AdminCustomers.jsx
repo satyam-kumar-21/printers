@@ -10,7 +10,9 @@ import {
     Mail,
     Phone,
     ShoppingBag,
-    Trash2
+    Trash2,
+    X,
+    AlertTriangle
 } from 'lucide-react';
 
 const AdminCustomers = () => {
@@ -18,6 +20,7 @@ const AdminCustomers = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [confirmModal, setConfirmModal] = useState({ show: false, type: '', userId: null, userName: '' });
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
@@ -29,12 +32,12 @@ const AdminCustomers = () => {
     const fetchCustomers = async () => {
         try {
             setLoading(true);
-            const { data: users } = await axios.get('http://localhost:5000/api/auth/users', {
+            const { data: users } = await axios.get('https://printersbackend.onrender.com/api/auth/users', {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
 
             // Fetch orders to calculate customer stats
-            const { data: orders } = await axios.get('http://localhost:5000/api/orders', {
+            const { data: orders } = await axios.get('https://printersbackend.onrender.com/api/orders', {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
 
@@ -42,7 +45,7 @@ const AdminCustomers = () => {
             const customersWithStats = users.filter(user => !user.isAdmin).map(user => {
                 const userOrders = orders.filter(order => order.user._id === user._id);
                 const totalSpent = userOrders.reduce((acc, order) => acc + order.totalPrice, 0);
-                const totalItems = userOrders.reduce((acc, order) => 
+                const totalItems = userOrders.reduce((acc, order) =>
                     acc + order.orderItems.reduce((sum, item) => sum + item.qty, 0), 0
                 );
 
@@ -52,8 +55,8 @@ const AdminCustomers = () => {
                     totalSpent,
                     totalItems,
                     status: 'Active',
-                    joinDate: new Date(user.createdAt).toLocaleDateString('en-US', { 
-                        month: 'short', day: 'numeric', year: 'numeric' 
+                    joinDate: new Date(user.createdAt).toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric'
                     })
                 };
             });
@@ -67,16 +70,60 @@ const AdminCustomers = () => {
     };
 
     const handleDeleteUser = async (userId) => {
-        if (!window.confirm('Are you sure you want to delete this user?')) return;
+        const user = customers.find(c => c._id === userId);
+        setConfirmModal({ show: true, type: 'delete', userId, userName: user?.name || 'this user' });
+    };
 
+    const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:5000/api/auth/users/${userId}`, {
+            await axios.delete(`https://printersbackend.onrender.com/api/auth/users/${confirmModal.userId}`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
-            fetchCustomers(); // Refresh the list
+            setConfirmModal({ show: false, type: '', userId: null, userName: '' });
+            fetchCustomers();
         } catch (err) {
             alert(err.response?.data?.message || 'Failed to delete user');
         }
+    };
+
+    const handleBlockUser = async (userId) => {
+        const user = customers.find(c => c._id === userId);
+        setConfirmModal({ show: true, type: 'block', userId, userName: user?.name || 'this user' });
+    };
+
+    const confirmBlock = async () => {
+        try {
+            await axios.put(`https://printersbackend.onrender.com/api/auth/users/${confirmModal.userId}/block`, {}, {
+                headers: { Authorization: `Bearer ${userInfo.token}` }
+            });
+            setConfirmModal({ show: false, type: '', userId: null, userName: '' });
+            fetchCustomers();
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to block user');
+        }
+    };
+
+    const handleUnblockUser = async (userId) => {
+        const user = customers.find(c => c._id === userId);
+        setConfirmModal({ show: true, type: 'unblock', userId, userName: user?.name || 'this user' });
+    };
+
+    const confirmUnblock = async () => {
+        try {
+            await axios.put(`https://printersbackend.onrender.com/api/auth/users/${confirmModal.userId}/unblock`, {}, {
+                headers: { Authorization: `Bearer ${userInfo.token}` }
+            });
+            setConfirmModal({ show: false, type: '', userId: null, userName: '' });
+            fetchCustomers();
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to unblock user');
+        }
+    };
+
+    const handleConfirm = () => {
+        if (confirmModal.type === 'delete') confirmDelete();
+        else if (confirmModal.type === 'block') confirmBlock();
+        else if (confirmModal.type === 'unblock') confirmUnblock();
     };
 
     const filteredCustomers = customers.filter(c =>
@@ -168,17 +215,40 @@ const AdminCustomers = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                                            {customer.status}
-                                        </span>
+                                        {customer.isBlocked ? (
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700">
+                                                <ShieldOff size={12} className="mr-1" /> Blocked
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                                <Shield size={12} className="mr-1" /> Active
+                                            </span>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button
-                                            onClick={() => handleDeleteUser(customer._id)}
-                                            className="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border bg-red-50 text-red-600 border-red-200 hover:bg-red-100 flex items-center gap-2 ml-auto"
-                                        >
-                                            <Trash2 size={14} /> Delete
-                                        </button>
+                                        <div className="flex items-center gap-2 justify-end">
+                                            {customer.isBlocked ? (
+                                                <button
+                                                    onClick={() => handleUnblockUser(customer._id)}
+                                                    className="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border bg-green-50 text-green-600 border-green-200 hover:bg-green-100 flex items-center gap-2"
+                                                >
+                                                    <Shield size={14} /> Unblock
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() => handleBlockUser(customer._id)}
+                                                    className="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border bg-orange-50 text-orange-600 border-orange-200 hover:bg-orange-100 flex items-center gap-2"
+                                                >
+                                                    <ShieldOff size={14} /> Block
+                                                </button>
+                                            )}
+                                            <button
+                                                onClick={() => handleDeleteUser(customer._id)}
+                                                className="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border bg-red-50 text-red-600 border-red-200 hover:bg-red-100 flex items-center gap-2"
+                                            >
+                                                <Trash2 size={14} /> Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -186,6 +256,52 @@ const AdminCustomers = () => {
                     </table>
                 </div>
             </div>
+
+            {/* Confirmation Modal */}
+            {confirmModal.show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 m-4">
+                        <div className={`p-6 ${confirmModal.type === 'delete' ? 'bg-red-50' : confirmModal.type === 'block' ? 'bg-orange-50' : 'bg-green-50'}`}>
+                            <div className="flex items-center gap-4">
+                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${confirmModal.type === 'delete' ? 'bg-red-100 text-red-600' : confirmModal.type === 'block' ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600'}`}>
+                                    <AlertTriangle size={24} />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-slate-900">
+                                        {confirmModal.type === 'delete' ? 'Delete User' : confirmModal.type === 'block' ? 'Block User' : 'Unblock User'}
+                                    </h3>
+                                    <p className="text-sm text-slate-600 mt-1">
+                                        {confirmModal.type === 'delete'
+                                            ? 'This action cannot be undone'
+                                            : confirmModal.type === 'block'
+                                                ? 'User will not be able to login'
+                                                : 'User will be able to login again'}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-6">
+                            <p className="text-slate-700 mb-6">
+                                Are you sure you want to {confirmModal.type} <span className="font-bold">{confirmModal.userName}</span>?
+                            </p>
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setConfirmModal({ show: false, type: '', userId: null, userName: '' })}
+                                    className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleConfirm}
+                                    className={`flex-1 px-4 py-2.5 text-white rounded-lg font-semibold transition-colors ${confirmModal.type === 'delete' ? 'bg-red-600 hover:bg-red-700' : confirmModal.type === 'block' ? 'bg-orange-600 hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700'}`}
+                                >
+                                    {confirmModal.type === 'delete' ? 'Delete' : confirmModal.type === 'block' ? 'Block' : 'Unblock'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

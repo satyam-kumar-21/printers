@@ -17,7 +17,7 @@ const MegaDeals = () => {
     }, [dispatch]);
 
     // Filter products that have a discount (oldPrice > price) and take top 8
-    const deals = products 
+    const deals = products
         ? products
             .filter(p => p.oldPrice > p.price)
             .sort((a, b) => (b.oldPrice - b.price) - (a.oldPrice - a.price))

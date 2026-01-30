@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchAnalytics } from '../../../redux/actions/analyticsActions';
 import {
     TrendingUp,
     Users,
     ShoppingBag,
     DollarSign,
-    MoreHorizontal,
     ArrowUpRight,
     Calendar,
     CreditCard
@@ -15,43 +14,45 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const [stats, setStats] = useState(null);
-    const [recentOrders, setRecentOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    const analyticsState = useSelector((state) => state.analytics);
+    const { loading, analytics, error } = analyticsState;
+
     useEffect(() => {
-        fetchDashboardData();
-    }, []);
-
-    const fetchDashboardData = async () => {
-        try {
-            setLoading(true);
-            // Fetch dashboard stats
-            const { data: statsData } = await axios.get('http://localhost:5000/api/dashboard/stats', {
-                headers: { Authorization: `Bearer ${userInfo.token}` }
-            });
-
-            // Fetch recent orders
-            const { data: ordersData } = await axios.get('http://localhost:5000/api/orders', {
-                headers: { Authorization: `Bearer ${userInfo.token}` }
-            });
-
-            setStats(statsData);
-            setRecentOrders(ordersData.slice(0, 5)); // Get only 5 most recent
-            setLoading(false);
-        } catch (err) {
-            console.error(err);
-            setLoading(false);
+        if (userInfo && userInfo.isAdmin) {
+            dispatch(fetchAnalytics());
         }
-    };
+    }, [dispatch, userInfo]);
 
-    const statsDisplay = stats ? [
-        { label: 'Total Revenue', value: `$${stats.totalRevenue.toFixed(2)}`, change: `+${stats.revenueGrowth}%`, icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-100' },
-        { label: 'Total Orders', value: stats.totalOrders.toString(), change: `+${stats.ordersGrowth}%`, icon: ShoppingBag, color: 'text-blue-600', bg: 'bg-blue-100' },
-        { label: 'Total Customers', value: stats.totalCustomers.toString(), change: `+${stats.customersGrowth}%`, icon: Users, color: 'text-purple-600', bg: 'bg-purple-100' },
+    const statsDisplay = analytics ? [
+        {
+            label: 'Total Revenue',
+            value: `$${analytics.revenue.total.toFixed(2)}`,
+            change: `${analytics.revenue.growth >= 0 ? '+' : ''}${analytics.revenue.growth}%`,
+            icon: DollarSign,
+            color: 'text-emerald-600',
+            bg: 'bg-emerald-100'
+        },
+        {
+            label: 'Total Orders',
+            value: analytics.orders.total.toString(),
+            change: `${analytics.orders.growth >= 0 ? '+' : ''}${analytics.orders.growth}%`,
+            icon: ShoppingBag,
+            color: 'text-blue-600',
+            bg: 'bg-blue-100'
+        },
+        {
+            label: 'Total Customers',
+            value: analytics.customers.total.toString(),
+            change: `${analytics.customers.growth >= 0 ? '+' : ''}${analytics.customers.growth}%`,
+            icon: Users,
+            color: 'text-purple-600',
+            bg: 'bg-purple-100'
+        },
     ] : [];
 
     const statusStyles = {
@@ -71,21 +72,23 @@ const AdminDashboard = () => {
                 </div>
                 <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium">
                     <Calendar size={16} />
-                    Oct 24, 2024
+                    {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </button>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {loading ? (
-                    <div className="col-span-full text-center py-10 text-slate-400">Loading stats...</div>
+                    <div className="col-span-full text-center py-10 text-slate-400">Loading analytics...</div>
+                ) : error ? (
+                    <div className="col-span-full text-center py-10 text-red-500">{error}</div>
                 ) : statsDisplay.map((stat, i) => (
                     <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex justify-between items-start mb-4">
                             <div className={`p-3 rounded-lg ${stat.bg} ${stat.color}`}>
                                 <stat.icon size={22} />
                             </div>
-                            <span className={`flex items-center text-xs font-bold px-2 py-1 rounded-full bg-slate-50 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                            <span className={`flex items-center text-xs font-bold px-2 py-1 rounded-full ${stat.change.startsWith('+') ? 'bg-green-50 text-green-600' : stat.change.startsWith('-') ? 'bg-red-50 text-red-600' : 'bg-slate-50 text-slate-600'}`}>
                                 {stat.change} <ArrowUpRight size={12} className="ml-1" />
                             </span>
                         </div>
@@ -95,7 +98,7 @@ const AdminDashboard = () => {
                 ))}
             </div>
 
-            {/* Recent Orders & Top Products */}
+            {/* Recent Orders & Quick Stats */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Orders Table */}
                 <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
@@ -117,28 +120,32 @@ const AdminDashboard = () => {
                             <tbody className="divide-y divide-slate-50">
                                 {loading ? (
                                     <tr><td colSpan="5" className="py-10 text-center text-slate-400">Loading orders...</td></tr>
-                                ) : recentOrders.map((order) => (
-                                    <tr key={order._id} className="hover:bg-slate-50/50 transition-colors cursor-pointer" onClick={() => navigate('/admin/orders')}>
-                                        <td className="px-6 py-4 font-bold text-slate-700">ORD-{order._id.substring(order._id.length - 4).toUpperCase()}</td>
-                                        <td className="px-6 py-4">
-                                            <div className="font-medium text-slate-800">{order.user?.name || 'Guest'}</div>
-                                            <div className="text-xs text-slate-400 truncate max-w-[150px]">{order.orderItems[0]?.name || 'N/A'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 font-bold text-slate-900">${order.totalPrice.toFixed(2)}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${statusStyles[order.status] || 'bg-slate-50 text-slate-700 border-slate-100'}`}>
-                                                {order.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-slate-500">{new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                                    </tr>
-                                ))}
+                                ) : analytics && analytics.recentOrders && analytics.recentOrders.length > 0 ? (
+                                    analytics.recentOrders.map((order) => (
+                                        <tr key={order._id} className="hover:bg-slate-50/50 transition-colors cursor-pointer" onClick={() => navigate('/admin/orders')}>
+                                            <td className="px-6 py-4 font-bold text-slate-700">ORD-{order._id.substring(order._id.length - 4).toUpperCase()}</td>
+                                            <td className="px-6 py-4">
+                                                <div className="font-medium text-slate-800">{order.user?.name || 'Guest'}</div>
+                                                <div className="text-xs text-slate-400">{order.user?.email || 'N/A'}</div>
+                                            </td>
+                                            <td className="px-6 py-4 font-bold text-slate-900">${order.totalPrice.toFixed(2)}</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${statusStyles[order.status] || 'bg-slate-50 text-slate-700 border-slate-100'}`}>
+                                                    {order.status}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right text-slate-500">{new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr><td colSpan="5" className="py-10 text-center text-slate-400">No orders found</td></tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                {/* Quick Actions / Mini Stats */}
+                {/* Quick Stats */}
                 <div className="space-y-6">
                     <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                         <h3 className="font-bold text-slate-800 mb-4">Quick Stats</h3>
@@ -149,9 +156,9 @@ const AdminDashboard = () => {
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-100"><CreditCard size={18} /></div>
-                                    <span className="text-sm font-medium text-slate-600">Pending Payments</span>
+                                    <span className="text-sm font-medium text-slate-600">Total Orders</span>
                                 </div>
-                                <span className="font-bold text-slate-900">12</span>
+                                <span className="font-bold text-slate-900">{analytics?.orders.total || 0}</span>
                             </div>
                             <div
                                 onClick={() => navigate('/admin/orders')}
@@ -159,9 +166,11 @@ const AdminDashboard = () => {
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-orange-50 text-orange-600 rounded-lg group-hover:bg-orange-100"><ShoppingBag size={18} /></div>
-                                    <span className="text-sm font-medium text-slate-600">To be Shipped</span>
+                                    <span className="text-sm font-medium text-slate-600">Processing</span>
                                 </div>
-                                <span className="font-bold text-slate-900">5</span>
+                                <span className="font-bold text-slate-900">
+                                    {analytics?.ordersByStatus?.find(s => s._id === 'Processing')?.count || 0}
+                                </span>
                             </div>
                             <div
                                 onClick={() => navigate('/admin/customers')}
@@ -169,9 +178,9 @@ const AdminDashboard = () => {
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="p-2 bg-purple-50 text-purple-600 rounded-lg group-hover:bg-purple-100"><Users size={18} /></div>
-                                    <span className="text-sm font-medium text-slate-600">New Customers</span>
+                                    <span className="text-sm font-medium text-slate-600">Total Customers</span>
                                 </div>
-                                <span className="font-bold text-slate-900">8</span>
+                                <span className="font-bold text-slate-900">{analytics?.customers.total || 0}</span>
                             </div>
                         </div>
                     </div>

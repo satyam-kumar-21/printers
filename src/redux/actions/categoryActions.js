@@ -18,7 +18,7 @@ export const listCategories = () => async (dispatch) => {
     try {
         dispatch({ type: CATEGORY_LIST_REQUEST });
 
-        const { data } = await axios.get('http://localhost:5000/api/categories');
+        const { data } = await axios.get('https://printersbackend.onrender.com/api/categories');
 
         dispatch({
             type: CATEGORY_LIST_SUCCESS,
@@ -47,7 +47,7 @@ export const createCategory = (categoryData) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.post(`http://localhost:5000/api/categories`, categoryData, config);
+        const { data } = await axios.post(`https://printersbackend.onrender.com/api/categories`, categoryData, config);
 
         dispatch({
             type: CATEGORY_CREATE_SUCCESS,
@@ -76,7 +76,7 @@ export const updateCategory = (id, categoryData) => async (dispatch, getState) =
             },
         };
 
-        const { data } = await axios.put(`http://localhost:5000/api/categories/${id}`, categoryData, config);
+        const { data } = await axios.put(`https://printersbackend.onrender.com/api/categories/${id}`, categoryData, config);
 
         dispatch({
             type: CATEGORY_UPDATE_SUCCESS,
@@ -105,7 +105,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
             },
         };
 
-        await axios.delete(`http://localhost:5000/api/categories/${id}`, config);
+        await axios.delete(`https://printersbackend.onrender.com/api/categories/${id}`, config);
 
         dispatch({
             type: CATEGORY_DELETE_SUCCESS,

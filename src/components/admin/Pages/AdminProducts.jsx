@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { 
-    Plus, Search, Trash2, Edit, X, Save, 
-    Image as ImageIcon, Tag, Hash, DollarSign, 
+import {
+    Plus, Search, Trash2, Edit, X, Save,
+    Image as ImageIcon, Tag, Hash, DollarSign,
     AlignLeft, Microscope, Layers, AlertCircle,
     CheckCircle2
 } from 'lucide-react';
-import { 
-    listProducts, 
-    deleteProduct, 
-    createProduct, 
-    updateProduct 
+import {
+    listProducts,
+    deleteProduct,
+    createProduct,
+    updateProduct
 } from '../../../redux/actions/productActions';
 import { listCategories } from '../../../redux/actions/categoryActions';
 import { PRODUCT_CREATE_RESET, PRODUCT_UPDATE_RESET } from '../../../redux/constants/productConstants';
@@ -82,7 +82,7 @@ const AdminProducts = () => {
             dispatch({ type: PRODUCT_UPDATE_RESET });
             closeForm();
         }
-        
+
         if (successDelete) {
             dispatch(listProducts());
         }
@@ -122,9 +122,9 @@ const AdminProducts = () => {
         setPreviewImages(prev => prev.filter((_, i) => i !== index));
 
         if (removed.isNew) {
-            setFormData(prev => ({ 
-                ...prev, 
-                images: prev.images.filter(f => f !== removed.file) 
+            setFormData(prev => ({
+                ...prev,
+                images: prev.images.filter(f => f !== removed.file)
             }));
         } else {
             setExistingImagesList(prev => prev.filter(path => !removed.url.endsWith(path)));
@@ -173,11 +173,11 @@ const AdminProducts = () => {
             images: [],
             reviews: product.reviews || []
         });
-        
+
         if (product.images) {
             setExistingImagesList(product.images);
             setPreviewImages(product.images.map(img => ({
-                url: `http://localhost:5000${img}`,
+                url: `https://printersbackend.onrender.com${img}`,
                 isNew: false
             })));
         }
@@ -197,7 +197,7 @@ const AdminProducts = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const data = new FormData();
         Object.keys(formData).forEach(key => {
             if (key === 'images') {
@@ -220,7 +220,7 @@ const AdminProducts = () => {
         }
     };
 
-    const filteredProducts = products?.filter(p => 
+    const filteredProducts = products?.filter(p =>
         p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.brand.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -236,7 +236,7 @@ const AdminProducts = () => {
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500 pb-20">
-            <ConfirmModal 
+            <ConfirmModal
                 isOpen={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
                 onConfirm={confirmDeleteHandler}
@@ -286,7 +286,7 @@ const AdminProducts = () => {
                         {/* Section 1: Basics */}
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                                <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><AlignLeft size={18}/></div>
+                                <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><AlignLeft size={18} /></div>
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Basic Information</h4>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -334,7 +334,7 @@ const AdminProducts = () => {
                         {/* Section 2: Pricing & Stock */}
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                                <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><DollarSign size={18}/></div>
+                                <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><DollarSign size={18} /></div>
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Pricing & Availability</h4>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -376,7 +376,7 @@ const AdminProducts = () => {
                         {/* Section 3: Visuals */}
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                                <div className="p-2 bg-amber-50 text-amber-600 rounded-lg"><ImageIcon size={18}/></div>
+                                <div className="p-2 bg-amber-50 text-amber-600 rounded-lg"><ImageIcon size={18} /></div>
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Product Media</h4>
                             </div>
                             <div className="p-8 border-4 border-dashed border-slate-100 rounded-3xl text-center space-y-4 hover:border-blue-100 transition-colors">
@@ -422,10 +422,10 @@ const AdminProducts = () => {
                         {/* Section 4: Rich Content */}
                         <div className="space-y-8">
                             <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                                <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><AlignLeft size={18}/></div>
+                                <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><AlignLeft size={18} /></div>
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Detailed Descriptions</h4>
                             </div>
-                            
+
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Short Summary (Plain Text)</label>
                                 <textarea
@@ -441,9 +441,9 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Highlights (Rich Text)</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill 
-                                            theme="snow" 
-                                            value={formData.shortDetails} 
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={formData.shortDetails}
                                             onChange={(val) => handleQuillChange('shortDetails', val)}
                                             modules={quillModules}
                                         />
@@ -452,9 +452,9 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Narrative Overview</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill 
-                                            theme="snow" 
-                                            value={formData.overview} 
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={formData.overview}
                                             onChange={(val) => handleQuillChange('overview', val)}
                                             modules={quillModules}
                                         />
@@ -466,10 +466,10 @@ const AdminProducts = () => {
                         {/* Section 5: Technical Data */}
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                                <div className="p-2 bg-slate-100 text-slate-800 rounded-lg"><Microscope size={18}/></div>
+                                <div className="p-2 bg-slate-100 text-slate-800 rounded-lg"><Microscope size={18} /></div>
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Technical Specifications</h4>
                             </div>
-                            
+
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Color</label>
@@ -492,9 +492,9 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Key Specs Table</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill 
-                                            theme="snow" 
-                                            value={formData.shortSpecification} 
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={formData.shortSpecification}
                                             onChange={(val) => handleQuillChange('shortSpecification', val)}
                                             modules={quillModules}
                                         />
@@ -503,9 +503,9 @@ const AdminProducts = () => {
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Technical Data</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill 
-                                            theme="snow" 
-                                            value={formData.technicalSpecification} 
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={formData.technicalSpecification}
                                             onChange={(val) => handleQuillChange('technicalSpecification', val)}
                                             modules={quillModules}
                                         />
@@ -518,7 +518,7 @@ const AdminProducts = () => {
                         <div className="space-y-6">
                             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-pink-50 text-pink-600 rounded-lg"><Tag size={18}/></div>
+                                    <div className="p-2 bg-pink-50 text-pink-600 rounded-lg"><Tag size={18} /></div>
                                     <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Reviews & Testimonials</h4>
                                 </div>
                                 <button
@@ -541,7 +541,7 @@ const AdminProducts = () => {
                                         >
                                             <X size={16} />
                                         </button>
-                                        
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                             <div className="space-y-1">
                                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Reviewer Name</label>
@@ -657,9 +657,9 @@ const AdminProducts = () => {
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-6">
                                             <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 flex items-center justify-center p-2 group-hover:scale-105 transition-transform rotate-1 group-hover:rotate-0">
-                                                <img 
-                                                    src={p.images?.[0] ? `http://localhost:5000${p.images[0]}` : '/printer.png'} 
-                                                    alt="" 
+                                                <img
+                                                    src={p.images?.[0] ? `http://localhost:5000${p.images[0]}` : '/printer.png'}
+                                                    alt=""
                                                     className="w-full h-full object-contain"
                                                     onError={(e) => e.target.src = '/printer.png'}
                                                 />

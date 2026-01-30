@@ -21,7 +21,7 @@ export const listProducts = (keyword = '', category = '') => async (dispatch) =>
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 
-        const { data } = await axios.get(`http://localhost:5000/api/products?keyword=${keyword}&category=${category}`);
+        const { data } = await axios.get(`https://printersbackend.onrender.com/api/products?keyword=${keyword}&category=${category}`);
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
@@ -42,7 +42,7 @@ export const listProductDetails = (id) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-        const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const { data } = await axios.get(`https://printersbackend.onrender.com/api/products/${id}`);
 
         dispatch({
             type: PRODUCT_DETAILS_SUCCESS,
@@ -71,7 +71,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
             },
         };
 
-        await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+        await axios.delete(`https://printersbackend.onrender.com/api/products/${id}`, config);
 
         dispatch({ type: PRODUCT_DELETE_SUCCESS });
     } catch (error) {
@@ -98,7 +98,7 @@ export const createProduct = (productData) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.post(`http://localhost:5000/api/products`, productData, config);
+        const { data } = await axios.post(`https://printersbackend.onrender.com/api/products`, productData, config);
 
         dispatch({
             type: PRODUCT_CREATE_SUCCESS,
@@ -128,7 +128,7 @@ export const updateProduct = (id, productData) => async (dispatch, getState) => 
         };
 
         const { data } = await axios.put(
-            `http://localhost:5000/api/products/${id}`,
+            `https://printersbackend.onrender.com/api/products/${id}`,
             productData,
             config
         );

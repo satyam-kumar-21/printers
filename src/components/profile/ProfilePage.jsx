@@ -5,6 +5,7 @@ import { User, Mail, Lock, Save, AlertCircle, CheckCircle2, Loader2, Package, Ca
 import { getUserDetails, updateUserProfile } from '../../redux/actions/userActions';
 import { listMyOrders } from '../../redux/actions/orderActions';
 import { USER_UPDATE_PROFILE_RESET } from '../../redux/constants/userConstants';
+import HelpSupport from './HelpSupport';
 
 const ProfilePage = () => {
     const [firstName, setFirstName] = useState('');
@@ -81,6 +82,13 @@ const ProfilePage = () => {
                                 }`}
                         >
                             Order History
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('help')}
+                            className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === 'help' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'
+                                }`}
+                        >
+                            Help & Support
                         </button>
                     </div>
                 </div>
@@ -245,7 +253,7 @@ const ProfilePage = () => {
                                     </div>
                                 </form>
                             </div>
-                        ) : (
+                        ) : activeTab === 'orders' ? (
                             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
                                 <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                                     <div>
@@ -327,7 +335,9 @@ const ProfilePage = () => {
                                     )}
                                 </div>
                             </div>
-                        )}
+                        ) : activeTab === 'help' ? (
+                            <HelpSupport />
+                        ) : null}
                     </div>
                 </div>
             </div>
