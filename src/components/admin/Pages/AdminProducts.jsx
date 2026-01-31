@@ -42,6 +42,12 @@ const AdminProducts = () => {
     const [selectedFiles, setSelectedFiles] = useState([]); // Array of File objects
     const [searchTerm, setSearchTerm] = useState('');
 
+    // Bulk Upload State
+    const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
+    const [bulkFile, setBulkFile] = useState(null);
+    const [bulkUploadLoading, setBulkUploadLoading] = useState(false);
+    const [bulkUploadMessage, setBulkUploadMessage] = useState('');
+
     // Modal State
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
@@ -220,6 +226,41 @@ const AdminProducts = () => {
         }
     };
 
+    const handleBulkUpload = async (e) => {
+        e.preventDefault();
+        if (!bulkFile) {
+            setBulkUploadMessage('Please select a file');
+            return;
+        }
+
+        setBulkUploadLoading(true);
+        setBulkUploadMessage('');
+
+        const formData = new FormData();
+        formData.append('excelFile', bulkFile);
+
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('userInfo')).token}`,
+                },
+            };
+
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/products/bulk-upload`, formData, config);
+            setBulkUploadMessage(data.message);
+            if (data.errors) {
+                setBulkUploadMessage(`${data.message}\nErrors: ${data.errors.join(', ')}`);
+            }
+            dispatch(listProducts());
+            setBulkFile(null);
+        } catch (error) {
+            setBulkUploadMessage(error.response?.data?.message || 'Upload failed');
+        } finally {
+            setBulkUploadLoading(false);
+        }
+    };
+
     const filteredProducts = products?.filter(p =>
         p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.brand.toLowerCase().includes(searchTerm.toLowerCase())
@@ -251,13 +292,22 @@ const AdminProducts = () => {
                     <p className="text-slate-500 text-sm font-medium">Manage and refine your store offerings.</p>
                 </div>
                 {!isFormOpen && (
-                    <button
-                        onClick={() => setIsFormOpen(true)}
-                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-xl shadow-blue-100"
-                    >
-                        <Plus size={20} />
-                        CREATE PRODUCT
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setIsBulkUploadOpen(true)}
+                            className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-xl shadow-green-100"
+                        >
+                            <Plus size={20} />
+                            BULK UPLOAD
+                        </button>
+                        <button
+                            onClick={() => setIsFormOpen(true)}
+                            className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all shadow-xl shadow-blue-100"
+                        >
+                            <Plus size={20} />
+                            CREATE PRODUCT
+                        </button>
+                    </div>
                 )}
             </div>
 
@@ -615,6 +665,61 @@ const AdminProducts = () => {
                             >
                                 <Save size={28} />
                                 {loadingCreate || loadingUpdate ? 'SAVING DATA...' : (editingId ? 'UPDATE PRODUCT' : 'REGISTER PRODUCT')}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+
+            {/* Bulk Upload Modal */}
+            {isBulkUploadOpen && (
+                <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-6 duration-300">
+                    <div className="bg-slate-900 px-8 py-5 flex justify-between items-center sticky top-0 z-10">
+                        <h3 className="text-white font-black uppercase tracking-widest text-sm flex items-center gap-3">
+                            <Tag className="text-green-400" size={18} />
+                            Bulk Upload Products
+                        </h3>
+                        <button
+                            onClick={() => setIsBulkUploadOpen(false)}
+                            className="p-2 hover:bg-slate-800 rounded-full transition-colors"
+                        >
+                            <X size={20} className="text-white" />
+                        </button>
+                    </div>
+
+                    <form onSubmit={handleBulkUpload} className="p-8 space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-black text-slate-600 uppercase tracking-widest">Excel File (.xlsx or .xls)</label>
+                            <input
+                                type="file"
+                                accept=".xlsx,.xls"
+                                onChange={(e) => setBulkFile(e.target.files[0])}
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-green-500/10 focus:border-green-500 outline-none font-bold text-slate-800"
+                                required
+                            />
+                            <p className="text-xs text-slate-500">Upload an Excel file with columns: brand, title, category, price, oldPrice, countInStock, description, shortDetails, shortSpecification, overview, technicalSpecification, color, width, height, depth, screenSize</p>
+                        </div>
+
+                        {bulkUploadMessage && (
+                            <div className="p-4 bg-blue-50 border border-blue-100 text-blue-600 rounded-xl font-bold whitespace-pre-line">
+                                {bulkUploadMessage}
+                            </div>
+                        )}
+
+                        <div className="flex justify-end gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setIsBulkUploadOpen(false)}
+                                className="px-6 py-3 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-all"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={bulkUploadLoading}
+                                className="px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all disabled:opacity-50"
+                            >
+                                {bulkUploadLoading ? 'Uploading...' : 'Upload Products'}
                             </button>
                         </div>
                     </form>

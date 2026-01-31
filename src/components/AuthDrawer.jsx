@@ -48,17 +48,17 @@ const AuthDrawer = ({ isOpen, onClose }) => {
             if (password !== confirmPassword) {
                 setMessage('Passwords do not match');
             } else {
-                dispatch(sendRegistrationOTP(firstName, lastName, email, password));
+                dispatch(sendRegistrationOTP(firstName, lastName, email.trim(), password));
             }
         } else if (mode === 'verify-otp') {
-            dispatch(verifyRegistrationOTP(email, otp));
+            dispatch(verifyRegistrationOTP(email.trim(), otp));
         } else if (mode === 'forgot-password') {
-            dispatch(forgotPassword(email));
+            dispatch(forgotPassword(email.trim()));
         } else if (mode === 'reset-password') {
             if (newPassword !== confirmPassword) {
                 setMessage('Passwords do not match');
             } else {
-                dispatch(resetPassword(email, otp, newPassword));
+                dispatch(resetPassword(email.trim(), otp, newPassword));
             }
         } else {
             dispatch(login(email, password));

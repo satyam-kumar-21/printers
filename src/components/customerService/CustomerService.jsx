@@ -22,7 +22,7 @@ const CustomerService = () => {
         setSuccess(false);
 
         try {
-            await axios.post('https://printersbackend.onrender.com/api/contact', {
+            await axios.post(`${import.meta.env.VITE_API_URL}/contact`, {
                 name,
                 email,
                 orderNumber,

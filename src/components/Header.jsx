@@ -10,6 +10,9 @@ const Header = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isAuthOpen, setIsAuthOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
 
     const dispatch = useDispatch();
     const userLogin = useSelector((state) => state.userLogin);
@@ -18,6 +21,41 @@ const Header = () => {
     const logoutHandler = () => {
         dispatch(logout());
         setIsUserMenuOpen(false);
+    };
+
+    const handleSearchChange = async (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+
+        if (query.length >= 2) {
+            try {
+                const { data } = await axios.get(`https://printersbackend.onrender.com/api/products/search/suggestions?q=${query}`);
+                setSuggestions(data);
+                setShowSuggestions(true);
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+                setSuggestions([]);
+            }
+        } else {
+            setSuggestions([]);
+            setShowSuggestions(false);
+        }
+    };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            // Navigate to search results page or filter products
+            window.location.href = `/?search=${encodeURIComponent(searchQuery)}`;
+            setIsSearchOpen(false);
+        }
+    };
+
+    const handleSuggestionClick = (suggestion) => {
+        setSearchQuery(suggestion.title);
+        setShowSuggestions(false);
+        window.location.href = `/?search=${encodeURIComponent(suggestion.title)}`;
+        setIsSearchOpen(false);
     };
 
     // Lock body scroll when search or menu is open
@@ -337,13 +375,31 @@ const Header = () => {
                             <h2 className="text-center text-slate-400 font-medium text-sm md:text-base mb-8 uppercase tracking-widest">What are you looking for?</h2>
 
                             <div className="relative group max-w-2xl mx-auto mb-12">
-                                <input
-                                    type="text"
-                                    placeholder="Search for printers, ink, etc..."
-                                    className="w-full text-2xl md:text-3xl font-semibold bg-slate-50 border-transparent rounded-xl py-4 px-6 md:px-12 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all text-slate-800 placeholder:text-slate-300 text-center shadow-inner"
-                                    autoFocus
-                                />
-                                <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" size={28} />
+                                <form onSubmit={handleSearchSubmit}>
+                                    <input
+                                        type="text"
+                                        placeholder="Search for printers, ink, etc..."
+                                        value={searchQuery}
+                                        onChange={handleSearchChange}
+                                        className="w-full text-2xl md:text-3xl font-semibold bg-slate-50 border-transparent rounded-xl py-4 px-6 md:px-12 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all text-slate-800 placeholder:text-slate-300 text-center shadow-inner"
+                                        autoFocus
+                                    />
+                                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" size={28} />
+                                </form>
+                                {showSuggestions && suggestions.length > 0 && (
+                                    <div className="absolute top-full left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg mt-2 z-20 max-h-60 overflow-y-auto">
+                                        {suggestions.map((suggestion, index) => (
+                                            <div
+                                                key={index}
+                                                className="px-6 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 last:border-b-0"
+                                                onClick={() => handleSuggestionClick(suggestion)}
+                                            >
+                                                <div className="font-medium text-slate-800">{suggestion.title}</div>
+                                                <div className="text-sm text-slate-500">{suggestion.brand}{suggestion.color ? ` - ${suggestion.color}` : ''}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="text-center">

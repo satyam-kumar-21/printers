@@ -17,11 +17,11 @@ import {
     PRODUCT_UPDATE_FAIL,
 } from '../constants/productConstants';
 
-export const listProducts = (keyword = '', category = '') => async (dispatch) => {
+export const listProducts = (search = '', category = '') => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products?keyword=${keyword}&category=${category}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products?search=${search}&category=${category}`);
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
