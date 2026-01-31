@@ -8,7 +8,6 @@ import UnderConstruction from './components/common/UnderConstruction';
 import AboutMain from './components/about/AboutMain';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsAndConditions from './components/TermsAndConditions';
-import Careers from './components/Careers';
 
 // Admin Imports
 import AdminLogin from './components/admin/Auth/AdminLogin';
@@ -76,8 +75,7 @@ function App() {
                     <Route path="/about" element={<AboutMain />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-                    <Route path="/careers" element={<Careers />} />
-
+                    
 
                     {/* Admin Routes */}
                     <Route path="/admin/login" element={<AdminLogin />} />

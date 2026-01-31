@@ -7,7 +7,7 @@ import {
 } from '../constants/cartConstants';
 
 export const addToCart = (idOrSlug, qty) => async (dispatch, getState) => {
-    const { data } = await axios.get(`https://printersbackend.onrender.com/api/products/${idOrSlug}`);
+    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products/${idOrSlug}`);
 
     dispatch({
         type: CART_ADD_ITEM,

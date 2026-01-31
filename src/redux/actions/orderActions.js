@@ -26,7 +26,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.post('https://printersbackend.onrender.com/api/orders', order, config);
+        const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/orders`, order, config);
 
         dispatch({
             type: ORDER_CREATE_SUCCESS,
@@ -57,7 +57,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`https://printersbackend.onrender.com/api/orders/${id}`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/orders/${id}`, config);
 
         dispatch({
             type: ORDER_DETAILS_SUCCESS,
@@ -88,7 +88,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get('https://printersbackend.onrender.com/api/orders/myorders', config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/orders/myorders`, config);
 
         dispatch({
             type: ORDER_LIST_MY_SUCCESS,

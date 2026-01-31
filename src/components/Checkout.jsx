@@ -34,7 +34,7 @@ const Checkout = () => {
         }
 
         const fetchRazorpayKey = async () => {
-            const { data } = await axios.get('http://localhost:5000/api/config/razorpay');
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/config/razorpay`);
             setRazorpayKey(data);
         };
         fetchRazorpayKey();
@@ -68,14 +68,14 @@ const Checkout = () => {
             };
 
             const { data: createdOrder } = await axios.post(
-                'http://localhost:5000/api/orders',
+                `${import.meta.env.VITE_API_URL}/orders`,
                 orderData,
                 { headers: { Authorization: `Bearer ${userInfo.token}` } }
             );
 
             // 2. Initialize Razorpay order
             const { data: razorpayOrder } = await axios.post(
-                'http://localhost:5000/api/orders/create-razorpay-order',
+                `${import.meta.env.VITE_API_URL}/orders/create-razorpay-order`,
                 { amount: totalPrice },
                 { headers: { Authorization: `Bearer ${userInfo.token}` } }
             );
@@ -94,7 +94,7 @@ const Checkout = () => {
                             orderId: createdOrder._id
                         };
                         await axios.post(
-                            'http://localhost:5000/api/orders/verify-payment',
+                            `${import.meta.env.VITE_API_URL}/orders/verify-payment`,
                             verifyData,
                             { headers: { Authorization: `Bearer ${userInfo.token}` } }
                         );

@@ -18,7 +18,7 @@ export const fetchAnalytics = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get('https://printersbackend.onrender.com/api/dashboard/analytics', config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/analytics`, config);
 
         dispatch({
             type: ANALYTICS_SUCCESS,

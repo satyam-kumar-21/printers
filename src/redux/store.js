@@ -3,7 +3,16 @@ import { thunk } from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Import Reducers
-import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer } from './reducers/userReducers';
+import {
+    userLoginReducer,
+    userRegisterReducer,
+    userSendOTPReducer,
+    userVerifyOTPReducer,
+    userForgotPasswordReducer,
+    userResetPasswordReducer,
+    userDetailsReducer,
+    userUpdateProfileReducer
+} from './reducers/userReducers';
 import {
     productListReducer,
     productDetailsReducer,
@@ -25,6 +34,10 @@ import { chatListReducer, chatDetailsReducer, chatSendMessageReducer, chatMarkRe
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
+    userSendOTP: userSendOTPReducer,
+    userVerifyOTP: userVerifyOTPReducer,
+    userForgotPassword: userForgotPasswordReducer,
+    userResetPassword: userResetPasswordReducer,
     productList: productListReducer,
     productDetails: productDetailsReducer,
     productDelete: productDeleteReducer,

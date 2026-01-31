@@ -26,34 +26,39 @@ const AdminCustomers = () => {
     const { userInfo } = userLogin;
 
     useEffect(() => {
-        fetchCustomers();
-    }, []);
+        if (userInfo) {
+            fetchCustomers();
+        }
+    }, [userInfo]);
 
     const fetchCustomers = async () => {
+        if (!userInfo) return;
+
         try {
             setLoading(true);
-            const { data: users } = await axios.get('https://printersbackend.onrender.com/api/auth/users', {
+            setError(null);
+            const { data: users } = await axios.get(`${import.meta.env.VITE_API_URL}/auth/users`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
 
             // Fetch orders to calculate customer stats
-            const { data: orders } = await axios.get('https://printersbackend.onrender.com/api/orders', {
+            const { data: orders } = await axios.get(`${import.meta.env.VITE_API_URL}/orders`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
 
             // Calculate stats for each customer
             const customersWithStats = users.filter(user => !user.isAdmin).map(user => {
-                const userOrders = orders.filter(order => order.user._id === user._id);
-                const totalSpent = userOrders.reduce((acc, order) => acc + order.totalPrice, 0);
+                const userOrders = orders.filter(order => order.user && order.user._id === user._id);
+                const totalSpent = userOrders.reduce((acc, order) => acc + (order.totalPrice || 0), 0);
                 const totalItems = userOrders.reduce((acc, order) =>
-                    acc + order.orderItems.reduce((sum, item) => sum + item.qty, 0), 0
+                    acc + (order.orderItems ? order.orderItems.reduce((sum, item) => sum + (item.qty || 0), 0) : 0), 0
                 );
 
                 return {
                     ...user,
                     totalOrders: userOrders.length,
-                    totalSpent,
-                    totalItems,
+                    totalSpent: totalSpent,
+                    totalItems: totalItems,
                     status: 'Active',
                     joinDate: new Date(user.createdAt).toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', year: 'numeric'
@@ -75,13 +80,16 @@ const AdminCustomers = () => {
     };
 
     const confirmDelete = async () => {
+        if (!userInfo) return;
+
         try {
-            await axios.delete(`https://printersbackend.onrender.com/api/auth/users/${confirmModal.userId}`, {
+            await axios.delete(`${import.meta.env.VITE_API_URL}/auth/users/${confirmModal.userId}`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             setConfirmModal({ show: false, type: '', userId: null, userName: '' });
             fetchCustomers();
         } catch (err) {
+            console.error('Delete user error:', err);
             alert(err.response?.data?.message || 'Failed to delete user');
         }
     };
@@ -92,14 +100,20 @@ const AdminCustomers = () => {
     };
 
     const confirmBlock = async () => {
+        if (!userInfo) {
+            console.error('No userInfo available');
+            return;
+        }
+
         try {
-            await axios.put(`https://printersbackend.onrender.com/api/auth/users/${confirmModal.userId}/block`, {}, {
+            const response = await axios.put(`${import.meta.env.VITE_API_URL}/auth/users/${confirmModal.userId}/block`, {}, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             setConfirmModal({ show: false, type: '', userId: null, userName: '' });
             fetchCustomers();
         } catch (err) {
-            alert(err.response?.data?.message || 'Failed to block user');
+            console.error('Block user error:', err);
+            alert(err.response?.data?.message || err.message || 'Failed to block user');
         }
     };
 
@@ -109,21 +123,24 @@ const AdminCustomers = () => {
     };
 
     const confirmUnblock = async () => {
+        if (!userInfo) return;
+
         try {
-            await axios.put(`https://printersbackend.onrender.com/api/auth/users/${confirmModal.userId}/unblock`, {}, {
+            await axios.put(`${import.meta.env.VITE_API_URL}/auth/users/${confirmModal.userId}/unblock`, {}, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             setConfirmModal({ show: false, type: '', userId: null, userName: '' });
             fetchCustomers();
         } catch (err) {
+            console.error('Unblock user error:', err);
             alert(err.response?.data?.message || 'Failed to unblock user');
         }
     };
 
-    const handleConfirm = () => {
-        if (confirmModal.type === 'delete') confirmDelete();
-        else if (confirmModal.type === 'block') confirmBlock();
-        else if (confirmModal.type === 'unblock') confirmUnblock();
+    const handleConfirm = async () => {
+        if (confirmModal.type === 'delete') await confirmDelete();
+        else if (confirmModal.type === 'block') await confirmBlock();
+        else if (confirmModal.type === 'unblock') await confirmUnblock();
     };
 
     const filteredCustomers = customers.filter(c =>
@@ -187,29 +204,29 @@ const AdminCustomers = () => {
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
                                             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold">
-                                                {customer.name.charAt(0)}
+                                                {(customer.name || 'U').charAt(0)}
                                             </div>
                                             <div>
-                                                <div className="font-bold text-slate-800">{customer.name}</div>
-                                                <div className="text-xs text-slate-500">ID: U-{customer._id.substring(customer._id.length - 4).toUpperCase()}</div>
+                                                <div className="font-bold text-slate-800">{customer.name || 'Unknown User'}</div>
+                                                <div className="text-xs text-slate-500">ID: U-{customer._id ? customer._id.substring(customer._id.length - 4).toUpperCase() : 'XXXX'}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-slate-600">
                                         <div className="flex items-center gap-2 text-xs">
-                                            <Mail size={12} /> {customer.email}
+                                            <Mail size={12} /> {customer.email || 'No email'}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 font-medium text-slate-700">
-                                        {customer.totalOrders} Orders
+                                        {customer.totalOrders || 0} Orders
                                     </td>
                                     <td className="px-6 py-4 font-bold text-slate-800">
-                                        ${customer.totalSpent.toFixed(2)}
+                                        ${(customer.totalSpent || 0).toFixed(2)}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-2">
                                             <div className="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
-                                                {customer.totalItems}
+                                                {customer.totalItems || 0}
                                             </div>
                                             <span className="text-slate-500 text-xs">Items</span>
                                         </div>

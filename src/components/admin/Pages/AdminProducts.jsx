@@ -38,8 +38,8 @@ const AdminProducts = () => {
 
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingId, setEditingId] = useState(null);
-    const [previewImages, setPreviewImages] = useState([]); // Both existing URLs and local blobs
-    const [existingImagesList, setExistingImagesList] = useState([]); // Just the paths for backend
+    const [previewImages, setPreviewImages] = useState([]); // Array of URLs or File objects
+    const [selectedFiles, setSelectedFiles] = useState([]); // Array of File objects
     const [searchTerm, setSearchTerm] = useState('');
 
     // Modal State
@@ -63,7 +63,7 @@ const AdminProducts = () => {
         height: '',
         depth: '',
         screenSize: '',
-        images: [], // New files only
+        images: [], // Array of existing image URLs
         reviews: [] // Array of { name, avatar, rating, comment }
     };
 
@@ -93,7 +93,7 @@ const AdminProducts = () => {
         setEditingId(null);
         setFormData(initialFormState);
         setPreviewImages([]);
-        setExistingImagesList([]);
+        setSelectedFiles([]);
     };
 
     const handleInputChange = (e) => {
@@ -105,30 +105,30 @@ const AdminProducts = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleImageChange = (e) => {
+    const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        setFormData(prev => ({ ...prev, images: [...prev.images, ...files] }));
+        setSelectedFiles(prev => [...prev, ...files]);
 
-        const newPreviews = files.map(file => ({
-            url: URL.createObjectURL(file),
-            isNew: true,
-            file
-        }));
+        // Create preview URLs for new files
+        const newPreviews = files.map(file => URL.createObjectURL(file));
         setPreviewImages(prev => [...prev, ...newPreviews]);
     };
 
     const removeImage = (index) => {
-        const removed = previewImages[index];
-        setPreviewImages(prev => prev.filter((_, i) => i !== index));
-
-        if (removed.isNew) {
+        // Remove from selected files if it's a newly uploaded file
+        if (index >= formData.images.length) {
+            const fileIndex = index - formData.images.length;
+            setSelectedFiles(prev => prev.filter((_, i) => i !== fileIndex));
+        } else {
+            // Remove from existing images
             setFormData(prev => ({
                 ...prev,
-                images: prev.images.filter(f => f !== removed.file)
+                images: prev.images.filter((_, i) => i !== index)
             }));
-        } else {
-            setExistingImagesList(prev => prev.filter(path => !removed.url.endsWith(path)));
         }
+
+        // Remove from previews
+        setPreviewImages(prev => prev.filter((_, i) => i !== index));
     };
 
     const handleReviewChange = (index, field, value) => {
@@ -170,17 +170,13 @@ const AdminProducts = () => {
             height: product.height || '',
             depth: product.depth || '',
             screenSize: product.screenSize || '',
-            images: [],
+            images: product.images || [], // Existing image URLs
             reviews: product.reviews || []
         });
 
-        if (product.images) {
-            setExistingImagesList(product.images);
-            setPreviewImages(product.images.map(img => ({
-                url: `https://printersbackend.onrender.com${img}`,
-                isNew: false
-            })));
-        }
+        // Set preview images for existing images
+        setPreviewImages(product.images || []);
+        setSelectedFiles([]); // Clear any previously selected files
         setIsFormOpen(true);
     };
 
@@ -199,11 +195,12 @@ const AdminProducts = () => {
         e.preventDefault();
 
         const data = new FormData();
+
+        // Add form fields
         Object.keys(formData).forEach(key => {
             if (key === 'images') {
-                formData.images.forEach(image => {
-                    data.append('images', image);
-                });
+                // Send existing image URLs as JSON string
+                data.append('images', JSON.stringify(formData.images));
             } else if (key === 'reviews') {
                 data.append('reviews', JSON.stringify(formData.reviews));
             } else {
@@ -211,9 +208,12 @@ const AdminProducts = () => {
             }
         });
 
+        // Add selected files
+        selectedFiles.forEach(file => {
+            data.append('images', file);
+        });
+
         if (editingId) {
-            // Include existing images to keep in a separate field
-            data.append('existingImages', JSON.stringify(existingImagesList));
             dispatch(updateProduct(editingId, data));
         } else {
             dispatch(createProduct(data));
@@ -379,43 +379,50 @@ const AdminProducts = () => {
                                 <div className="p-2 bg-amber-50 text-amber-600 rounded-lg"><ImageIcon size={18} /></div>
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Product Media</h4>
                             </div>
-                            <div className="p-8 border-4 border-dashed border-slate-100 rounded-3xl text-center space-y-4 hover:border-blue-100 transition-colors">
-                                <input
-                                    type="file"
-                                    multiple
-                                    onChange={handleImageChange}
-                                    className="hidden"
-                                    id="image-upload"
-                                />
-                                <label htmlFor="image-upload" className="cursor-pointer inline-flex flex-col items-center">
-                                    <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-2 shadow-inner">
-                                        <Plus size={32} />
-                                    </div>
-                                    <span className="font-black text-slate-800 uppercase tracking-widest text-xs">UPLOAD PRODUCT PHOTOS</span>
-                                    <span className="text-slate-400 text-[10px] font-bold mt-1">PNG, JPG up to 5 files</span>
-                                </label>
-                            </div>
-                            <div className="flex flex-wrap gap-4 mt-4">
-                                {previewImages.map((img, i) => (
-                                    <div key={i} className={`relative w-32 h-32 rounded-2xl overflow-hidden border-2 group shadow-lg ${img.isNew ? 'border-blue-400' : 'border-slate-100'}`}>
-                                        <img src={img.url} alt="" className="w-full h-full object-cover" />
-                                        <div className={`absolute top-0 left-0 w-full h-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center`}>
-                                            <button
-                                                type="button"
-                                                onClick={() => removeImage(i)}
-                                                className="p-2 bg-red-600 text-white rounded-xl shadow-xl hover:scale-110 transition-transform"
-                                            >
-                                                <X size={18} />
-                                            </button>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Upload Images</label>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-slate-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                                    />
+                                    <p className="text-xs text-slate-500">Select multiple images (JPG, PNG, WebP). Max 5MB each.</p>
+                                </div>
+
+                                {/* Image Previews */}
+                                {previewImages.length > 0 && (
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Image Previews</label>
+                                        <div className="flex flex-wrap gap-4">
+                                            {previewImages.map((preview, index) => (
+                                                <div key={index} className="relative w-32 h-32 rounded-2xl overflow-hidden border-2 border-slate-100 group shadow-lg">
+                                                    <img
+                                                        src={preview}
+                                                        alt={`Preview ${index + 1}`}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                    <div className="absolute top-0 left-0 w-full h-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeImage(index)}
+                                                            className="p-2 bg-red-600 text-white rounded-xl shadow-xl hover:scale-110 transition-transform"
+                                                        >
+                                                            <X size={18} />
+                                                        </button>
+                                                    </div>
+                                                    {index < formData.images.length && (
+                                                        <div className="absolute bottom-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-lg font-bold">
+                                                            Existing
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
                                         </div>
-                                        {!img.isNew && (
-                                            <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-slate-900/80 text-white text-[8px] font-black uppercase rounded">Existing</div>
-                                        )}
-                                        {img.isNew && (
-                                            <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-blue-600/80 text-white text-[8px] font-black uppercase rounded">New</div>
-                                        )}
                                     </div>
-                                ))}
+                                )}
                             </div>
                         </div>
 
@@ -658,7 +665,7 @@ const AdminProducts = () => {
                                         <div className="flex items-center gap-6">
                                             <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 flex items-center justify-center p-2 group-hover:scale-105 transition-transform rotate-1 group-hover:rotate-0">
                                                 <img
-                                                    src={p.images?.[0] ? `http://localhost:5000${p.images[0]}` : '/printer.png'}
+                                                    src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${import.meta.env.VITE_API_URL.replace('/api', '')}${p.images[0]}`) : '/printer.png'}
                                                     alt=""
                                                     className="w-full h-full object-contain"
                                                     onError={(e) => e.target.src = '/printer.png'}

@@ -28,7 +28,7 @@ const AdminOrders = () => {
     const fetchOrders = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('https://printersbackend.onrender.com/api/orders', {
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/orders`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             setOrders(data);
@@ -153,11 +153,14 @@ const AdminOrders = () => {
                             ) : error ? (
                                 <tr><td colSpan="6" className="py-10 text-center text-red-500 font-bold uppercase tracking-widest text-xs">{error}</td></tr>
                             ) : filteredOrders.map((order) => (
-                                <tr key={order._id} className="hover:bg-slate-50/50 transition-colors">
+                                <tr key={order._id} className={`hover:bg-slate-50/50 transition-colors ${!order.isPaid ? 'bg-red-50/30 border-l-4 border-l-red-500' : ''}`}>
                                     <td className="px-6 py-4 font-bold text-slate-700">
                                         <div className="flex flex-col">
                                             <span className="text-blue-600">ORD-{order._id.toUpperCase()}</span>
                                             <div className="text-xs font-normal text-slate-400">{new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                                            {!order.isPaid && (
+                                                <div className="text-xs font-bold text-red-600 uppercase tracking-wider mt-1">Payment Failed</div>
+                                            )}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">

@@ -13,6 +13,8 @@ const ProductDetails = () => {
     const [qty, setQty] = useState(1);
     const [activeImage, setActiveImage] = useState(0);
     const [activeTab, setActiveTab] = useState("overview");
+    const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+    const [isZooming, setIsZooming] = useState(false);
 
     const productDetails = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetails;
@@ -31,6 +33,21 @@ const ProductDetails = () => {
     const buyNowHandler = () => {
         dispatch(addToCart(product.slug || product._id, qty));
         navigate('/cart?redirect=shipping');
+    };
+
+    const handleMouseEnter = () => {
+        setIsZooming(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsZooming(false);
+    };
+
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        setZoomPosition({ x, y });
     };
 
     if (loading) return (
@@ -66,7 +83,7 @@ const ProductDetails = () => {
     );
 
     const productImages = product.images && product.images.length > 0 
-        ? product.images.map(img => img.startsWith('http') ? img : `http://localhost:5000${img}`)
+        ? product.images.map(img => img.startsWith('http') ? img : `${import.meta.env.VITE_API_URL.replace('/api', '')}${img}`)
         : [printerImg];
 
     return (
@@ -89,11 +106,50 @@ const ProductDetails = () => {
                     </div>
 
                     {/* Main Image */}
-                    <div className="flex-1 aspect-[4/5] bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/50 flex items-center justify-center p-8 overflow-hidden group order-1 md:order-2">
+                    <div className="flex-1 aspect-[4/5] bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/50 flex items-center justify-center p-8 overflow-hidden group order-1 md:order-2 relative">
                         <img
                             src={productImages[activeImage]}
                             alt={product.title}
                             className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                        />
+                        
+                        {/* Zoom Lens */}
+                        {isZooming && (
+                            <div
+                                className="hidden lg:block absolute w-32 h-32 border-3 border-blue-500 rounded-full pointer-events-none z-10 shadow-xl overflow-hidden"
+                                style={{
+                                    left: `${zoomPosition.x}%`,
+                                    top: `${zoomPosition.y}%`,
+                                    transform: 'translate(-50%, -50%)',
+                                    backgroundImage: `url(${productImages[activeImage]})`,
+                                    backgroundSize: '600% 600%',
+                                    backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                    backgroundRepeat: 'no-repeat'
+                                }}
+                            />
+                        )}
+                        
+                        {/* Zoom Box */}
+                        {isZooming && (
+                            <div className="hidden lg:block absolute top-0 -right-96 w-[28rem] h-[28rem] bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden z-20">
+                                <div
+                                    className="w-full h-full"
+                                    style={{
+                                        backgroundImage: `url(${productImages[activeImage]})`,
+                                        backgroundSize: '600% 600%',
+                                        backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                        backgroundRepeat: 'no-repeat'
+                                    }}
+                                />
+                            </div>
+                        )}
+                        
+                        {/* Hover Overlay */}
+                        <div 
+                            className="absolute inset-0 cursor-crosshair"
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            onMouseMove={handleMouseMove}
                         />
                     </div>
                 </div>

@@ -28,7 +28,7 @@ const OrderDetails = () => {
         const fetchOrder = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get(`http://localhost:5000/api/orders/${id}`, {
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/orders/${id}`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` }
                 });
                 setOrder(data);

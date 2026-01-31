@@ -7,6 +7,18 @@ import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAIL,
+    USER_SEND_OTP_REQUEST,
+    USER_SEND_OTP_SUCCESS,
+    USER_SEND_OTP_FAIL,
+    USER_VERIFY_OTP_REQUEST,
+    USER_VERIFY_OTP_SUCCESS,
+    USER_VERIFY_OTP_FAIL,
+    USER_FORGOT_PASSWORD_REQUEST,
+    USER_FORGOT_PASSWORD_SUCCESS,
+    USER_FORGOT_PASSWORD_FAIL,
+    USER_RESET_PASSWORD_REQUEST,
+    USER_RESET_PASSWORD_SUCCESS,
+    USER_RESET_PASSWORD_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
@@ -27,7 +39,7 @@ export const login = (email, password, isAdminLogin = false) => async (dispatch)
         };
 
         const { data } = await axios.post(
-            'https://printersbackend.onrender.com/api/auth/login',
+            `${import.meta.env.VITE_API_URL}/auth/login`,
             { email, password, isAdminLogin },
             config
         );
@@ -66,7 +78,7 @@ export const register = (firstName, lastName, email, password) => async (dispatc
         };
 
         const { data } = await axios.post(
-            'https://printersbackend.onrender.com/api/auth/register',
+            `${import.meta.env.VITE_API_URL}/auth/register`,
             { firstName, lastName, email, password },
             config
         );
@@ -92,6 +104,137 @@ export const register = (firstName, lastName, email, password) => async (dispatc
         });
     }
 };
+
+export const sendRegistrationOTP = (firstName, lastName, email, password) => async (dispatch) => {
+    try {
+        dispatch({ type: USER_SEND_OTP_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/auth/send-registration-otp`,
+            { firstName, lastName, email, password },
+            config
+        );
+
+        dispatch({
+            type: USER_SEND_OTP_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: USER_SEND_OTP_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const verifyRegistrationOTP = (email, otp) => async (dispatch) => {
+    try {
+        dispatch({ type: USER_VERIFY_OTP_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/auth/verify-registration-otp`,
+            { email, otp },
+            config
+        );
+
+        dispatch({
+            type: USER_VERIFY_OTP_SUCCESS,
+            payload: data,
+        });
+
+        dispatch({
+            type: USER_LOGIN_SUCCESS,
+            payload: data,
+        });
+
+        localStorage.setItem('userInfo', JSON.stringify(data));
+    } catch (error) {
+        dispatch({
+            type: USER_VERIFY_OTP_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+    try {
+        dispatch({ type: USER_FORGOT_PASSWORD_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/auth/forgot-password`,
+            { email },
+            config
+        );
+
+        dispatch({
+            type: USER_FORGOT_PASSWORD_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: USER_FORGOT_PASSWORD_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const resetPassword = (email, otp, newPassword) => async (dispatch) => {
+    try {
+        dispatch({ type: USER_RESET_PASSWORD_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/auth/reset-password`,
+            { email, otp, newPassword },
+            config
+        );
+
+        dispatch({
+            type: USER_RESET_PASSWORD_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: USER_RESET_PASSWORD_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
 export const getUserDetails = (id) => async (dispatch, getState) => {
     try {
         dispatch({ type: USER_DETAILS_REQUEST });
@@ -106,7 +249,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`https://printersbackend.onrender.com/api/auth/profile`, config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/auth/profile`, config);
 
         dispatch({
             type: USER_DETAILS_SUCCESS,
@@ -138,7 +281,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.put(`https://printersbackend.onrender.com/api/auth/profile`, user, config);
+        const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/auth/profile`, user, config);
 
         dispatch({
             type: USER_UPDATE_PROFILE_SUCCESS,
