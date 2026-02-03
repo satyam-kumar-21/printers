@@ -60,20 +60,16 @@ const AdminProducts = () => {
         oldPrice: '',
         countInStock: '',
         description: '',
-        shortDetails: '',
+        shortSpecification: '', // Now acts as Keywords
         overview: '',
-        shortSpecification: '',
         technicalSpecification: '',
-        color: '',
-        width: '',
-        height: '',
-        depth: '',
-        screenSize: '',
         images: [], // Array of existing image URLs
         reviews: [] // Array of { name, avatar, rating, comment }
     };
 
     const [formData, setFormData] = useState(initialFormState);
+    const [specType, setSpecType] = useState('text'); // 'text' | 'table'
+    const [specRows, setSpecRows] = useState([{ key: '', value: '' }]);
 
     useEffect(() => {
         dispatch(listProducts());
@@ -100,6 +96,8 @@ const AdminProducts = () => {
         setFormData(initialFormState);
         setPreviewImages([]);
         setSelectedFiles([]);
+        setSpecRows([{ key: '', value: '' }]);
+        setSpecType('text');
     };
 
     const handleInputChange = (e) => {
@@ -167,16 +165,10 @@ const AdminProducts = () => {
             oldPrice: product.oldPrice || '',
             countInStock: product.countInStock || '',
             description: product.description || '',
-            shortDetails: product.shortDetails || '',
-            overview: product.overview || '',
             shortSpecification: product.shortSpecification || '',
+            overview: product.overview || '',
             technicalSpecification: product.technicalSpecification || '',
-            color: product.color || '',
-            width: product.width || '',
-            height: product.height || '',
-            depth: product.depth || '',
-            screenSize: product.screenSize || '',
-            images: product.images || [], // Existing image URLs
+            images: product.images || [],
             reviews: product.reviews || []
         });
 
@@ -197,19 +189,47 @@ const AdminProducts = () => {
         setItemToDelete(null);
     };
 
+    // Technical Specification Table Builders
+    const addSpecRow = () => {
+        setSpecRows([...specRows, { id: Date.now(), key: '', value: '' }]);
+    };
+
+    const removeSpecRow = (id) => {
+        setSpecRows(specRows.filter(row => row.id !== id));
+    };
+
+    const updateSpecRow = (id, field, value) => {
+        setSpecRows(specRows.map(row => 
+            row.id === id ? { ...row, [field]: value } : row
+        ));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const data = new FormData();
 
+        // Handle Tech Specs Table Mode
+        let finalTechSpecs = formData.technicalSpecification;
+        if (specType === 'table') {
+            const tableRows = specRows.filter(r => r.key && r.value).map(r => 
+                `<tr class="border-b border-slate-100">
+                    <td class="py-3 pr-4 font-bold text-slate-900 uppercase text-xs w-1/3">${r.key}</td>
+                    <td class="py-3 text-slate-600 text-sm">${r.value}</td>
+                </tr>`
+            ).join('');
+            
+            finalTechSpecs = `<table class="w-full text-left border-collapse"><tbody>${tableRows}</tbody></table>`;
+        }
+
         // Add form fields
         Object.keys(formData).forEach(key => {
             if (key === 'images') {
-                // Send existing image URLs as JSON string
-                // We use 'existingImages' to avoid conflict with file uploads named 'images'
                 data.append('existingImages', JSON.stringify(formData.images));
             } else if (key === 'reviews') {
                 data.append('reviews', JSON.stringify(formData.reviews));
+            } else if (key === 'technicalSpecification') {
+                data.append('technicalSpecification', finalTechSpecs);
             } else {
                 data.append(key, formData[key]);
             }
@@ -484,16 +504,7 @@ const AdminProducts = () => {
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Detailed Descriptions</h4>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Short Summary (Plain Text)</label>
-                                <textarea
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    rows="1"
-                                    className="w-full px-5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-slate-800 resize-none"
-                                ></textarea>
-                            </div>
+
 
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                                 <div className="space-y-2">
@@ -528,27 +539,9 @@ const AdminProducts = () => {
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Technical Specifications</h4>
                             </div>
 
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Color</label>
-                                    <input type="text" name="color" value={formData.color} onChange={handleInputChange} className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Display</label>
-                                    <input type="text" name="screenSize" value={formData.screenSize} onChange={handleInputChange} className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Dim. (WxH)</label>
-                                    <div className="flex gap-2">
-                                        <input type="text" name="width" value={formData.width} onChange={handleInputChange} className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold" placeholder="W" />
-                                        <input type="text" name="height" value={formData.height} onChange={handleInputChange} className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold" placeholder="H" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div className="grid grid-cols-1 gap-10">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Key Specs Table</label>
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Keywords</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
                                         <ReactQuill
                                             theme="snow"
@@ -558,16 +551,75 @@ const AdminProducts = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Technical Data</label>
-                                    <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
-                                        <ReactQuill
-                                            theme="snow"
-                                            value={formData.technicalSpecification}
-                                            onChange={(val) => handleQuillChange('technicalSpecification', val)}
-                                            modules={quillModules}
-                                        />
+
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Technical Specification</label>
+                                        <div className="flex bg-slate-100 rounded-lg p-1">
+                                            <button
+                                                type="button"
+                                                onClick={() => setSpecType('text')}
+                                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${specType === 'text' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                            >
+                                                Text Editor
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSpecType('table')}
+                                                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${specType === 'table' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                            >
+                                                Table Builder
+                                            </button>
+                                        </div>
                                     </div>
+
+                                    {specType === 'text' ? (
+                                        <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
+                                            <ReactQuill
+                                                theme="snow"
+                                                value={formData.technicalSpecification}
+                                                onChange={(val) => handleQuillChange('technicalSpecification', val)}
+                                                modules={quillModules}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 space-y-4">
+                                            {specRows.map((row) => (
+                                                <div key={row.id} className="flex gap-4 items-start">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Feature (e.g., Resolution)"
+                                                        value={row.key}
+                                                        onChange={(e) => updateSpecRow(row.id, 'key', e.target.value)}
+                                                        className="flex-1 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Value (e.g., 1920x1080)"
+                                                        value={row.value}
+                                                        onChange={(e) => updateSpecRow(row.id, 'value', e.target.value)}
+                                                        className="flex-1 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeSpecRow(row.id)}
+                                                        className="p-2 text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
+                                                        disabled={specRows.length === 1}
+                                                    >
+                                                        <X size={18} />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                            <button
+                                                type="button"
+                                                onClick={addSpecRow}
+                                                className="flex items-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl text-xs font-black transition-colors"
+                                            >
+                                                <Plus size={16} />
+                                                ADD SPECIFICATION ROW
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
