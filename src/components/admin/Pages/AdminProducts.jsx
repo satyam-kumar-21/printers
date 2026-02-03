@@ -206,7 +206,8 @@ const AdminProducts = () => {
         Object.keys(formData).forEach(key => {
             if (key === 'images') {
                 // Send existing image URLs as JSON string
-                data.append('images', JSON.stringify(formData.images));
+                // We use 'existingImages' to avoid conflict with file uploads named 'images'
+                data.append('existingImages', JSON.stringify(formData.images));
             } else if (key === 'reviews') {
                 data.append('reviews', JSON.stringify(formData.reviews));
             } else {

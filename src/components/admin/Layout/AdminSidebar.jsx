@@ -28,9 +28,8 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
         { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
         { name: 'Categories', path: '/admin/categories', icon: <Layers size={20} /> },
         { name: 'Products', path: '/admin/products', icon: <Package size={20} /> },
-        
-        { name: 'Orders', path: '/admin/orders', icon: <ShoppingBag size={20} /> },
         { name: 'Customers', path: '/admin/customers', icon: <Users size={20} /> },
+        { name: 'Orders', path: '/admin/orders', icon: <ShoppingBag size={20} /> },
         { name: 'Customer Chat', path: '/admin/chat', icon: <MessageSquare size={20} /> },
         { name: 'Analytics', path: '/admin/analytics', icon: <BarChart3 size={20} /> },
         { name: 'Settings', path: '/admin/settings', icon: <Settings size={20} /> },

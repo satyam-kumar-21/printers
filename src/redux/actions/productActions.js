@@ -15,6 +15,15 @@ import {
     PRODUCT_UPDATE_REQUEST,
     PRODUCT_UPDATE_SUCCESS,
     PRODUCT_UPDATE_FAIL,
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_SUCCESS,
+    PRODUCT_CREATE_REVIEW_FAIL,
+    PRODUCT_UPDATE_REVIEW_REQUEST,
+    PRODUCT_UPDATE_REVIEW_SUCCESS,
+    PRODUCT_UPDATE_REVIEW_FAIL,
+    PRODUCT_DELETE_REVIEW_REQUEST,
+    PRODUCT_DELETE_REVIEW_SUCCESS,
+    PRODUCT_DELETE_REVIEW_FAIL,
 } from '../constants/productConstants';
 
 export const listProducts = (search = '', category = '') => async (dispatch) => {
@@ -141,6 +150,98 @@ export const updateProduct = (id, productData) => async (dispatch, getState) => 
     } catch (error) {
         dispatch({
             type: PRODUCT_UPDATE_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const createProductReview = (productId, review) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.post(`${import.meta.env.VITE_API_URL}/products/${productId}/reviews`, review, config);
+
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_SUCCESS,
+        });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const updateProductReview = (productId, review) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_UPDATE_REVIEW_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.put(`${import.meta.env.VITE_API_URL}/products/${productId}/reviews`, review, config);
+
+        dispatch({
+            type: PRODUCT_UPDATE_REVIEW_SUCCESS,
+        });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_UPDATE_REVIEW_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const deleteProductReview = (productId) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_DELETE_REVIEW_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.delete(`${import.meta.env.VITE_API_URL}/products/${productId}/reviews`, config);
+
+        dispatch({
+            type: PRODUCT_DELETE_REVIEW_SUCCESS,
+        });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_DELETE_REVIEW_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
