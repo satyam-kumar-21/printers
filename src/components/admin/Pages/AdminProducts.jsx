@@ -22,7 +22,7 @@ const AdminProducts = () => {
     const dispatch = useDispatch();
 
     const productList = useSelector((state) => state.productList);
-    const { loading, error, products, page, pages } = productList;
+    const { loading, error, products, page, pages, total } = productList; // Assuming 'total' is available in state
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
@@ -840,9 +840,9 @@ const AdminProducts = () => {
                         <div className="p-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-100">
                             <Layers size={20} />
                         </div>
-                        <span className="font-black text-slate-800 uppercase tracking-widest">Active Stock</span>
+                        <span className="font-black text-slate-800 uppercase tracking-widest">Total Products</span>
                         <span className="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-black">
-                            {products?.length || 0}
+                            {total || products?.length || 0}
                         </span>
                     </div>
                     <div className="relative group">

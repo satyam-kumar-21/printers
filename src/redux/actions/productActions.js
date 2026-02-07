@@ -26,11 +26,19 @@ import {
     PRODUCT_DELETE_REVIEW_FAIL,
 } from '../constants/productConstants';
 
-export const listProducts = (search = '', category = '', pageNumber = 1) => async (dispatch) => {
+export const listProducts = (search = '', category = '', pageNumber = 1, sort = '', brand = '') => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products?search=${search}&category=${category}&page=${pageNumber}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products`, {
+            params: {
+                search,
+                category,
+                page: pageNumber,
+                sort,
+                brand,
+            }
+        });
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,

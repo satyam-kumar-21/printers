@@ -208,10 +208,10 @@ const handleWriteReview = () => {
                             {product.countInStock > 0 ? (
                                 <span className="text-emerald-500 text-[9px] font-black uppercase tracking-widest flex items-center gap-2">
                                     <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                                    {product.countInStock} Units Available
+                                    In Stock
                                 </span>
                             ) : (
-                                <span className="text-rose-500 text-[9px] font-black uppercase tracking-widest">Sold Out</span>
+                                <span className="text-rose-500 text-[9px] font-black uppercase tracking-widest">Out of Stock</span>
                             )}
                         </div>
                         <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 leading-tight tracking-tight uppercase">
@@ -236,7 +236,7 @@ const handleWriteReview = () => {
                             <span className="text-4xl font-black text-slate-900 tracking-tighter">
                                 ${product.price?.toFixed(2)}
                             </span>
-                            {product.oldPrice > 0 && (
+                            {product.oldPrice > 0 && product.oldPrice > product.price && (
                                 <span className="text-xl text-slate-300 line-through font-bold">
                                     ${product.oldPrice?.toFixed(2)}
                                 </span>

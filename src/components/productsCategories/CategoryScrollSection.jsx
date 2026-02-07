@@ -65,7 +65,9 @@ const CategoryScrollSection = () => {
                 ref={scrollRef}
                 className="flex gap-4 overflow-x-auto scroll-smooth px-2 sm:px-0 scrollbar-hide"
             >
-                {categories && categories.map((item, index) => (
+                {categories && categories
+                    .filter(item => !['Large Format', 'LED Printers'].includes(item.name)) // Filter unwanted categories
+                    .map((item, index) => (
                     <Link
                         key={item._id || index}
                         to={`/product-category/${item.slug}`} // Assuming slug exists, otherwise use ID

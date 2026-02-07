@@ -1,23 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../../redux/actions/productActions";
 import ProductGrid from "./ProductGrid";
 import printerImg from "../../assets/printer.png";
 
-const CategoryProductList = ({ categoryName, heading }) => {
+const CategoryProductList = ({ categoryName, heading, enableFlowLayout = false }) => {
     const dispatch = useDispatch();
+    const [sort, setSort] = useState('');
+    const [brand, setBrand] = useState('');
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
 
     useEffect(() => {
-        dispatch(listProducts('', categoryName, 1));
-    }, [dispatch, categoryName]);
+        dispatch(listProducts('', categoryName, 1, sort, brand));
+    }, [dispatch, categoryName, sort, brand]);
 
     const loadMoreHandler = () => {
         if (page < pages) {
-            dispatch(listProducts('', categoryName, page + 1));
+            dispatch(listProducts('', categoryName, page + 1, sort, brand));
         }
+    };
+
+    const handleFilterChange = (newSort, newBrand) => {
+        setSort(newSort);
+        setBrand(newBrand);
     };
 
     const safeProducts = Array.isArray(products) ? products : [];
@@ -31,10 +38,10 @@ const CategoryProductList = ({ categoryName, heading }) => {
         link: `/product/${product.slug || product._id}`
     }));
 
-    if (loading && safeProducts.length === 0) return <div className="py-20 text-center font-black uppercase text-[10px] tracking-[0.3em] text-slate-400 animate-pulse">Synchronizing Inventory...</div>;
+    // if (loading && safeProducts.length === 0) return <div className="py-20 text-center font-black uppercase text-[10px] tracking-[0.3em] text-slate-400 animate-pulse">Synchronizing Inventory...</div>;
     if (error) return <div className="py-20 text-center font-black uppercase text-[10px] tracking-[0.3em] text-red-500">{error}</div>;
 
-    if (!loading && safeProducts.length === 0) {
+    if (!loading && safeProducts.length === 0 && !sort && !brand) {
         return (
             <div className="max-w-7xl mx-auto px-4 py-20 text-center">
                 <h2 className="text-3xl font-semibold text-gray-900 mb-6">{heading || categoryName}</h2>
@@ -51,7 +58,8 @@ const CategoryProductList = ({ categoryName, heading }) => {
             <ProductGrid
                 heading={heading || categoryName}
                 products={formattedProducts}
-                dropdownOptions={["Best Selling", "Top Rated", "New Arrivals"]}
+                onFilterChange={handleFilterChange}
+                enableFlowLayout={enableFlowLayout}
             />
             
             {loading && page >= 1 && (

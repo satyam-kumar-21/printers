@@ -164,10 +164,8 @@ const Header = () => {
                             <nav className="hidden md:flex items-center justify-center flex-1 px-2 lg:px-8 gap-2 lg:gap-6 text-slate-600 text-[10px] lg:text-sm font-bold whitespace-nowrap">
                                 <Link to="/" className="hover:text-blue-600 transition-colors uppercase tracking-wide">Home</Link>
                                 <Link to="/product-category/all-in-one-printers" className="hover:text-blue-600 transition-colors uppercase tracking-wide">All In One</Link>
-                                <Link to="/product-category/large-format-printers" className="hidden 2xl:block hover:text-blue-600 transition-colors uppercase tracking-wide">Large Format</Link>
                                 <Link to="/product-category/inkjet-printers" className="hidden 2xl:block hover:text-blue-600 transition-colors uppercase tracking-wide">Inkjet</Link>
                                 <Link to="/product-category/laser-printers" className="hidden 2xl:block hover:text-blue-600 transition-colors uppercase tracking-wide">Laser</Link>
-                                <Link to="/product-category/led-printers" className="hidden 2xl:block hover:text-blue-600 transition-colors uppercase tracking-wide">LED Printers</Link>
                                 <Link to="/product-category/ink-toner" className="hover:text-blue-600 transition-colors uppercase tracking-wide">Ink & Toner</Link>
                                 <Link to="/customer-service" className="hover:text-blue-600 transition-colors uppercase tracking-wide">Customer Support</Link>
 
@@ -283,10 +281,8 @@ const Header = () => {
                                         {[
                                             { name: 'Home', path: '/' },
                                             { name: 'All In One', path: '/product-category/all-in-one-printers' },
-                                            { name: 'Large Format', path: '/product-category/large-format-printers' },
                                             { name: 'Inkjet', path: '/product-category/inkjet-printers' },
                                             { name: 'Laser', path: '/product-category/laser-printers' },
-                                            { name: 'LED Printers', path: '/product-category/led-printers' },
                                             { name: 'Ink & Toner', path: '/product-category/ink-toner' },
                                             { name: 'Customer Support', path: '/customer-service' },
                                             { name: 'Track Your Order', path: '/track-order' },
@@ -373,11 +369,12 @@ const Header = () => {
                                     <div className="space-y-3 pt-2">
                                         <div className="flex items-start gap-3">
                                             <MapPin size={16} className="text-blue-500 mt-0.5 shrink-0" />
-                                            <p className="text-sm text-slate-500 leading-snug">9169 W State St #810<br />Garden City, ID 83714</p>
+                                            <p className="text-sm text-slate-500 leading-snug">17807 Lakecrest View Drive, #1205<br />Cypress, TX 77433</p>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <Mail size={16} className="text-blue-500 shrink-0" />
-                                            <a href="mailto:info@myinkshops.com" className="text-sm text-blue-600 hover:underline font-medium">info@myinkshops.com</a>
+                                            <a href="mailto:support@smarteprinting.com" className="text-sm text-blue-600 hover:underline font-medium">support@smarteprinting.com</a>
+
                                         </div>
                                     </div>
                                 </div>

@@ -46,6 +46,14 @@ const AdminDashboard = () => {
             bg: 'bg-blue-100'
         },
         {
+            label: 'Active Stock',
+            value: analytics.activeStock ? analytics.activeStock.toString() : '0',
+            change: '', // No growth metric for stock yet
+            icon: ShoppingBag, // Or another icon like Package
+            color: 'text-purple-600',
+            bg: 'bg-purple-100'
+        },
+        {
             label: 'Total Customers',
             value: analytics.customers.total.toString(),
             change: `${analytics.customers.growth >= 0 ? '+' : ''}${analytics.customers.growth}%`,
