@@ -37,7 +37,7 @@ const TrackOrder = () => {
                     price: item.price
                 })),
                 history: [
-                    { status: 'Confirmed', location: 'Office', date: new Date(data.createdAt).toLocaleDateString() },
+                    { status: data.isPaid ? 'Confirmed' : 'Payment Failed', location: 'Office', date: new Date(data.createdAt).toLocaleDateString() },
                     { status: data.status, location: data.tracking?.currentLocation || 'In Transit', date: 'Real-time' }
                 ]
             };
@@ -94,7 +94,7 @@ const TrackOrder = () => {
                                         orderDetails.paid ? "text-green-600" : "text-red-600"
                                     }
                                 >
-                                    {orderDetails.paid ? "Paid" : "Pending"}
+                                    {orderDetails.paid ? "Paid" : "Failed - Please Reorder"}
                                 </span>
                             </p>
                             <p>

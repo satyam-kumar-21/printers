@@ -67,7 +67,7 @@ const OrderDetails = () => {
     if (!order) return null;
 
     const statusSteps = [
-        { label: 'Confirmed', status: 'Processing', icon: Clock },
+        { label: order.isPaid ? 'Confirmed' : 'Payment Failed', status: 'Processing', icon: Clock },
         { label: 'In Transit', status: 'Shipped', icon: Truck },
         { label: 'Out for Delivery', status: 'Out for Delivery', icon: Package },
         { label: 'Synchronized', status: 'Delivered', icon: CheckCircle2 },
@@ -271,9 +271,9 @@ const OrderDetails = () => {
                                 <div className={`px-4 py-2 rounded-xl border text-[10px] font-black uppercase tracking-[0.2em] text-center ${
                                     order.isPaid 
                                     ? 'bg-emerald-50 border-emerald-100 text-emerald-600' 
-                                    : 'bg-slate-50 border-slate-100 text-slate-400'
+                                    : 'bg-red-50 border-red-100 text-red-600'
                                 }`}>
-                                    {order.isPaid ? 'Payment Confirmed' : 'Payment Awaiting Sync'}
+                                    {order.isPaid ? 'Payment Confirmed' : 'Payment Failed - Please Reorder'}
                                 </div>
                             </div>
                         </div>

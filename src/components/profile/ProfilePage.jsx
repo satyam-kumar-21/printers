@@ -315,7 +315,7 @@ const ProfilePage = () => {
                                                                 {order.isPaid ? (
                                                                     <span className="px-2.5 py-1 bg-green-50 text-green-700 text-[10px] font-bold rounded-full uppercase">Paid</span>
                                                                 ) : (
-                                                                    <span className="px-2.5 py-1 bg-amber-50 text-amber-700 text-[10px] font-bold rounded-full uppercase">Pending</span>
+                                                                    <span className="px-2.5 py-1 bg-red-50 text-red-700 text-[10px] font-bold rounded-full uppercase">Failed</span>
                                                                 )}
                                                             </td>
                                                             <td className="py-4 text-right">
