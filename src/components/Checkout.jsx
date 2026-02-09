@@ -78,8 +78,8 @@ const Checkout = () => {
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
     const taxPrice = Number((0.15 * subtotal).toFixed(2));
-    const shippingPrice = subtotal > 500 ? 0 : 50;
-    const totalPrice = subtotal + taxPrice + shippingPrice;
+    const shippingPrice = "Free Delivery";
+    const totalPrice = subtotal + taxPrice ;
 
     const submitShippingHandler = (e) => {
         e.preventDefault();
@@ -333,7 +333,7 @@ const Checkout = () => {
                         <h3 className="text-xl font-black mb-6">Summary</h3>
                         <p>Subtotal: ${subtotal.toFixed(2)}</p>
                         <p>Tax: ${taxPrice.toFixed(2)}</p>
-                        <p>Shipping: ${shippingPrice.toFixed(2)}</p>
+                        <p>Shipping: {shippingPrice}</p>
                         <hr className="my-4" />
                         <p className="text-2xl font-black">Total: ${totalPrice.toFixed(2)}</p>
 
