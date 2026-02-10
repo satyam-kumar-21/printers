@@ -52,7 +52,6 @@ const HomeMain = () => {
             <WhyChooseSection />
             <OurPromiseSection />
             <Reviews />
-            <LatestTips />
             <StatsCircles />
             <ImportantInfoSection />
         </>

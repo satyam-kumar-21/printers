@@ -24,6 +24,7 @@ const Checkout = () => {
 
     const [step, setStep] = useState(1);
     const [shippingRates, setShippingRates] = useState([]);
+    const [distance, setDistance] = useState(null);
     const [selectedRate, setSelectedRate] = useState(null);
     const [loading, setLoading] = useState(false);
     const [clover, setClover] = useState(null);
@@ -96,7 +97,11 @@ const Checkout = () => {
                     { address, city, postalCode, country, state: province, phone, cartItems },
                     { headers: { Authorization: `Bearer ${userInfo.token}` } }
                 );
-                const sortedRates = data.sort((a, b) => Number(a.rate) - Number(b.rate));
+                
+                const rates = data.rates || (Array.isArray(data) ? data : []);
+                setDistance(data.distance || null);
+
+                const sortedRates = rates.sort((a, b) => Number(a.rate) - Number(b.rate));
                 setShippingRates(sortedRates);
                 if (sortedRates.length > 0) setSelectedRate(sortedRates[0]);
             } catch (error) {
@@ -278,7 +283,14 @@ const Checkout = () => {
 
                                 {shippingRates.length > 0 && (
                                     <div className="mt-8 space-y-4">
-                                        <h3 className="text-lg font-bold text-slate-900">Select Shipping Method</h3>
+                                        <div className="flex justify-between items-end">
+                                            <h3 className="text-lg font-bold text-slate-900">Select Shipping Method</h3>
+                                            {distance && (
+                                                <span className="text-sm font-medium text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                                                    Distance: {distance} miles
+                                                </span>
+                                            )}
+                                        </div>
                                         <div className="space-y-3">
                                             {shippingRates.map((rate) => (
                                                 <div 
@@ -301,6 +313,12 @@ const Checkout = () => {
                                             ))}
                                         </div>
                                     </div>
+                                )}
+
+                                {shippingRates.length === 0 && !loading && (
+                                     <div className="mt-8 p-4 bg-yellow-50 text-yellow-800 rounded-xl text-sm border border-yellow-200">
+                                        Please enter your address above and click Calculate Shipping to see available rates.
+                                     </div>
                                 )}
 
                                 <button type="submit" disabled={loading} className="w-full mt-10 bg-slate-900 text-white py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-lg shadow-slate-200 disabled:opacity-70 disabled:cursor-wait">
@@ -408,13 +426,39 @@ const Checkout = () => {
                     {/* RIGHT */}
                     <div className="lg:col-span-2 bg-slate-900 text-white p-10 rounded-3xl h-fit">
                         <h3 className="text-xl font-black mb-6">Summary</h3>
-                        <p>Subtotal: ${subtotal.toFixed(2)}</p>
-                        <p>Tax: ${taxPrice.toFixed(2)}</p>
-                        <p>Shipping: ${shippingPrice}</p>
-                        <hr className="my-4" />
-                        <p className="text-2xl font-black">Total: ${totalPrice.toFixed(2)}</p>
+                        
+                        <div className="space-y-4 text-slate-300 font-medium">
+                            <div className="flex justify-between">
+                                <span>Subtotal:</span>
+                                <span>${subtotal.toFixed(2)}</span>
+                            </div>
 
-                        <p className="text-xs text-slate-400 mt-6">
+                            {distance && (
+                                <div className="flex justify-between text-indigo-400">
+                                    <span>Distance:</span>
+                                    <span>{distance} miles</span>
+                                </div>
+                            )}
+
+                            <div className="flex justify-between">
+                                <span>Tax:</span>
+                                <span>${taxPrice.toFixed(2)}</span>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <span>Shipping:</span>
+                                <span>${shippingPrice.toFixed(2)}</span>
+                            </div>
+                        </div>
+
+                        <hr className="my-6 border-slate-800" />
+                        
+                        <div className="flex justify-between items-center text-white">
+                            <span className="font-bold text-lg">Total:</span>
+                            <span className="text-3xl font-black">${totalPrice.toFixed(2)}</span>
+                        </div>
+
+                        <p className="text-xs text-slate-500 mt-8 font-medium leading-relaxed">
                             Payments are securely processed via Clover (PCI-DSS compliant).
                         </p>
                     </div>

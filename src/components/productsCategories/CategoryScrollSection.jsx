@@ -3,7 +3,29 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import printer from "../../assets/printer.png";
+import allone from "../../assets/allone.png";
+import inkjet from "../../assets/inkjet.png";
+import laser from "../../assets/laser.jpg";
+import inktoner from "../../assets/inktoner.png";
 import { listCategories } from "../../redux/actions/categoryActions";
+
+const getCategoryImage = (categoryName, originalImage) => {
+    // Map specific categories to local assets
+    const name = categoryName?.toLowerCase() || '';
+    
+    // Check for explicit matches or contains
+    if (name.includes('all in one')) return allone;
+    if (name.includes('inkjet')) return inkjet;
+    if (name.includes('laser')) return laser;
+    if (name.includes('ink') && name.includes('toner')) return inktoner;
+
+    // Default fallbacks
+    return originalImage
+        ? (originalImage.startsWith('http')
+            ? originalImage
+            : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${originalImage}`)
+        : printer;
+};
 
 const CategoryScrollSection = () => {
     const scrollRef = useRef(null);
@@ -80,13 +102,7 @@ const CategoryScrollSection = () => {
                         {/* Image */}
                         <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
                              <img 
-                                src={
-                                    item.image
-                                        ? (item.image.startsWith('http') 
-                                            ? item.image 
-                                            : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${item.image}`)
-                                        : printer
-                                }
+                                src={getCategoryImage(item.name, item.image)}
                                 alt={item.name} 
                                 className="w-full h-full object-contain p-2"
                                 onError={(e) => { e.target.src = printer; }}
