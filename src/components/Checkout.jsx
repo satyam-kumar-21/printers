@@ -101,10 +101,10 @@ const Checkout = () => {
                 const rates = data.rates || (Array.isArray(data) ? data : []);
                 setDistance(data.distance || null);
 
-                // Filter rates by allowed EasyPost account IDs
+                // Only show Canada Post, FedEx, UPS, USPS shipping methods
                 const allowedAccounts = [
                     'ca_e3cbd16a6eb84914985d90875a6ec074', // Canada Post
-                    'ca_76d0939dc1ce4c99870bbc2844d8d02b', // FedEx
+                    'ca_76d0939dc1ce4c99870bbc2844d8d02b', // FedEx Wallet
                     'ca_c5f03a14c10d4fbab837e8a35b01c7df', // UPS
                     'ca_b82a2962176446d09a48bc649977f467'  // USPS
                 ];
