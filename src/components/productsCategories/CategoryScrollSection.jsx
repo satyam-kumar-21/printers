@@ -1,4 +1,9 @@
 import React, { useRef, useEffect } from "react";
+import allInOneImg from "../../../public/assets/allone.png";
+import inkjetImg from "../../../public/assets/inkjet.png";
+import laserImg from "../../../public/assets/laser.jpg";
+import inkTonerImg from "../../../public/assets/inktoner.png";
+import defaultPrinterImg from "../../../public/assets/printer.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
@@ -6,21 +11,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { listCategories } from "../../redux/actions/categoryActions";
 
 const getCategoryImage = (categoryName, originalImage) => {
-    // Map specific categories to local assets
     const name = categoryName?.toLowerCase() || '';
-    
-    // Check for explicit matches or contains
-    if (name.includes('all in one')) return "/assets/allone.png";
-    if (name.includes('inkjet')) return "/assets/inkjet.png";
-    if (name.includes('laser')) return "/assets/laser.jpg";
-    if (name.includes('ink') && name.includes('toner')) return "/assets/inktoner.png";
-
-    // Default fallbacks
+    if (name.includes('all in one')) return allInOneImg;
+    if (name.includes('inkjet')) return inkjetImg;
+    if (name.includes('laser')) return laserImg;
+    if (name.includes('ink') && name.includes('toner')) return inkTonerImg;
     return originalImage
         ? (originalImage.startsWith('http')
             ? originalImage
             : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${originalImage}`)
-        : "/assets/printer.png";
+        : defaultPrinterImg;
 };
 
 const CategoryScrollSection = () => {
@@ -84,32 +84,48 @@ const CategoryScrollSection = () => {
                 className="flex gap-4 overflow-x-auto scroll-smooth px-2 sm:px-0 scrollbar-hide"
             >
                 {categories && categories
-                    .filter(item => !['Large Format', 'LED Printers'].includes(item.name)) // Filter unwanted categories
-                    .map((item, index) => (
-                    <Link
-                        key={item._id || index}
-                        to={`/product-category/${item.slug}`} // Assuming slug exists, otherwise use ID
-                        className="
-              flex-shrink-0
-              w-[calc(50%-8px)] sm:w-[calc(33.333%-12px)] lg:w-[calc(25%-18px)]
-              bg-white border rounded-xl p-5 text-center hover:shadow-lg transition
-            "
-                    >
-                        {/* Image */}
-                        <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
-                             <img 
-                                src={getCategoryImage(item.name, item.image)}
-                                alt={item.name} 
-                                className="w-full h-full object-contain p-2"
-                                onError={(e) => { e.target.src = "/assets/printer.png"; }}
-                            />
-                        </div>
+                    .filter(item => !['Large Format', 'LED Printers'].includes(item.name))
+                    .map((item, index) => {
+                        let displayName = item.name;
+                        let routeSlug = item.slug;
+                        const nameLower = item.name.toLowerCase();
+                        if (nameLower.includes('all in one')) {
+                            displayName = 'All In One';
+                            routeSlug = 'all-in-one-printers';
+                        } else if (nameLower.includes('inkjet')) {
+                            displayName = 'Inkjet';
+                            routeSlug = 'inkjet-printers';
+                        } else if (nameLower.includes('laser')) {
+                            displayName = 'Laser';
+                            routeSlug = 'laser-printers';
+                        }
+                        // For other categories, keep as is
+                        return (
+                            <Link
+                                key={item._id || index}
+                                to={`/product-category/${routeSlug}`}
+                                className="
+                  flex-shrink-0
+                  w-[calc(50%-8px)] sm:w-[calc(33.333%-12px)] lg:w-[calc(25%-18px)]
+                  bg-white border rounded-xl p-5 text-center hover:shadow-lg transition
+                "
+                            >
+                                {/* Image */}
+                                <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
+                                    <img 
+                                        src={getCategoryImage(item.name, item.image)}
+                                        alt={displayName} 
+                                        className="w-full h-full object-contain p-2"
+                                        onError={(e) => { e.target.src = defaultPrinterImg; }}
+                                    />
+                                </div>
 
-                        {/* Text */}
-                        <h3 className="text-lg font-medium text-gray-900">{item.name}</h3>
-                        <p className="text-sm text-gray-500 mt-1">{item.count} items</p>
-                    </Link>
-                ))}
+                                {/* Text */}
+                                <h3 className="text-lg font-medium text-gray-900">{displayName}</h3>
+                                <p className="text-sm text-gray-500 mt-1">{item.count} items</p>
+                            </Link>
+                        );
+                    })}
             </div>
 
             {/* Tailwind hide scrollbar for all browsers */}
