@@ -26,7 +26,18 @@ import {
     PRODUCT_DELETE_REVIEW_FAIL,
 } from '../constants/productConstants';
 
-export const listProducts = (search = '', category = '', pageNumber = 1, sort = '', brand = '') => async (dispatch) => {
+export const listProducts = (
+    search = '',
+    category = '',
+    pageNumber = 1,
+    sort = '',
+    brand = '',
+    technology = '',
+    usageCategory = [],
+    allInOneType = '',
+    wireless = '',
+    mainFunction = []
+) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 
@@ -37,6 +48,11 @@ export const listProducts = (search = '', category = '', pageNumber = 1, sort = 
                 page: pageNumber,
                 sort,
                 brand,
+                technology,
+                usageCategory: usageCategory.join(','),
+                allInOneType,
+                wireless,
+                mainFunction: mainFunction.join(',')
             }
         });
 

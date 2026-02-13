@@ -6,6 +6,12 @@ import { addToCart } from "../../redux/actions/cartActions";
 const ProductGrid = ({ heading = "Products", products = [], onFilterChange, enableFlowLayout = false }) => {
     const [sort, setSort] = useState('');
     const [brand, setBrand] = useState('');
+    // Structured attribute filters
+    const [technology, setTechnology] = useState('');
+    const [usageCategory, setUsageCategory] = useState([]);
+    const [allInOneType, setAllInOneType] = useState('');
+    const [wireless, setWireless] = useState('');
+    const [mainFunction, setMainFunction] = useState([]);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -15,13 +21,36 @@ const ProductGrid = ({ heading = "Products", products = [], onFilterChange, enab
     const handleSortChange = (e) => {
         const value = e.target.value;
         setSort(value);
-        if (onFilterChange) onFilterChange(value, brand);
+        if (onFilterChange) onFilterChange({ sort: value, brand, technology, usageCategory, allInOneType, wireless, mainFunction });
     };
 
     const handleBrandChange = (e) => {
         const value = e.target.value;
         setBrand(value);
-        if (onFilterChange) onFilterChange(sort, value);
+        if (onFilterChange) onFilterChange({ sort, brand: value, technology, usageCategory, allInOneType, wireless, mainFunction });
+    };
+    // Structured attribute filter handlers
+    const handleTechnologyChange = (e) => {
+        setTechnology(e.target.value);
+        if (onFilterChange) onFilterChange({ sort, brand, technology: e.target.value, usageCategory, allInOneType, wireless, mainFunction });
+    };
+    const handleUsageCategoryChange = (e) => {
+        const values = Array.from(e.target.options).filter(o => o.selected).map(o => o.value);
+        setUsageCategory(values);
+        if (onFilterChange) onFilterChange({ sort, brand, technology, usageCategory: values, allInOneType, wireless, mainFunction });
+    };
+    const handleAllInOneTypeChange = (e) => {
+        setAllInOneType(e.target.value);
+        if (onFilterChange) onFilterChange({ sort, brand, technology, usageCategory, allInOneType: e.target.value, wireless, mainFunction });
+    };
+    const handleWirelessChange = (e) => {
+        setWireless(e.target.value);
+        if (onFilterChange) onFilterChange({ sort, brand, technology, usageCategory, allInOneType, wireless: e.target.value, mainFunction });
+    };
+    const handleMainFunctionChange = (e) => {
+        const values = Array.from(e.target.options).filter(o => o.selected).map(o => o.value);
+        setMainFunction(values);
+        if (onFilterChange) onFilterChange({ sort, brand, technology, usageCategory, allInOneType, wireless, mainFunction: values });
     };
 
     const handleAddToCart = (e, product) => {
@@ -54,30 +83,117 @@ const ProductGrid = ({ heading = "Products", products = [], onFilterChange, enab
                     <h2 className="text-3xl font-semibold text-gray-900">{heading}</h2>
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                     {/* Sort Dropdown */}
-                    <select
-                        className="border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                        value={sort}
-                        onChange={handleSortChange}
-                    >
-                        <option value="">Sort By Price</option>
-                        <option value="lowToHigh">Price: Low to High</option>
-                        <option value="highToLow">Price: High to Low</option>
-                    </select>
-
-                    {/* Brand Filter */}
-                    <select
-                        className="border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                        value={brand}
-                        onChange={handleBrandChange}
-                    >
-                        <option value="">Filter By Brand</option>
-                        <option value="HP">HP</option>
-                        <option value="Canon">Canon</option>
-                        <option value="Epson">Epson</option>
-                        <option value="Brother">Brother</option>
-                    </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-6">
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Sort By Price</label>
+                        <select
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            value={sort}
+                            onChange={handleSortChange}
+                        >
+                            <option value="">Select</option>
+                            <option value="lowToHigh">Price: Low to High</option>
+                            <option value="highToLow">Price: High to Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Brand</label>
+                        <select
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            value={brand}
+                            onChange={handleBrandChange}
+                        >
+                            <option value="">Select</option>
+                            <option value="HP">HP</option>
+                            <option value="Canon">Canon</option>
+                            <option value="Epson">Epson</option>
+                            <option value="Brother">Brother</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Technology</label>
+                        <div className="flex flex-wrap gap-3">
+                            {['Inkjet', 'Laser', 'Laser (B/W)'].map(opt => (
+                                <label key={opt} className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={technology === opt}
+                                        onChange={() => handleTechnologyChange({ target: { value: opt } })}
+                                    />
+                                    <span className="text-xs font-bold text-blue-700">{opt}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Usage Category</label>
+                        <div className="flex flex-wrap gap-3">
+                            {['Home', 'Office', 'Mobile', 'Photo'].map(opt => (
+                                <label key={opt} className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={usageCategory.includes(opt)}
+                                        onChange={() => {
+                                            const values = usageCategory.includes(opt)
+                                                ? usageCategory.filter(v => v !== opt)
+                                                : [...usageCategory, opt];
+                                            setUsageCategory(values);
+                                            if (onFilterChange) onFilterChange({ sort, brand, technology, usageCategory: values, allInOneType, wireless, mainFunction });
+                                        }}
+                                    />
+                                    <span className="text-xs font-bold text-blue-700">{opt}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">All-in-One Type</label>
+                        <div className="flex flex-wrap gap-3">
+                            {['Multifunction', 'Single Function'].map(opt => (
+                                <label key={opt} className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={allInOneType === opt}
+                                        onChange={() => handleAllInOneTypeChange({ target: { value: opt } })}
+                                    />
+                                    <span className="text-xs font-bold text-purple-700">{opt}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Wireless</label>
+                        <select
+                            className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            value={wireless}
+                            onChange={handleWirelessChange}
+                        >
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-2">Main Function</label>
+                        <div className="flex flex-wrap gap-3">
+                            {['Print', 'Scan', 'Copy', 'Fax', 'Print Only'].map(opt => (
+                                <label key={opt} className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={mainFunction.includes(opt)}
+                                        onChange={() => {
+                                            const values = mainFunction.includes(opt)
+                                                ? mainFunction.filter(v => v !== opt)
+                                                : [...mainFunction, opt];
+                                            setMainFunction(values);
+                                            if (onFilterChange) onFilterChange({ sort, brand, technology, usageCategory, allInOneType, wireless, mainFunction: values });
+                                        }}
+                                    />
+                                    <span className="text-xs font-bold text-green-700">{opt}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -8,23 +8,34 @@ const CategoryProductList = ({ categoryName, heading, enableFlowLayout = false }
     const dispatch = useDispatch();
     const [sort, setSort] = useState('');
     const [brand, setBrand] = useState('');
+    // Structured attribute filters
+    const [technology, setTechnology] = useState('');
+    const [usageCategory, setUsageCategory] = useState([]);
+    const [allInOneType, setAllInOneType] = useState('');
+    const [wireless, setWireless] = useState('');
+    const [mainFunction, setMainFunction] = useState([]);
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
 
     useEffect(() => {
-        dispatch(listProducts('', categoryName, 1, sort, brand));
-    }, [dispatch, categoryName, sort, brand]);
+        dispatch(listProducts('', categoryName, 1, sort, brand, technology, usageCategory, allInOneType, wireless, mainFunction));
+    }, [dispatch, categoryName, sort, brand, technology, usageCategory, allInOneType, wireless, mainFunction]);
 
     const loadMoreHandler = () => {
         if (page < pages) {
-            dispatch(listProducts('', categoryName, page + 1, sort, brand));
+            dispatch(listProducts('', categoryName, page + 1, sort, brand, technology, usageCategory, allInOneType, wireless, mainFunction));
         }
     };
 
-    const handleFilterChange = (newSort, newBrand) => {
-        setSort(newSort);
-        setBrand(newBrand);
+    const handleFilterChange = (filters) => {
+        setSort(filters.sort || '');
+        setBrand(filters.brand || '');
+        setTechnology(filters.technology || '');
+        setUsageCategory(filters.usageCategory || []);
+        setAllInOneType(filters.allInOneType || '');
+        setWireless(filters.wireless || '');
+        setMainFunction(filters.mainFunction || []);
     };
 
     const safeProducts = Array.isArray(products) ? products : [];

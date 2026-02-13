@@ -231,9 +231,20 @@ const handleWriteReview = () => {
                     {/* Header */}
                     <div className="space-y-4">
                         <div className="flex items-center flex-wrap gap-3">
-                            <span className="px-4 py-1.5 bg-slate-50 text-slate-500 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-100">
-                                {product.brand || 'Premium Hardware'}
-                            </span>
+                            {Array.isArray(product.usageCategory) && product.usageCategory.length > 0 && (
+                                product.usageCategory.map((val, idx) => (
+                                    <span key={"usage-"+val+idx} className="px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-[9px] font-bold uppercase tracking-widest border border-blue-100">
+                                        {val}
+                                    </span>
+                                ))
+                            )}
+                            {Array.isArray(product.allInOneType) && product.allInOneType.length > 0 && (
+                                product.allInOneType.map((val, idx) => (
+                                    <span key={"allinone-"+val+idx} className="px-4 py-1.5 bg-purple-50 text-purple-700 rounded-full text-[9px] font-bold uppercase tracking-widest border border-purple-100">
+                                        {val}
+                                    </span>
+                                ))
+                            )}
                             {product.countInStock > 0 ? (
                                 <span className="text-emerald-500 text-[9px] font-black uppercase tracking-widest flex items-center gap-2">
                                     <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
@@ -318,14 +329,26 @@ const handleWriteReview = () => {
                         </div>
                     </div>
 
-                    {/* Short Specs */}
-                    {product.shortSpecification && (
+                    {/* Key Specifications - Custom UI */}
+                    {(product.technology || product.mainFunction || product.wireless || product.shortSpecification) && (
                         <div className="space-y-3">
-                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Key Specifications</h3>
-                            <div
-                                dangerouslySetInnerHTML={{ __html: product.shortSpecification }}
-                                className="text-slate-500 text-xs font-semibold grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-4"
-                            />
+                            <div className="flex flex-col md:flex-row gap-2 border-t border-slate-100 pt-4">
+                                {Array.isArray(product.technology) && product.technology.length > 0 && (
+                                    <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs font-semibold text-slate-900">
+                                        Technology: {product.technology.join(', ')}
+                                    </div>
+                                )}
+                                {Array.isArray(product.mainFunction) && product.mainFunction.length > 0 && (
+                                    <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs font-semibold text-slate-900">
+                                        Main Function: {product.mainFunction.join(', ')}
+                                    </div>
+                                )}
+                                {product.wireless && (
+                                    <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs font-semibold text-slate-900">
+                                        Wireless: {product.wireless}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
