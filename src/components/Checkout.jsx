@@ -443,7 +443,7 @@ const Checkout = () => {
                                     disabled={loading}
                                     className="w-full mt-6 bg-indigo-600 text-white py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-xl shadow-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {loading ? <Loader2 className="animate-spin" size={18} /> : <>Pay with Clover <ShieldCheck size={18} /></>}
+                                    {loading ? <Loader2 className="animate-spin" size={18} /> : <>Pay Now <ShieldCheck size={18} /></>}
                                 </button>
                             </div>
                         )}
