@@ -54,7 +54,7 @@ const CustomerService = () => {
     <div className="max-w-7xl mx-auto px-4 py-12 space-y-16">
       {/* Header Section */}
       <div className="text-center space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+        <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent uppercase">
           Contact Us – Smart ePrinting
         </h1>
         <p className="text-gray-600 text-base sm:text-lg max-w-3xl mx-auto">

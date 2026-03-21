@@ -135,7 +135,7 @@ const FAQContent = () => {
               className="w-full max-w-sm mx-auto h-40 object-cover rounded-lg shadow-md"
             />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent mb-4 uppercase">
             FAQs – Smart ePrinting
           </h1>
           <p className="max-w-3xl mx-auto text-gray-600 text-base sm:text-lg">

@@ -25,10 +25,10 @@ const AboutContent = () => {
 
     {/* Text Section */}
     <div className="md:w-1/2 text-center md:text-left">
-      <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+      <h2 className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent mb-4">
         About Us – Smart ePrinting
       </h2>
-      <h3 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6">
+      <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-500 to-blue-500 bg-clip-text text-transparent mb-6">
         Your Trusted Online Store for Printing Essentials
       </h3>
       <p className="text-gray-600 text-base sm:text-lg">
@@ -43,7 +43,7 @@ const AboutContent = () => {
         {/* Who We Are - Two Column */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6">
+            <h3 className="text-2xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent uppercase mb-6">
               Who We Are
             </h3>
             <p className="text-gray-600 leading-relaxed mb-4">
@@ -67,7 +67,7 @@ const AboutContent = () => {
 
         {/* What We Offer - Three Column Cards */}
         <div className="mb-16">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
+          <h3 className="text-2xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent uppercase mb-8 text-center">
             What We Offer
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -121,8 +121,8 @@ const AboutContent = () => {
 
         {/* Our Commitment to Customers - Grid */}
         <div className="mb-16">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
-            Our Commitment to Customers
+          <h3 className="text-2xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent uppercase mb-8 text-center">
+            Our Commitment
           </h3>
           <p className="text-gray-600 leading-relaxed mb-8 text-center max-w-3xl mx-auto">
             At Smart ePrinting, we believe trust is built through clarity, consistency, and respect. That's why we focus on:
@@ -174,8 +174,8 @@ const AboutContent = () => {
 
         {/* Why Customers Choose Smart ePrinting - Cards */}
         <div className="mb-16">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
-            Why Customers Choose Smart ePrinting
+          <h3 className="text-2xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent uppercase mb-8 text-center">
+            Why Choose Us
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">

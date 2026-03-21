@@ -4,8 +4,8 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/f
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 text-gray-700 py-12">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
 
         {/* 1. Brand + description + social */}
         <div>
@@ -16,22 +16,22 @@ const Footer = () => {
               className="h-16 w-auto object-contain"
             />
           </div>
-          <p className="text-gray-600 text-sm mb-4">
+          <p className="text-gray-300 text-sm mb-4">
             Smart ePrinting is your trusted online destination for printers,
             ink, toner, and office printing supplies. We focus on quality
             products, secure shopping, and reliable customer support.
           </p>
           <div className="flex space-x-4 mt-2">
-            <a href="#" aria-label="Facebook" className="text-gray-600 hover:text-gray-900 transition">
+            <a href="#" aria-label="Facebook" className="text-gray-300 hover:text-orange-500 transition">
               <FaFacebookF />
             </a>
-            <a href="#" aria-label="Twitter" className="text-gray-600 hover:text-gray-900 transition">
+            <a href="#" aria-label="Twitter" className="text-gray-300 hover:text-orange-500 transition">
               <FaTwitter />
             </a>
-            <a href="#" aria-label="Instagram" className="text-gray-600 hover:text-gray-900 transition">
+            <a href="#" aria-label="Instagram" className="text-gray-300 hover:text-orange-500 transition">
               <FaInstagram />
             </a>
-            <a href="#" aria-label="LinkedIn" className="text-gray-600 hover:text-gray-900 transition">
+            <a href="#" aria-label="LinkedIn" className="text-gray-300 hover:text-orange-500 transition">
               <FaLinkedinIn />
             </a>
           </div>
@@ -39,25 +39,25 @@ const Footer = () => {
 
         {/* 2. Quick Links */}
         <div>
-          <h3 className="text-gray-900 font-semibold mb-4">Quick Links</h3>
-          <ul className="space-y-2 text-gray-600 text-sm">
+          <h3 className="text-white font-bold mb-4 uppercase tracking-wide">Quick Links</h3>
+          <ul className="space-y-2 text-gray-300 text-sm">
             <li>
-              <Link to="/track-order" className="hover:text-gray-900">
+              <Link to="/track-order" className="hover:text-orange-500 transition font-medium">
                 Track Your Order
               </Link>
             </li>
             <li>
-              <Link to="/return-exchange-policy" className="hover:text-gray-900">
+              <Link to="/return-exchange-policy" className="hover:text-orange-500 transition font-medium">
                 Returns & Exchanges
               </Link>
             </li>
             <li>
-              <Link to="/customer-service" className="hover:text-gray-900">
+              <Link to="/customer-service" className="hover:text-orange-500 transition font-medium">
                 Contact Support
               </Link>
             </li>
             <li>
-              <Link to="/faq" className="hover:text-gray-900">
+              <Link to="/faq" className="hover:text-orange-500 transition font-medium">
                 FAQ
               </Link>
             </li>
@@ -66,29 +66,29 @@ const Footer = () => {
 
         {/* 3. Company & Legal */}
         <div>
-          <h3 className="text-gray-900 font-semibold mb-4">Company</h3>
-          <ul className="space-y-2 text-gray-600 text-sm">
-            <li><Link to="/about" className="hover:text-gray-900">About Us</Link></li>
-            <li><Link to="/privacy-policy" className="hover:text-gray-900">Privacy Policy</Link></li>
-            <li><Link to="/terms-and-conditions" className="hover:text-gray-900">Terms & Conditions</Link></li>
-            <li><Link to="/shipping-policy" className="hover:text-gray-900">Shipping Policy</Link></li>
-            <li><Link to="/return-exchange-policy" className="hover:text-gray-900">Return & Exchange Policy</Link></li>
-            <li><Link to="/cookie-policy" className="hover:text-gray-900">Cookie Policy</Link></li>
-            <li><Link to="/ccpa-privacy-policy" className="hover:text-gray-900">CCPA / CPRA</Link></li>
-            <li><Link to="/accessibility-statement" className="hover:text-gray-900">Accessibility</Link></li>
-            <li><Link to="/disclaimer" className="hover:text-gray-900">Disclaimer</Link></li>
+          <h3 className="text-white font-bold mb-4 uppercase tracking-wide">Company</h3>
+          <ul className="space-y-2 text-gray-300 text-sm">
+            <li><Link to="/about" className="hover:text-orange-500 transition font-medium">About Us</Link></li>
+            <li><Link to="/privacy-policy" className="hover:text-orange-500 transition font-medium">Privacy Policy</Link></li>
+            <li><Link to="/terms-and-conditions" className="hover:text-orange-500 transition font-medium">Terms & Conditions</Link></li>
+            <li><Link to="/shipping-policy" className="hover:text-orange-500 transition font-medium">Shipping Policy</Link></li>
+            <li><Link to="/return-exchange-policy" className="hover:text-orange-500 transition font-medium">Return & Exchange Policy</Link></li>
+            <li><Link to="/cookie-policy" className="hover:text-orange-500 transition font-medium">Cookie Policy</Link></li>
+            <li><Link to="/ccpa-privacy-policy" className="hover:text-orange-500 transition font-medium">CCPA / CPRA</Link></li>
+            <li><Link to="/accessibility-statement" className="hover:text-orange-500 transition font-medium">Accessibility</Link></li>
+            <li><Link to="/disclaimer" className="hover:text-orange-500 transition font-medium">Disclaimer</Link></li>
           </ul>
         </div>
 
         {/* 4. Contact Details */}
         <div>
-          <h3 className="text-gray-900 font-semibold mb-4">Get in Touch</h3>
-          <ul className="space-y-2 text-gray-600 text-sm">
+          <h3 className="text-white font-bold mb-4 uppercase tracking-wide">Get in Touch</h3>
+          <ul className="space-y-2 text-gray-300 text-sm">
             <li>
               Email:{" "}
               <a
                 href="mailto:support@smarteprinting.com"
-                className="hover:text-gray-900"
+                className="hover:text-orange-500 transition font-medium"
               >
                 support@smarteprinting.com
               </a>

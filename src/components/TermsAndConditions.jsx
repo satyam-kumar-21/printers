@@ -2,7 +2,12 @@ import React from "react";
 
 const TermsAndConditions = () => {
   return (
-    <section className="w-full bg-gray-50 min-h-screen py-16">
+    <section className="w-full bg-gradient-to-br from-slate-50 via-white to-blue-50/20 min-h-screen py-16">
+      {/* Background Patterns */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-orange-200/10 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/10 to-transparent rounded-full blur-3xl"></div>
+      </div>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
 
         {/* Header */}
@@ -34,8 +39,8 @@ const TermsAndConditions = () => {
           </div>
 
           {/* 2. Eligibility to Use the Website */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-900">2. Eligibility to Use the Website</h2>
+          <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-3xl p-6 md:p-8 shadow-lg shadow-blue-100/30 border-2 border-slate-100 space-y-4 backdrop-blur-sm">
+            <h2 className="text-2xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent uppercase tracking-tighter">2. Eligibility to Use the Website</h2>
             <p className="text-gray-600 leading-relaxed">
               To use this Website, you must:
             </p>

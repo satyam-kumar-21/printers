@@ -5,31 +5,31 @@ import { Link } from "react-router-dom";
 const ReturnsAndExchanges = () => {
     const steps = [
         {
-            icon: <FaBox className="text-indigo-600 w-6 h-6" />,
+            icon: <FaBox className="text-orange-600 w-6 h-6" />,
             title: "Check Eligibility",
             description:
                 "Ensure the product is eligible for return/exchange. Must be unused, in original packaging, and returned within 7 days.",
         },
         {
-            icon: <FaExchangeAlt className="text-indigo-600 w-6 h-6" />,
+            icon: <FaExchangeAlt className="text-orange-600 w-6 h-6" />,
             title: "Request Return/Exchange",
             description:
                 "Login to your account, select the order, click 'Return/Exchange', choose reason and submit your request.",
         },
         {
-            icon: <FaTruck className="text-indigo-600 w-6 h-6" />,
+            icon: <FaTruck className="text-orange-600 w-6 h-6" />,
             title: "Pickup & Inspection",
             description:
                 "Our courier will collect the product from your doorstep. The product will be inspected to ensure it meets the criteria.",
         },
         {
-            icon: <FaCheckCircle className="text-indigo-600 w-6 h-6" />,
+            icon: <FaCheckCircle className="text-orange-600 w-6 h-6" />,
             title: "Refund / Exchange",
             description:
                 "Refunds will be processed in 5-7 business days. Exchanges will be shipped after inspection of the returned item.",
         },
         {
-            icon: <FaHeadset className="text-indigo-600 w-6 h-6" />,
+            icon: <FaHeadset className="text-orange-600 w-6 h-6" />,
             title: "Need Help?",
             description:
                 "For any questions, contact our Customer Service via chat, email, or phone. We're happy to assist you.",
@@ -38,7 +38,7 @@ const ReturnsAndExchanges = () => {
 
     return (
         <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">Returns & Exchanges</h1>
+            <h1 className="text-3xl font-black bg-gradient-to-r from-orange-600 to-blue-600 bg-clip-text text-transparent mb-6 uppercase">Returns & Exchanges</h1>
             <p className="text-gray-700 mb-8">
                 We want you to be completely satisfied with your purchase. Follow these simple steps for hassle-free returns or exchanges.
             </p>
