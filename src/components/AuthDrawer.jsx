@@ -139,6 +139,7 @@ const AuthDrawer = ({ isOpen, onClose }) => {
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors"
+                        aria-label="Close"
                     >
                         <X size={24} />
                     </button>
@@ -189,6 +190,7 @@ const AuthDrawer = ({ isOpen, onClose }) => {
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
                                     >
                                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>

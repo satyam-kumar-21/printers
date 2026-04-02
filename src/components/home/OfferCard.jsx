@@ -1,5 +1,5 @@
 import React from 'react';
-const OfferImage = "/assets/printer.png";
+const OfferImage = "/assets/printer.webp";
 import { Link } from 'react-router-dom';
 
 const OfferCard = () => {

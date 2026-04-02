@@ -141,13 +141,13 @@ const AdminCategories = () => {
                             <Layers size={18} className="text-blue-400" />
                             {editingId ? 'Update Category' : 'New Category'}
                         </h3>
-                        <button onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-white transition-colors">
+                        <button onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-white transition-colors" aria-label="Close form">
                             <X size={24} />
                         </button>
                     </div>
                     <form onSubmit={handleSubmit} className="p-8">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Category Name</label>
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Category Name</label>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <input
                                     type="text"
@@ -207,12 +207,14 @@ const AdminCategories = () => {
                                     <button 
                                         onClick={() => handleEdit(cat)} 
                                         className="p-3 bg-white hover:bg-blue-600 text-slate-400 hover:text-white rounded-xl shadow-sm border border-slate-100 transition-all"
+                                        aria-label="Edit category"
                                     >
                                         <Edit size={20} />
                                     </button>
                                     <button 
                                         onClick={() => handleDelete(cat._id)} 
                                         className="p-3 bg-white hover:bg-red-600 text-slate-400 hover:text-white rounded-xl shadow-sm border border-slate-100 transition-all"
+                                        aria-label="Delete category"
                                     >
                                         <Trash2 size={20} />
                                     </button>

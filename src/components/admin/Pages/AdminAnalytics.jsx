@@ -338,7 +338,7 @@ const AdminAnalytics = () => {
                                 {analytics.recentOrders.slice(0, 5).map((order) => (
                                     <tr key={order._id} className="hover:bg-slate-50/50">
                                         <td className="px-6 py-4 font-bold text-slate-700">
-                                            ORD-{order._id.toUpperCase().slice(-8)}
+                                            ORD_ID-{order._id.toUpperCase().slice(-8)}
                                         </td>
                                         <td className="px-6 py-4 text-slate-700">
                                             {order.user?.name || 'N/A'}

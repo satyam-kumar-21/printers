@@ -26,7 +26,7 @@ const TrackOrder = () => {
             // Format order data for tracking display
             const formattedOrder = {
                 customerName: data.user?.name || "Customer",
-                orderId: `ORD-${data._id.toUpperCase()}`,
+                orderId: `${data._id.toUpperCase()}`,
                 paid: data.isPaid,
                 status: data.status,
                 currentLocation: data.tracking?.currentLocation || "Warehouse",

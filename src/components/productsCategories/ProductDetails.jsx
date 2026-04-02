@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { listProductDetails, listProducts } from "../../redux/actions/productActions";
 import { addToCart } from "../../redux/actions/cartActions";
+import { optimizeCloudinaryUrl } from "../../lib/utils";
 
+const printerImg = "/assets/printer.webp";
 
 const ProductDetails = () => {
     const { productSlug } = useParams();
@@ -22,13 +24,31 @@ const ProductDetails = () => {
     const [canReview, setCanReview] = useState(false);
 
     const productDetails = useSelector((state) => state.productDetails);
-    const { loading, error, product } = productDetails;
+    const { loading: productLoading, error, product: fetchedProduct } = productDetails;
+
+    const allProductsCache = useSelector((state) => state.allProductsCache);
+    const cachedProduct = allProductsCache?.bySlug?.[productSlug];
+
+    // Use cached product for instant display while fresh data loads
+    const product = fetchedProduct && fetchedProduct.slug === productSlug ? fetchedProduct : cachedProduct || fetchedProduct;
+    const loading = productLoading && !cachedProduct;
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
     const productList = useSelector((state) => state.productList);
-    const { products: relatedProducts } = productList;
+    const { products: fetchedRelated } = productList;
+
+    // Use cached products for related items if available
+    const relatedProducts = (() => {
+        if (product && product.category && allProductsCache?.loaded) {
+            const catName = (product.category.name || product.category).toLowerCase();
+            return allProductsCache.products.filter(p =>
+                p.category && (p.category.name || p.category).toString().toLowerCase() === catName
+            );
+        }
+        return fetchedRelated;
+    })();
 
     useEffect(() => {
         const checkEligibility = async () => {
@@ -55,12 +75,11 @@ const ProductDetails = () => {
     }, [dispatch, productSlug]);
 
     useEffect(() => {
-        if (product && product.category) {
+        if (product && product.category && !allProductsCache?.loaded) {
             const categoryName = product.category.name || product.category;
-            // Fetch related products (page 1)
             dispatch(listProducts('', categoryName, 1));
         }
-    }, [dispatch, product]);
+    }, [dispatch, product, allProductsCache?.loaded]);
 
     const addToCartHandler = () => {
         if (!userInfo) {
@@ -145,8 +164,8 @@ const handleWriteReview = () => {
     );
 
     const productImages = product.images && product.images.length > 0
-        ? product.images.map(img => img.startsWith('http') ? img : `${import.meta.env.VITE_API_URL.replace('/api', '')}${img}`)
-        : ["/assets/printer.png"];
+        ? product.images.map(img => optimizeCloudinaryUrl(img.startsWith('http') ? img : `${import.meta.env.VITE_API_URL.replace('/api', '')}${img}`))
+        : ["/assets/printer.webp"];
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 bg-white overflow-hidden">

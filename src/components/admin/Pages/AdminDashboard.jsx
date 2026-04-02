@@ -131,7 +131,7 @@ const AdminDashboard = () => {
                                 ) : analytics && analytics.recentOrders && analytics.recentOrders.length > 0 ? (
                                     analytics.recentOrders.map((order) => (
                                         <tr key={order._id} className="hover:bg-slate-50/50 transition-colors cursor-pointer" onClick={() => navigate('/admin/orders')}>
-                                            <td className="px-6 py-4 font-bold text-slate-700">ORD-{order._id.substring(order._id.length - 4).toUpperCase()}</td>
+                                            <td className="px-6 py-4 font-bold text-slate-700">{order._id.substring(order._id.length - 4).toUpperCase()}</td>
                                             <td className="px-6 py-4">
                                                 <div className="font-medium text-slate-800">{order.user?.name || 'Guest'}</div>
                                                 <div className="text-xs text-slate-400">{order.user?.email || 'N/A'}</div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/actions/cartActions";
+import { optimizeCloudinaryUrl } from "../../lib/utils";
 
 const ProductGrid = ({ heading = "Products", products = [], onFilterChange, enableFlowLayout = false }) => {
     const [sort, setSort] = useState('');
@@ -222,17 +223,17 @@ const ProductGrid = ({ heading = "Products", products = [], onFilterChange, enab
                                 {/* Image */}
                                 <div className="relative w-full aspect-square bg-gray-100 p-4">
                                     <img
-                                        src={
+                                        src={optimizeCloudinaryUrl(
                                             product.image || 
                                             (product.images && product.images.length > 0 
                                                 ? (product.images[0].startsWith('http') 
                                                     ? product.images[0] 
                                                     : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${product.images[0]}`)
-                                                : '/printer.png')
-                                        }
+                                                : '/assets/printer.webp')
+                                        )}
                                         alt={product.title}
                                         className="w-full h-full object-contain mix-blend-multiply"
-                                        onError={(e) => e.target.src = '/printer.png'}
+                                        onError={(e) => e.target.src = '/assets/printer.webp'}
                                     />
                                     {!inStock && (
                                         <div className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">

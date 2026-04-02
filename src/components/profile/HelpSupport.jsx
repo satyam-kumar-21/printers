@@ -27,7 +27,6 @@ const HelpSupport = () => {
             });
 
             newSocket.on('connect', () => {
-                console.log('User connected to chat');
             });
 
             newSocket.on('new-message', (data) => {
@@ -189,7 +188,8 @@ const HelpSupport = () => {
                         </div>
                         <button
                             onClick={() => setChatOpen(false)}
-                            className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+                            className="p-2.5 hover:bg-white/20 rounded-lg transition-colors"
+                            aria-label="Close chat"
                         >
                             <X size={20} />
                         </button>
@@ -239,7 +239,8 @@ const HelpSupport = () => {
                             />
                             <button
                                 type="submit"
-                                className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shrink-0"
+                                className="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shrink-0"
+                                aria-label="Send message"
                             >
                                 <Send size={18} />
                             </button>

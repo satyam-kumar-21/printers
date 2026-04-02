@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-const tip = "/assets/printer.png";
+const tip = "/assets/printer.webp";
 
 const LatestTips = () => {
     const scrollRef = useRef(null);
@@ -46,13 +46,15 @@ const LatestTips = () => {
             {/* Scroll Buttons */}
             <button
                 onClick={() => scroll("left")}
-                className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow hover:bg-gray-100 items-center justify-center"
+                className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow hover:bg-gray-100 items-center justify-center"
+                aria-label="Scroll left"
             >
                 &lt;
             </button>
             <button
                 onClick={() => scroll("right")}
-                className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow hover:bg-gray-100 items-center justify-center"
+                className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow hover:bg-gray-100 items-center justify-center"
+                aria-label="Scroll right"
             >
                 &gt;
             </button>

@@ -5,16 +5,36 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/smarteFav.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Shop high-quality printers, ink, toner, and office printing supplies at Smart ePrinting. Browse inkjet, laser, all-in-one, and large format printers with secure checkout and fast shipping." />
+  <link rel="preload" as="image" type="image/webp" href="/smartEprintingLogo.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </noscript>
 
   <title>Wide Range of High-Quality Printers for Home and Office Use – Inkjet, Laser, All-in-One, and More</title>
+  <style>
+    /* Critical inline CSS — prevent render flash while main CSS loads */
+    body{margin:0;font-family:'Poppins',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    #root{min-height:100vh;display:flex;flex-direction:column}
+    .flex{display:flex}.flex-col{flex-direction:column}.min-h-screen{min-height:100vh}
+    .items-center{align-items:center}.justify-center{justify-content:center}
+    .bg-white{background-color:#fff}.bg-gray-50{background-color:#f9fafb}
+    .text-gray-900{color:#111827}.text-gray-700{color:#374151}
+    .w-full{width:100%}.max-w-7xl{max-width:80rem}.mx-auto{margin-left:auto;margin-right:auto}
+    .px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}
+    .animate-spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  </style>
 </head>
 
 <body>
   <div id="root"></div>
-  <script src="https://checkout.clover.com/sdk.js"></script>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

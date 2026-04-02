@@ -1,5 +1,5 @@
 import React from "react";
-import heroImage from "../../assets/printer.png"; // Replace with your image
+import heroImage from "../../assets/printer.webp";
 
 const Hero = () => {
     return (
@@ -8,7 +8,7 @@ const Hero = () => {
                 <div className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16">
 
                     {/* Left Text Content */}
-                    <div className="flex-1 text-center md:text-left">
+                    <div className="flex-1 text-center md:text-left min-h-[200px] sm:min-h-[240px]">
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
                             Smart Printing Made Simple
                         </h1>
@@ -26,6 +26,9 @@ const Hero = () => {
                             src={heroImage}
                             alt="Printers Hero"
                             className="w-full max-w-md object-contain"
+                            width={500}
+                            height={500}
+                            fetchPriority="high"
                         />
                     </div>
 

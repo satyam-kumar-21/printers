@@ -222,7 +222,8 @@ const AdminOrders = () => {
                                             <td className="px-6 py-4 text-center">
                                                 <button
                                                     onClick={() => handleOpenItems(order)}
-                                                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                                                    className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+                                                    aria-label="View order items"
                                                 >
                                                     <Package size={16} />
                                                 </button>
@@ -283,9 +284,9 @@ const AdminOrders = () => {
                         <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                             <div>
                                 <h3 className="font-bold text-slate-800">Update Tracking</h3>
-                                <p className="text-xs text-slate-500">Order #ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
+                                <p className="text-xs text-slate-500">ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
                             </div>
-                            <button onClick={() => setIsUpdateModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsUpdateModalOpen(false)} className="text-slate-400 hover:text-slate-600" aria-label="Close modal">
                                 <X size={20} />
                             </button>
                         </div>
@@ -338,9 +339,9 @@ const AdminOrders = () => {
                         <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
                             <div>
                                 <h3 className="font-bold text-slate-800">Order Items</h3>
-                                <p className="text-xs text-slate-500">Order #ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
+                                <p className="text-xs text-slate-500">ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
                             </div>
-                            <button onClick={() => setIsItemsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsItemsModalOpen(false)} className="text-slate-400 hover:text-slate-600" aria-label="Close modal">
                                 <X size={20} />
                             </button>
                         </div>
@@ -379,7 +380,7 @@ const AdminOrders = () => {
                                 {selectedOrder.isPaid ? <CheckCircle size={24} className="text-white" /> : <Clock size={24} className="text-white" />}
                             </div>
                             <h3 className="font-bold text-lg">{selectedOrder.isPaid ? 'Payment Successful' : 'Payment Pending'}</h3>
-                            <p className="text-white/80 text-sm">Order #ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
+                            <p className="text-white/80 text-sm">ORD-{selectedOrder._id.substring(selectedOrder._id.length - 4).toUpperCase()}</p>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="text-center mb-6">

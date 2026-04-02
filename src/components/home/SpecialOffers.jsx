@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tag, ChevronLeft, ChevronRight } from 'lucide-react';
-const OfferImage = "/assets/printer.png";
+const OfferImage = "/assets/printer.webp";
 import { Link } from 'react-router-dom';
 
 const specialOffers = [

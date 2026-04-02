@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../../redux/actions/productActions";
+import { optimizeCloudinaryUrl } from "../../lib/utils";
 import ProductGrid from "./ProductGrid";
 
 
@@ -17,6 +18,8 @@ const CategoryProductList = ({ categoryName, heading, enableFlowLayout = false }
 
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, page, pages } = productList;
+
+    const allProductsCache = useSelector((state) => state.allProductsCache);
 
     useEffect(() => {
         dispatch(listProducts('', categoryName, 1, sort, brand, technology, usageCategory, allInOneType, wireless, mainFunction));
@@ -38,14 +41,24 @@ const CategoryProductList = ({ categoryName, heading, enableFlowLayout = false }
         setMainFunction(filters.mainFunction || []);
     };
 
-    const safeProducts = Array.isArray(products) ? products : [];
+    // Use cached products for instant display while API loads
+    const hasFilters = sort || brand || technology || usageCategory.length || allInOneType || wireless || mainFunction.length;
+    const cachedCategoryProducts = (!hasFilters && allProductsCache?.loaded)
+        ? allProductsCache.products.filter(p =>
+            p.category && (p.category.name || '').toLowerCase() === categoryName.toLowerCase()
+        )
+        : null;
+
+    const safeProducts = Array.isArray(products) && products.length > 0
+        ? products
+        : (cachedCategoryProducts || []);
     const formattedProducts = safeProducts.map(product => ({
         ...product,
-        image: product.image 
+        image: optimizeCloudinaryUrl(product.image 
             ? (product.image.startsWith('http') ? product.image : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${product.image}`)
             : (product.images && product.images.length > 0 
                 ? (product.images[0].startsWith('http') ? product.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${product.images[0]}`) 
-                : "/assets/printer.png"),
+                : "/assets/printer.webp")),
         link: `/product/${product.slug || product._id}`
     }));
 

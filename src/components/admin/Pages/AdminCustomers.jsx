@@ -123,14 +123,12 @@ const AdminCustomers = () => {
             setConfirmModal({ show: false, type: '', userId: null, userName: '' });
             fetchCustomers();
         } catch (err) {
-            console.error('Delete user error:', err);
             alert(err.response?.data?.message || 'Failed to delete user');
         }
     };
 
     const confirmBlock = async () => {
         if (!userInfo) {
-            console.error('No userInfo available');
             return;
         }
 
@@ -141,7 +139,6 @@ const AdminCustomers = () => {
             setConfirmModal({ show: false, type: '', userId: null, userName: '' });
             fetchCustomers();
         } catch (err) {
-            console.error('Block user error:', err);
             alert(err.response?.data?.message || err.message || 'Failed to block user');
         }
     };
@@ -160,7 +157,6 @@ const AdminCustomers = () => {
             });
             fetchCustomers(searchTerm, 1, false); // Refresh list
         } catch (err) {
-            console.error('Unblock user error:', err);
             alert(err.response?.data?.message || 'Failed to unblock user');
         }
     };
@@ -175,7 +171,6 @@ const AdminCustomers = () => {
             setConfirmModal({ show: false, type: '', userId: null, userName: '' });
             fetchCustomers();
         } catch (err) {
-            console.error('Unblock user error:', err);
             alert(err.response?.data?.message || 'Failed to unblock user');
         }
     };

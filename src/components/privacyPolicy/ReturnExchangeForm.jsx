@@ -147,6 +147,7 @@ const ReturnExchangeForm = () => {
         value={formData.reason}
         onChange={handleChange}
         required
+        aria-label="Reason for return"
         className="border border-gray-300 rounded px-3 py-2 w-full"
       >
         <option value="">Select Reason</option>
@@ -165,6 +166,7 @@ const ReturnExchangeForm = () => {
         value={formData.itemCondition}
         onChange={handleChange}
         required
+        aria-label="Item condition"
         className="border border-gray-300 rounded px-3 py-2 w-full"
       >
         <option value="">Select Condition</option>
@@ -180,6 +182,7 @@ const ReturnExchangeForm = () => {
         value={formData.resolution}
         onChange={handleChange}
         required
+        aria-label="Preferred resolution"
         className="border border-gray-300 rounded px-3 py-2 w-full"
       >
         <option value="">Select Resolution</option>

@@ -3,7 +3,7 @@ const aboutUsHero = "/assets/aboutUsHero.png";
 const whoweare = "/assets/whoweare.png";
 const inktoner = "/assets/inktoner.png";
 const printingacceseries = "/assets/printingacceseries.png";
-const printer = "/assets/printer.png";
+const printer = "/assets/printer.webp";
 
 const AboutContent = () => {
   return (

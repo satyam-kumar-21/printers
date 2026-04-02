@@ -88,7 +88,7 @@ const OrderDetails = () => {
                         <span className="text-[10px] font-black uppercase tracking-widest">Return to Dashboard</span>
                     </Link>
                     <div className="text-right">
-                        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Order #ORD-{order._id.toUpperCase()}</h1>
+                        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">ORD_ID:-{order._id.toUpperCase()}</h1>
                         <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center justify-end gap-1">
                             <Calendar size={12} /> {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </p>

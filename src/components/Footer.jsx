@@ -11,9 +11,12 @@ const Footer = () => {
         <div>
           <div className="mb-4">
             <img 
-              src="/smartEprintingLogo.png" 
+              src="/smartEprintingLogo.webp" 
               alt="Smart ePrinting" 
               className="h-16 w-auto object-contain"
+              width="177"
+              height="112"
+              loading="lazy"
             />
           </div>
           <p className="text-gray-300 text-sm mb-4">
@@ -107,7 +110,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom */}
-      <div className="mt-12 border-t border-gray-200 pt-6 text-center text-gray-500 text-sm">
+      <div className="mt-12 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
         &copy; {new Date().getFullYear()} Smart ePrinting. All rights reserved.
       </div>
     </footer>

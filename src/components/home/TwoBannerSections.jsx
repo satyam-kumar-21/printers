@@ -1,6 +1,6 @@
 import React from 'react';
-const ClickPrintImg = "/assets/printer.png";
-const PrintCoreImg = "/assets/printer.png";
+const ClickPrintImg = "/assets/printer.webp";
+const PrintCoreImg = "/assets/printer.webp";
 import { Link } from 'react-router-dom';
 
 const TwoBannerSections = () => {

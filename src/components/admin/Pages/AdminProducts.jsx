@@ -236,7 +236,6 @@ const AdminProducts = () => {
                     setSpecRows([{ id: Date.now(), key: '', value: '' }]);
                 }
             } catch (e) {
-                console.error("Error parsing technical specification table:", e);
                 setSpecType('text');
                 setSpecRows([{ id: Date.now(), key: '', value: '' }]);
             }
@@ -418,7 +417,7 @@ const AdminProducts = () => {
                             <Tag className="text-blue-400" size={18} />
                             {editingId ? 'Updating Product' : 'Register New Product'}
                         </h3>
-                        <button onClick={closeForm} className="text-slate-400 hover:text-white transition-colors">
+                        <button onClick={closeForm} className="text-slate-400 hover:text-white transition-colors" aria-label="Close form">
                             <X size={28} />
                         </button>
                     </div>
@@ -432,7 +431,7 @@ const AdminProducts = () => {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Product Title</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Product Title</label>
                                     <input
                                         type="text"
                                         name="title"
@@ -444,7 +443,7 @@ const AdminProducts = () => {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Brand</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Brand</label>
                                     <input
                                         type="text"
                                         name="brand"
@@ -455,7 +454,7 @@ const AdminProducts = () => {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Category</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Category</label>
                                     <select
                                         name="category"
                                         value={formData.category}
@@ -471,7 +470,7 @@ const AdminProducts = () => {
                                 </div>
                                 {/* Structured Product Attributes */}
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Technology</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Technology</label>
                                     <div className="flex flex-wrap gap-3">
                                         {['Inkjet', 'Laser', 'Laser (B/W)'].map(opt => (
                                             <label key={opt} className="flex items-center gap-2">
@@ -493,7 +492,7 @@ const AdminProducts = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Usage Category</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Usage Category</label>
                                     <div className="flex flex-wrap gap-3">
                                         {['Home', 'Office', 'Mobile', 'Photo'].map(opt => (
                                             <label key={opt} className="flex items-center gap-2">
@@ -515,7 +514,7 @@ const AdminProducts = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">All-in-One Type</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">All-in-One Type</label>
                                     <div className="flex flex-wrap gap-3">
                                         {['Multifunction', 'Single Function'].map(opt => (
                                             <label key={opt} className="flex items-center gap-2">
@@ -537,7 +536,7 @@ const AdminProducts = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Wireless</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Wireless</label>
                                     <select
                                         name="wireless"
                                         value={formData.wireless}
@@ -550,7 +549,7 @@ const AdminProducts = () => {
                                     </select>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Main Function</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Main Function</label>
                                     <div className="flex flex-wrap gap-3">
                                         {['Print', 'Scan', 'Copy', 'Fax', 'Print Only'].map(opt => (
                                             <label key={opt} className="flex items-center gap-2">
@@ -582,7 +581,7 @@ const AdminProducts = () => {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Price ($)</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Price ($)</label>
                                     <input
                                         type="number"
                                         name="price"
@@ -593,7 +592,7 @@ const AdminProducts = () => {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sale Price ($)</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Sale Price ($)</label>
                                     <input
                                         type="number"
                                         name="oldPrice"
@@ -603,7 +602,7 @@ const AdminProducts = () => {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Stock Level</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Stock Level</label>
                                     <input
                                         type="number"
                                         name="countInStock"
@@ -624,7 +623,7 @@ const AdminProducts = () => {
                             </div>
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Upload Images</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Upload Images</label>
                                     <input
                                         type="file"
                                         multiple
@@ -638,7 +637,7 @@ const AdminProducts = () => {
                                 {/* Image Previews */}
                                 {previewImages.length > 0 && (
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Image Previews</label>
+                                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Image Previews</label>
                                         <div className="flex flex-wrap gap-4">
                                             {previewImages.map((preview, index) => (
                                                 <div key={index} className="relative w-32 h-32 rounded-2xl overflow-hidden border-2 border-slate-100 group shadow-lg">
@@ -652,6 +651,7 @@ const AdminProducts = () => {
                                                             type="button"
                                                             onClick={() => removeImage(index)}
                                                             className="p-2 bg-red-600 text-white rounded-xl shadow-xl hover:scale-110 transition-transform"
+                                                            aria-label="Remove image"
                                                         >
                                                             <X size={18} />
                                                         </button>
@@ -680,7 +680,7 @@ const AdminProducts = () => {
 
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Highlights (Rich Text)</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Highlights (Rich Text)</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
                                         <ReactQuill
                                             theme="snow"
@@ -691,7 +691,7 @@ const AdminProducts = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Full Narrative Overview</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Full Narrative Overview</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
                                         <ReactQuill
                                             theme="snow"
@@ -713,7 +713,7 @@ const AdminProducts = () => {
 
                             <div className="grid grid-cols-1 gap-10">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Keywords</label>
+                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Keywords</label>
                                     <div className="quill-container bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden">
                                         <ReactQuill
                                             theme="snow"
@@ -726,7 +726,7 @@ const AdminProducts = () => {
 
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Technical Specification</label>
+                                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Technical Specification</label>
                                         <div className="flex bg-slate-100 rounded-lg p-1">
                                             <button
                                                 type="button"
@@ -777,6 +777,7 @@ const AdminProducts = () => {
                                                         onClick={() => removeSpecRow(row.id)}
                                                         className="p-2 text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
                                                         disabled={specRows.length === 1}
+                                                        aria-label="Remove specification row"
                                                     >
                                                         <X size={18} />
                                                     </button>
@@ -820,13 +821,14 @@ const AdminProducts = () => {
                                             type="button"
                                             onClick={() => removeReview(index)}
                                             className="absolute -top-2 -right-2 p-2 bg-white text-red-500 rounded-full shadow-lg hover:bg-red-500 hover:text-white transition-all border border-slate-100"
+                                            aria-label="Remove review"
                                         >
                                             <X size={16} />
                                         </button>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                             <div className="space-y-1">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Reviewer Name</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Reviewer Name</label>
                                                 <input
                                                     type="text"
                                                     value={review.name}
@@ -837,7 +839,7 @@ const AdminProducts = () => {
                                                 />
                                             </div>
                                             <div className="space-y-1">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Avatar URL (Optional)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Avatar URL (Optional)</label>
                                                 <input
                                                     type="text"
                                                     value={review.avatar}
@@ -847,7 +849,7 @@ const AdminProducts = () => {
                                                 />
                                             </div>
                                             <div className="space-y-1">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Rating (1-5)</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Rating (1-5)</label>
                                                 <select
                                                     value={review.rating}
                                                     onChange={(e) => handleReviewChange(index, 'rating', Number(e.target.value))}
@@ -859,7 +861,7 @@ const AdminProducts = () => {
                                                 </select>
                                             </div>
                                             <div className="space-y-1 md:col-span-2 lg:col-span-1">
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Message</label>
+                                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Message</label>
                                                 <textarea
                                                     value={review.comment}
                                                     onChange={(e) => handleReviewChange(index, 'comment', e.target.value)}
@@ -907,6 +909,7 @@ const AdminProducts = () => {
                         <button
                             onClick={() => setIsBulkUploadOpen(false)}
                             className="p-2 hover:bg-slate-800 rounded-full transition-colors"
+                            aria-label="Close bulk upload"
                         >
                             <X size={20} className="text-white" />
                         </button>
@@ -997,15 +1000,15 @@ const AdminProducts = () => {
                                                 <div className="flex items-center gap-6">
                                                     <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 flex items-center justify-center p-2 group-hover:scale-105 transition-transform rotate-1 group-hover:rotate-0">
                                                         <img
-                                                            src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${import.meta.env.VITE_API_URL.replace('/api', '')}${p.images[0]}`) : '/printer.png'}
+                                                            src={p.images?.[0] ? (p.images[0].startsWith('http') ? p.images[0] : `${import.meta.env.VITE_API_URL.replace('/api', '')}${p.images[0]}`) : '/assets/printer.webp'}
                                                             alt=""
                                                             className="w-full h-full object-contain"
-                                                            onError={(e) => e.target.src = '/printer.png'}
+                                                            onError={(e) => e.target.src = '/assets/printer.webp'}
                                                         />
                                                     </div>
                                                     <div>
                                                         <div className="font-black text-slate-900 text-lg leading-tight mb-1 group-hover:text-blue-600 transition-colors">{p.title}</div>
-                                                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest opacity-60">{p.brand || 'No Brand'}</div>
+                                                        <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest opacity-60">{p.brand || 'No Brand'}</div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -1026,10 +1029,10 @@ const AdminProducts = () => {
                                             </td>
                                             <td className="px-8 py-6 text-right">
                                                 <div className="flex items-center justify-end gap-3">
-                                                    <button onClick={() => handleEdit(p)} className="p-4 bg-white hover:bg-slate-900 text-slate-400 hover:text-white rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 transition-all active:scale-95">
+                                                    <button onClick={() => handleEdit(p)} className="p-4 bg-white hover:bg-slate-900 text-slate-400 hover:text-white rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 transition-all active:scale-95" aria-label="Edit product">
                                                         <Edit size={22} />
                                                     </button>
-                                                    <button onClick={() => handleDelete(p._id)} className="p-4 bg-white hover:bg-red-600 text-slate-400 hover:text-white rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 transition-all active:scale-95">
+                                                    <button onClick={() => handleDelete(p._id)} className="p-4 bg-white hover:bg-red-600 text-slate-400 hover:text-white rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 transition-all active:scale-95" aria-label="Delete product">
                                                         <Trash2 size={22} />
                                                     </button>
                                                 </div>

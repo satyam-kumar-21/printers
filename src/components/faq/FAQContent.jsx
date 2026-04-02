@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const heroImage = "/assets/printer.png";
+const heroImage = "/assets/printer.webp";
 
 const FAQContent = () => {
   const [openIndex, setOpenIndex] = useState(null);

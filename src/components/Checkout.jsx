@@ -32,15 +32,11 @@ const Checkout = () => {
     useEffect(() => {
         if (!userInfo || cartItems.length === 0) {
             navigate('/cart');
-        } else if (step === 2 && window.Clover) {
-             setTimeout(() => {
+        } else if (step === 2) {
+            // Dynamically load Clover SDK if not already loaded
+            const loadCloverAndInit = () => {
                 const numberEl = document.querySelector('#card-number');
-                const dateEl = document.querySelector('#card-date');
-                const cvvEl = document.querySelector('#card-cvv');
-                const zipEl = document.querySelector('#card-postal-code');
-
-                // Check if containers exist and are empty
-                if (numberEl && !numberEl.hasChildNodes()) {
+                if (numberEl && !numberEl.hasChildNodes() && window.Clover) {
                      const cloverInstance = new window.Clover(import.meta.env.VITE_CLOVER_PUBLIC_KEY);
                      const elements = cloverInstance.elements();
                      
@@ -48,7 +44,7 @@ const Checkout = () => {
                          body: { 
                              fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', 
                              fontSize: '14px',
-                             color: '#334155', // slate-700
+                             color: '#334155',
                              fontWeight: '500', 
                              margin: '0',
                              padding: '0',
@@ -60,7 +56,7 @@ const Checkout = () => {
                              width: '100%'
                          },
                          'input::placeholder': {
-                             color: '#94a3b8' // slate-400
+                             color: '#94a3b8'
                          }
                      };
 
@@ -76,7 +72,17 @@ const Checkout = () => {
 
                      setClover(cloverInstance);
                 }
-             }, 100);
+            };
+
+            if (window.Clover) {
+                setTimeout(loadCloverAndInit, 100);
+            } else {
+                const script = document.createElement('script');
+                script.src = 'https://checkout.clover.com/sdk.js';
+                script.async = true;
+                script.onload = () => setTimeout(loadCloverAndInit, 100);
+                document.body.appendChild(script);
+            }
         }
     }, [userInfo, cartItems, navigate, step]);
 
@@ -100,14 +106,6 @@ const Checkout = () => {
                 
                 const rates = data.rates || (Array.isArray(data) ? data : []);
                 setDistance(data.distance || null);
-                                // Debug: log raw rates from backend
-                                // console.log('Raw rates from backend:', rates); 
-                                if (Array.isArray(rates)) {
-                                    rates.forEach((rate, idx) => {
-                                        console.log(`Rate #${idx}: carrier=${rate.carrier}, account_id=${rate.carrier_account_id}, service=${rate.service}`);
-                                    });
-                                }
-
                                 // Only show Canada Post, FedEx, UPS, USPS shipping methods (strict carrier name and account id)
                                 const allowedAccounts = [
                                         'ca_e3cbd16a6eb84914985d90875a6ec074', // Canada Post
@@ -207,7 +205,6 @@ const Checkout = () => {
             navigate('/profile');
 
         } catch (error) {
-            console.error(error);
             alert(error.response?.data?.message || 'Clover payment failed');
         } finally {
             setLoading(false);

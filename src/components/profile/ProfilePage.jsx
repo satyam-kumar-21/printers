@@ -303,7 +303,7 @@ const ProfilePage = () => {
                                                 <tbody className="divide-y divide-slate-50">
                                                     {orders && orders.map((order) => (
                                                         <tr key={order._id} className="group hover:bg-slate-50/50 transition-colors">
-                                                            <td className="py-4 font-mono text-sm text-slate-600">#{order._id.substring(18)}</td>
+                                                            <td className="py-4 font-mono text-sm text-slate-600">{order._id.toUpperCase()}</td>
                                                             <td className="py-4">
                                                                 <div className="flex items-center gap-2 text-slate-600 text-sm">
                                                                     <Calendar size={14} />

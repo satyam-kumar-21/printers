@@ -52,15 +52,18 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
                 <div className="h-16 flex items-center gap-2 px-6 border-b border-slate-100 shrink-0">
                     <div className="flex-1 flex items-center justify-start">
                         <img 
-                            src="/smartEprintingLogo.png" 
+                            src="/smartEprintingLogo.webp" 
                             alt="SmartEprinting" 
                             className="h-12 w-auto object-contain max-w-[180px]"
+                            width="177"
+                            height="112"
                         />
                     </div>
                     {/* Mobile Close Button */}
                     <button
                         onClick={() => setIsOpen(false)}
                         className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+                        aria-label="Close sidebar"
                     >
                         <X size={20} />
                     </button>

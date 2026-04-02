@@ -1,5 +1,5 @@
 import React from 'react';
-const WhyImage = "/assets/about.jpg";
+const WhyImage = "/assets/about.webp";
 
 const choosePoints = [
     {
@@ -66,6 +66,9 @@ const WhyChooseSection = () => {
                             src={WhyImage}
                             alt="Why Shop With Smart ePrinting"
                             className="w-full h-full object-cover rounded-xl shadow-lg"
+                            width="560"
+                            height="400"
+                            loading="lazy"
                         />
                     </div>
                 </div>

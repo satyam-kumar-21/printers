@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeFromCart, addToCart } from "../redux/actions/cartActions";
-const printerImg = "/assets/printer.png";
+const printerImg = "/assets/printer.webp";
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Cart = () => {
                 <section className="w-full bg-white rounded-3xl border border-slate-100 p-8 md:p-12 mb-8 shadow-sm">
                     <div className="text-center">
                         <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">Shopping Hub</h1>
-                        <p className="mt-4 text-xs font-black text-slate-400 uppercase tracking-[0.3em]">
+                        <p className="mt-4 text-xs font-black text-slate-500 uppercase tracking-[0.3em]">
                             You have <span className="text-slate-900">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</span> items in your inventory
                         </p>
                     </div>
@@ -41,13 +41,13 @@ const Cart = () => {
                 {cartItems.length === 0 ? (
                     <div className="bg-white border border-dashed border-slate-200 rounded-[3rem] p-20 text-center flex flex-col items-center justify-center space-y-6">
                         <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center">
-                            <svg className="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                         </div>
                         <div className="space-y-2">
                             <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Your Cart is Empty</h2>
-                            <p className="text-slate-400 font-medium">Ready to start printing? Explore our premium hardware collection.</p>
+                            <p className="text-slate-500 font-medium">Ready to start printing? Explore our premium hardware collection.</p>
                         </div>
                         <Link to="/" className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-black transition-all">
                             Browse Inventory
@@ -96,11 +96,13 @@ const Cart = () => {
                                                     <button 
                                                         onClick={() => dispatch(addToCart(item.product, Math.max(1, item.qty - 1)))}
                                                         className="px-3 hover:bg-slate-50 text-slate-400"
+                                                        aria-label="Decrease quantity"
                                                     >-</button>
                                                     <span className="px-3 text-[10px] font-black text-slate-900">{item.qty}</span>
                                                     <button 
                                                         onClick={() => dispatch(addToCart(item.product, Math.min(item.countInStock, item.qty + 1)))}
                                                         className="px-3 hover:bg-slate-50 text-slate-400"
+                                                        aria-label="Increase quantity"
                                                     >+</button>
                                                 </div>
                                             </div>
@@ -110,6 +112,7 @@ const Cart = () => {
                                                 <button 
                                                     onClick={() => removeFromCartHandler(item.product)}
                                                     className="p-3 text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
+                                                    aria-label="Remove item from cart"
                                                 >
                                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -149,7 +152,7 @@ const Cart = () => {
                                         <span className="text-sm font-black text-slate-900 uppercase tracking-tight">Invoice Total</span>
                                         <span className="text-3xl font-black text-slate-900 tracking-tighter">${totalWithGift.toFixed(2)}</span>
                                     </div>
-                                    <p className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.3em] text-center">Taxes and Logistics calculated at next stage</p>
+                                    <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.3em] text-center">Taxes and Logistics calculated at next stage</p>
                                 </div>
 
                                 <div className="space-y-4 pt-4">

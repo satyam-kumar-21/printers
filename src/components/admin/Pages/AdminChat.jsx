@@ -32,7 +32,6 @@ const AdminChat = () => {
             });
 
             newSocket.on('connect', () => {
-                console.log('Admin connected to chat');
             });
 
             newSocket.on('new-message', (data) => {
@@ -233,6 +232,7 @@ const AdminChat = () => {
                                 <button
                                     type="submit"
                                     className="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-shadow shadow-md shrink-0"
+                                    aria-label="Send message"
                                 >
                                     <Send size={18} className="translate-x-0.5" />
                                 </button>

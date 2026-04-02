@@ -24,7 +24,33 @@ import {
     PRODUCT_DELETE_REVIEW_REQUEST,
     PRODUCT_DELETE_REVIEW_SUCCESS,
     PRODUCT_DELETE_REVIEW_FAIL,
+    PRODUCT_PREFETCH_REQUEST,
+    PRODUCT_PREFETCH_SUCCESS,
+    PRODUCT_PREFETCH_FAIL,
 } from '../constants/productConstants';
+
+export const prefetchAllProducts = () => async (dispatch, getState) => {
+    const { allProductsCache } = getState();
+    if (allProductsCache && allProductsCache.loaded) return;
+
+    try {
+        dispatch({ type: PRODUCT_PREFETCH_REQUEST });
+
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products`, {
+            params: { limit: 1000, page: 1 }
+        });
+
+        dispatch({
+            type: PRODUCT_PREFETCH_SUCCESS,
+            payload: data.products,
+        });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_PREFETCH_FAIL,
+            payload: error.response?.data?.message || error.message,
+        });
+    }
+};
 
 export const listProducts = (
     search = '',

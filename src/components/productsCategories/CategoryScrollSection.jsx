@@ -3,7 +3,7 @@ import allInOneImg from "../../../public/assets/allone.png";
 import inkjetImg from "../../../public/assets/inkjet.png";
 import laserImg from "../../../public/assets/laser.jpg";
 import inkTonerImg from "../../../public/assets/inktoner.png";
-import defaultPrinterImg from "../../../public/assets/printer.png";
+import defaultPrinterImg from "../../../public/assets/printer.webp";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
@@ -70,6 +70,7 @@ const CategoryScrollSection = () => {
                 className="absolute left-0 top-1/2 -translate-y-1/2 z-20
                    w-12 h-12 rounded-full bg-white/70 backdrop-blur-sm
                    flex items-center justify-center shadow-md hover:bg-white/90 transition"
+                aria-label="Scroll categories left"
             >
                 <ChevronLeftIcon className="w-6 h-6 text-gray-800" />
             </button>
@@ -79,6 +80,7 @@ const CategoryScrollSection = () => {
                 className="absolute right-0 top-1/2 -translate-y-1/2 z-20
                    w-12 h-12 rounded-full bg-white/70 backdrop-blur-sm
                    flex items-center justify-center shadow-md hover:bg-white/90 transition"
+                aria-label="Scroll categories right"
             >
                 <ChevronRightIcon className="w-6 h-6 text-gray-800" />
             </button>

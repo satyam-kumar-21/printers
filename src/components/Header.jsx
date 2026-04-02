@@ -61,7 +61,6 @@ const Header = () => {
                 setSuggestions(data);
                 setShowSuggestions(true);
             } catch (error) {
-                console.error("Error fetching suggestions:", error);
                 setSuggestions([]);
                 setShowSuggestions(false);
             }
@@ -117,7 +116,7 @@ const Header = () => {
 
                         {/* Center: Privacy */}
                         <div>
-                            <span className="text-slate-400">Your privacy matters to us. </span>
+                            <span className="text-slate-600">Your privacy matters to us. </span>
                             <Link to="/privacy-policy" className="underline hover:text-blue-600 transition-colors">Read our Privacy Policy.</Link>
                         </div>
 
@@ -144,6 +143,7 @@ const Header = () => {
                             <button
                                 className="md:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-800"
                                 onClick={() => setIsMenuOpen(true)}
+                                aria-label="Open menu"
                             >
                                 <Menu size={24} />
                             </button>
@@ -154,9 +154,12 @@ const Header = () => {
                                 className="cursor-pointer shrink-0 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0"
                             >
                                 <img
-                                    src="/smartEprintingLogo.png"
+                                    src="/smartEprintingLogo.webp"
                                     alt="Smart ePrinting"
                                     className="h-12 md:h-16 w-auto object-contain"
+                                    width="177"
+                                    height="112"
+                                    fetchpriority="high"
                                 />
                             </Link>
 
@@ -186,6 +189,7 @@ const Header = () => {
                                         <button
                                             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                                             className="hidden md:flex items-center gap-2 p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-600 group"
+                                            aria-label="User menu"
                                         >
                                             <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm uppercase">
                                                 {userInfo.firstName?.charAt(0) || userInfo.name?.charAt(0)}
@@ -238,16 +242,17 @@ const Header = () => {
                                     <button
                                         onClick={() => setIsAuthOpen(true)}
                                         className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-600 hidden sm:block group"
+                                        aria-label="Sign in"
                                     >
                                         <User size={22} className="group-hover:scale-110 transition-transform" />
                                     </button>
                                 )}
-                                <button className="relative p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-600 group">
-                                    <Link to="/cart"><ShoppingCart size={22} className="group-hover:scale-110 transition-transform" /></Link>
-                                    <span className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                                <Link to="/cart" className="relative p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-600 group" aria-label="Shopping cart">
+                                    <ShoppingCart size={22} className="group-hover:scale-110 transition-transform" />
+                                    <span className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold" aria-hidden="true">
                                         {useSelector(state => state.cart.cartItems).reduce((acc, item) => acc + item.qty, 0)}
                                     </span>
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -270,6 +275,7 @@ const Header = () => {
                                     <button
                                         onClick={() => setIsMenuOpen(false)}
                                         className="p-2 hover:bg-slate-50 rounded-full text-slate-500"
+                                        aria-label="Close menu"
                                     >
                                         <X size={24} />
                                     </button>
@@ -402,6 +408,7 @@ const Header = () => {
                             <button
                                 onClick={() => setIsSearchOpen(false)}
                                 className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-700"
+                                aria-label="Close search"
                             >
                                 <X size={24} />
                             </button>
@@ -432,7 +439,7 @@ const Header = () => {
                                             >
                                                 <div className="w-12 h-12 bg-white rounded-lg overflow-hidden shrink-0 border border-slate-200 p-1">
                                                     <img 
-                                                        src={suggestion.images && suggestion.images[0] ? (suggestion.images[0].startsWith('http') ? suggestion.images[0] : `${import.meta.env.VITE_API_URL.replace('/api', '')}${suggestion.images[0]}`) : '/printer.png'} 
+                                                        src={suggestion.images && suggestion.images[0] ? (suggestion.images[0].startsWith('http') ? suggestion.images[0] : `${import.meta.env.VITE_API_URL.replace('/api', '')}${suggestion.images[0]}`) : '/assets/printer.webp'} 
                                                         alt={suggestion.title} 
                                                         className="w-full h-full object-contain"
                                                     />

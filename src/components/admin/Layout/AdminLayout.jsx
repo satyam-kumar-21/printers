@@ -135,7 +135,7 @@ const AdminLayout = () => {
             setNotifications(combined);
 
         } catch (error) {
-            console.error("Failed to fetch notifications", error);
+            // silently handle notification fetch errors
         }
     };
 
@@ -195,6 +195,7 @@ const AdminLayout = () => {
                         <button
                             onClick={() => setIsSidebarOpen(true)}
                             className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+                            aria-label="Open sidebar"
                         >
                             <Menu size={20} />
                         </button>
@@ -214,6 +215,7 @@ const AdminLayout = () => {
                             <button
                                 onClick={() => { setIsNotifOpen(!isNotifOpen); setIsProfileOpen(false); }}
                                 className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
+                                aria-label="Notifications"
                             >
                                 <Bell size={20} />
                                 {unreadCount > 0 && (
@@ -298,7 +300,7 @@ const AdminLayout = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
                     <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 m-4">
                         <div className="bg-slate-900 px-6 py-8 text-white relative">
-                            <button onClick={() => setIsProfileModalOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+                            <button onClick={() => setIsProfileModalOpen(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors" aria-label="Close profile">
                                 <X size={20} />
                             </button>
                             <div className="flex flex-col items-center">
