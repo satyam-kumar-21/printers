@@ -4,8 +4,8 @@ import React from 'react';
 const SelectHero = () => {
   return (
     <section
-      className="flex flex-col items-center justify-center text-center min-h-[320px] w-full px-2 relative overflow-hidden"
-      style={{ height: '320px', width: '100%' }}
+      className="flex flex-col items-center justify-center text-center min-h-[380px] pb-16 w-full px-2 relative overflow-hidden"
+      style={{ width: '100%' }}
     >
       <picture>
         <source srcSet="/hero_background_image.webp" type="image/webp" />
@@ -13,7 +13,7 @@ const SelectHero = () => {
           src="/hero_background_image.webp"
           alt="123.hp.com/setup | HP Printer Setup, Offline Fix & Troubleshooting"
           width="1920"
-          height="320"
+          height="380"
           fetchpriority="high"
           decoding="async"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
