@@ -4,7 +4,7 @@ import React from 'react';
 const SelectHero = () => {
   return (
     <section
-      className="flex flex-col items-center justify-center text-center min-h-[380px] pb-16 w-full px-2 relative overflow-hidden"
+      className="flex flex-col items-center justify-center text-center min-h-[480px] pb-16 w-full px-2 relative overflow-hidden"
       style={{ width: '100%' }}
     >
       <picture>

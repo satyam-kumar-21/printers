@@ -144,8 +144,8 @@ const IssueSelector = () => {
 
   return (
     <>
-      <div className="flex justify-center items-start min-h-[70vh] bg-gray-100 pb-12">
-        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-8 mx-2 -mt-24 relative z-20">
+      <div className="flex justify-center items-start bg-gray-100 pb-12">
+        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-8 mx-2 -mt-24 relative z-20 mb-12">
           {step === 1 && <StepOne onSelect={handleIssueSelect} />}
           {step === 3 && <StepThree onBack={() => setStep(1)} />}
         </div>
