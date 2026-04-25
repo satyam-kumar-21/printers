@@ -19,10 +19,8 @@ const SelectHero = () => {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
         />
       </picture>
-      <h2 className="relative z-10 text-white text-3xl sm:text-4xl md:text-5xl font-extrabold mt-8 mb-4 drop-shadow leading-tight whitespace-nowrap">
-        Smart Printer Setup
-        <br className="block sm:hidden" />
-        & Troubleshooting
+      <h2 className="relative z-10 text-white text-3xl sm:text-4xl lg:text-5xl font-extrabold mt-8 mb-4 drop-shadow leading-tight px-4">
+        Smart Printer Setup & Troubleshooting
       </h2>
       <p className="relative z-10 text-gray-200 text-base sm:text-lg md:text-xl mb-4 sm:mb-6 max-w-xl mx-auto">
         Set Up & Troubleshoot Your Printer in Minutes

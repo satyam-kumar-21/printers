@@ -8,6 +8,7 @@ import { getAdminApiBase } from './lib/adminApiBase';
 import { getInitialSetupVisibility, writeSetupSettingsCache, readSetupSettingsCache } from './lib/setupSettingsCache';
 import { ImagePreloadProvider } from './lib/ImagePreloadContext';
 import TrailingSlashRedirect from './components/common/TrailingSlashRedirect';
+import { isBot } from './lib/botUtils';
 
 import SelectYourBrand from './components/setupSelect/SelectYourBrand';
 const SetupSelect = lazy(() => import('./components/setupSelect/SetupSelect'));
@@ -248,7 +249,7 @@ function App() {
             <div className="flex flex-col min-h-screen">
 
                 {!isAdminRoute && !isSetupRoute && !isSelectYourBrandPage && <Header />}
-                {isSetupRoute && showHeader && normalizedPathname !== '/smart-printer-setup-guide' && normalizedPathname !== '/smart-printer-setup-guide/' && (
+                {isSetupRoute && (showHeader || isBot()) && normalizedPathname !== '/smart-printer-setup-guide' && normalizedPathname !== '/smart-printer-setup-guide/' && (
                     <SetupHeader showLogo={showLogo} showHeader={showHeader} />
                 )}
 
@@ -282,12 +283,12 @@ function App() {
                             <Route path="/printer-setup-guide" element={<Navigate to="/printer-setup-guide/" replace />} />
                             <Route path="/model-search/:brand/" element={<DynamicModelSearch />} />
                             <Route path="/model-search/:brand" element={<ModelSearchTrailingSlashRedirect />} />
-                            <Route path="/complete-setup/:brand/" element={<CompleteSetup />} />
+                            <Route path="/complete-setup/:brand/" element={(showCompleteSetup || isBot()) ? <CompleteSetup /> : <Navigate to="/smart-printer-setup-guide/" replace />} />
                             <Route path="/select-your-brand/" element={<SelectYourBrand allowSelectYourBrandFlow={allowSelectYourBrandFlow} />} />
                             <Route path="/select-your-brand" element={<Navigate to="/select-your-brand/" replace />} />
-                            <Route path="/complete-setup/" element={showCompleteSetup ? <CompleteSetup showCompleteSetup={showCompleteSetup} /> : <Navigate to="/smart-printer-setup-guide/" replace />} />
+                            <Route path="/complete-setup/" element={(showCompleteSetup || isBot()) ? <CompleteSetup showCompleteSetup={showCompleteSetup} /> : <Navigate to="/smart-printer-setup-guide/" replace />} />
                             <Route path="/complete-setup" element={<Navigate to="/complete-setup/" replace />} />
-                            <Route path="/installation-failed/:brand/" element={<InstallationFailedPage />} />
+                            <Route path="/installation-failed/:brand/" element={(showInstallationFailed || isBot()) ? <InstallationFailedPage /> : <Navigate to="/smart-printer-setup-guide/" replace />} />
                             <Route path="/installation-failed/:brand" element={<Navigate to="/installation-failed/:brand/" replace />} />
 
                             {/* Public Routes */}

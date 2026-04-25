@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Navigate } from 'react-router-dom';
 import { readSetupSettingsCache } from '../../lib/setupSettingsCache';
+import { isBot } from '../../lib/botUtils';
 import BrandFooter from './BrandFooter';
 import { normalizeSetupBrand } from '../../lib/setupBrandUtils';
 import { openJivoChat } from '../../lib/jivoChat';
@@ -29,11 +30,6 @@ const brandHeroBackground = {
 };
 
 export default function InstallationFailedPage() {
-  // Check if the page should be shown
-  const settings = readSetupSettingsCache();
-  if (!settings?.showInstallationFailed) {
-    return <Navigate to="/smart-printer-setup-guide/" replace />;
-  }
   const { brand: brandParam } = useParams();
   const brandKey = normalizeSetupBrand(brandParam);
   const supportNumber = (brandKey && brandSupportNumbers[brandKey]) || brandSupportNumbers.HP;

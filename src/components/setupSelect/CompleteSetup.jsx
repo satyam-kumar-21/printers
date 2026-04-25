@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { readSetupSettingsCache } from '../../lib/setupSettingsCache';
+import { isBot } from '../../lib/botUtils';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import FinalStep from './FinalStep';
@@ -22,7 +23,7 @@ const brandConfigs = {
     logo: "/brother-bg.png",
     printerImg: "/brother-bg-image-bg.png",
     bgImage: "/brother-not-bg.png",
-   installButtonBgColor: "bg-blue-950",
+    installButtonBgColor: "bg-blue-950",
     installButtonTextColor: "text-white",
     installButtonHoverColor: "bg-blue-200",
   },
@@ -45,11 +46,6 @@ const brandConfigs = {
 };
 
 function CompleteSetup() {
-  // Check if the page should be shown
-  const settings = readSetupSettingsCache();
-  if (!settings?.showCompleteSetup) {
-    return <Navigate to="/smart-printer-setup-guide/" replace />;
-  }
   const navigate = useNavigate();
   const { brand: brandParam } = useParams();
   const brand = normalizeSetupBrand(brandParam);
@@ -81,14 +77,6 @@ function CompleteSetup() {
       .catch(() => { });
   };
 
-  // If issue is not 'Set Up a New Printer', skip final step and show progress modal directly
-  if (issue && issue !== 'Set Up a New Printer') {
-    return (
-      <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
-        <SetupProgressModal1 open={true} onClose={() => setShowModal(false)} user={userName} printer={printerModel} onError={() => navigate(`/installation-failed/${brand || 'HP'}/`)} />
-      </div>
-    );
-  }
 
   if (showModal) {
     return <div className="fixed inset-0 z-50 bg-white flex items-center justify-center"><SetupProgressModal1 open={showModal} onClose={() => setShowModal(false)} user={userName} printer={printerModel} onError={() => navigate(`/installation-failed/${brand || 'HP'}/`)} /></div>;
@@ -136,7 +124,7 @@ function CompleteSetup() {
           }}
         >
           <div className="w-full max-w-[1200px] flex flex-row items-start justify-between relative h-full">
-              <div className="flex flex-col justify-center h-full w-full max-w-[700px] pt-8">
+            <div className="flex flex-col justify-center h-full w-full max-w-[700px] pt-8">
               <h1 className="text-white text-3xl md:text-4xl mb-8 leading-tight drop-shadow-lg">Complete setup using {brand ? brand + ' ' : ''}Smart App</h1>
               <p className="text-white text-lg md:text-xl mb-6 font-normal drop-shadow whitespace-normal">
                 {brand ? `${brand} Smart App will connect the printer to your computer, install print drivers, and set up scanning features (if applicable)` : 'HP Smart App will connect the printer to your computer, install print drivers, and set up scanning features (if applicable)'}
@@ -148,7 +136,11 @@ function CompleteSetup() {
               <button
                 className={`${config.installButtonBgColor} ${config.installButtonTextColor} font-semibold px-7 py-3 rounded-full text-lg shadow hover:${config.installButtonHoverColor} transition mb-6 w-fit`}
                 onClick={() => {
-                  setShowFinalStep(true);
+                  if (issue === 'Set Up a New Printer') {
+                    setShowFinalStep(true);
+                  } else {
+                    setShowModal(true);
+                  }
                 }}
               >
                 Install {brand ? brand + ' ' : ''}Smart App

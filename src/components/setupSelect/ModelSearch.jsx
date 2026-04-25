@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { normalizeSetupBrand } from '../../lib/setupBrandUtils';
 import { getAdminApiBase } from '../../lib/adminApiBase';
 import { getInitialSetupVisibility, writeSetupSettingsCache, readSetupSettingsCache } from '../../lib/setupSettingsCache';
+import { isBot } from '../../lib/botUtils';
 import BrandFooter from './BrandFooter';
 
 const ModelSearch = (props) => {
@@ -34,7 +35,7 @@ const ModelSearch = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!allowModelSearch) {
+        if (!allowModelSearch && !isBot()) {
             if (input.trim() !== '') {
                 setInput('');
                 setError('');

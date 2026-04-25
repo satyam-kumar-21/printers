@@ -47,7 +47,7 @@ const SetupHeader = ({ showLogo = true, showHeader = true }) => {
   return (
     <header className="w-full h-20 bg-white py-2 flex items-center px-[15vw] border-b border-gray-100 shadow-sm relative z-50">
       <nav className="w-full flex items-center justify-between">
-        
+
         {/* Logo */}
         <div className="flex items-center">
           {showLogo && (
@@ -68,7 +68,7 @@ const SetupHeader = ({ showLogo = true, showHeader = true }) => {
           {navItems.map((item, index) => (
             <li key={index}>
               <Link
-                to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                to={`#`}
                 className="text-gray-800 text-lg font-normal hover:font-semibold transition"
               >
                 {item}
@@ -116,7 +116,7 @@ const SetupHeader = ({ showLogo = true, showHeader = true }) => {
             {navItems.map((item, index) => (
               <li key={index}>
                 <Link
-                  to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
+                  to={`#`}
                   className="text-gray-800 text-lg font-normal hover:font-semibold transition"
                   onClick={() => setMenuOpen(false)}
                 >

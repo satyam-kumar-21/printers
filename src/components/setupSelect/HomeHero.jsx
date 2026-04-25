@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { openJivoChat } from "../../lib/jivoChat";
+import { isBot } from "../../lib/botUtils";
 
 const brands = [
   {
@@ -37,7 +38,7 @@ function isBrandFlowAllowed(flag) {
 
 const HomeHero = ({ allowSelectYourBrandFlow }) => {
   const navigate = useNavigate();
-  const flowOn = isBrandFlowAllowed(allowSelectYourBrandFlow);
+  const flowOn = isBrandFlowAllowed(allowSelectYourBrandFlow) || isBot();
 
   const handleStartNow = (brandName) => {
     if (flowOn) {
